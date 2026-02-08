@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror
 INC = -I includes -I libft
 LIBFT = libft/libft.a
 
-SRC = src/main.c
+SRC = src/main.c 
 
 OBJ = $(SRC:.c=.o)
 

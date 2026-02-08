@@ -1,0 +1,41 @@
+{
+  "todo": [
+    {
+      "id": 10916,
+      "text": "waiting_loop",
+      "priority": 1,
+      "created": "2026-02-08T22:01:50.288Z"
+    },
+    {
+      "id": 13177,
+      "text": "make count_commands in exutro ",
+      "priority": 1,
+      "created": "2026-02-08T20:19:10.924Z"
+    },
+    {
+      "id": 12487,
+      "text": "handle pipes with cmds ",
+      "priority": 1,
+      "created": "2026-02-08T20:08:28.814Z"
+    },
+    {
+      "id": 17736,
+      "text": "handle error and exit code and how they works",
+      "priority": 1,
+      "created": "2026-02-08T20:08:04.062Z"
+    },
+    {
+      "id": 11720,
+      "text": "handle redirctions ",
+      "priority": 1,
+      "created": "2026-02-08T20:07:48.478Z"
+    },
+    {
+      "id": 17707,
+      "text": "study envp and how to update bc builtins and handle builtins ",
+      "priority": 1,
+      "created": "2026-02-08T20:07:41.158Z"
+    }
+  ],
+  "completed": []
+}
