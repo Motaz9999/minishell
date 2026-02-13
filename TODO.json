@@ -1,20 +1,20 @@
 {
   "todo": [
     {
-      "id": 10916,
-      "text": "waiting_loop",
+      "id": 15899,
+      "text": "make void fork_cmd_helper();",
       "priority": 1,
-      "created": "2026-02-08T22:01:50.288Z"
+      "created": "2026-02-13T19:08:01.705Z"
     },
     {
-      "id": 13177,
-      "text": "make count_commands in exutro ",
+      "id": 15402,
+      "text": "make void clean_up_v1();",
       "priority": 1,
-      "created": "2026-02-08T20:19:10.924Z"
+      "created": "2026-02-13T19:06:26.088Z"
     },
     {
       "id": 12487,
-      "text": "handle pipes with cmds ",
+      "text": "handle pipes with cmds  \t\thandle_pipes(prev_fd_in, pipes, cmd->redirects);",
       "priority": 1,
       "created": "2026-02-08T20:08:28.814Z"
     },
@@ -25,17 +25,54 @@
       "created": "2026-02-08T20:08:04.062Z"
     },
     {
-      "id": 11720,
-      "text": "handle redirctions ",
-      "priority": 1,
-      "created": "2026-02-08T20:07:48.478Z"
+      "id": 10916,
+      "text": "waiting_loop this in the end (make the parent wait the process)",
+      "priority": 2,
+      "created": "2026-02-13T12:41:11.623Z"
     },
     {
       "id": 17707,
       "text": "study envp and how to update bc builtins and handle builtins ",
-      "priority": 1,
-      "created": "2026-02-08T20:07:41.158Z"
+      "priority": 2,
+      "created": "2026-02-13T12:36:47.994Z"
+    },
+    {
+      "id": 11720,
+      "text": "handle redirctions ",
+      "priority": 2,
+      "created": "2026-02-13T12:36:43.096Z"
+    },
+    {
+      "id": 13085,
+      "text": "is_bulitin() make this fun  and this \texecute_builtin();",
+      "priority": 3,
+      "created": "2026-02-13T12:41:01.850Z"
+    },
+    {
+      "id": 15558,
+      "text": "handle signals and there exit code",
+      "priority": 3,
+      "created": "2026-02-08T22:30:06.358Z"
+    },
+    {
+      "id": 14607,
+      "text": "handle signals errors when do make signals",
+      "priority": 3,
+      "created": "2026-02-08T22:29:45.200Z"
     }
   ],
-  "completed": []
+  "completed": [
+    {
+      "id": 13177,
+      "text": "make count_commands in exutro ",
+      "priority": 1,
+      "created": "2026-02-08T20:19:10.924Z"
+    },
+    {
+      "id": 11813,
+      "text": "make custom struct ",
+      "priority": 1,
+      "created": "2026-02-08T23:05:50.802Z"
+    }
+  ]
 }

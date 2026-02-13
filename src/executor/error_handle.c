@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 20:53:19 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/08 20:57:41 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/13 21:52:05 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // if a sys fails use errno
 // for all sys calles like    open, read, write,
 //                           fork, pipe, dup2 , chdir, access
-
 int	error_syscall(char *context, int exit_code)
 {
 	ft_putstr_fd("minishell: ", 2);

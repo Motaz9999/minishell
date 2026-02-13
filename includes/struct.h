@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/08 23:03:08 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/13 15:39:01 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ typedef struct s_redirect
 typedef struct s_command
 {
 	char **args;            // NULL-terminated array for execve().
-	t_redirect *redirects;  // A linked list of all redirections for this command.
+	t_redirect *redirects; 
+		// A linked list of all redirections for this command.
 	struct s_command *next; // Pointer to the next command in a pipeline.
 }					t_command;
 
@@ -101,5 +102,19 @@ typedef struct s_shell
 	t_token *tokens;     // The head of the token list from the lexer.
 	t_command *commands; // The head of the command list from the parser.
 }					t_shell;
+
+/*
+** =============================================================================
+**   3. extract struct for motaz
+** =============================================================================
+*/
+typedef struct s_ext
+{
+	int				pipe_fds[2];
+	int				prev_fd_in;
+	pid_t			*pids;
+	int				i;
+	t_command		*cmd;
+}					t_ext;
 
 #endif
