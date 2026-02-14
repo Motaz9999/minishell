@@ -1,10 +1,16 @@
 {
   "todo": [
     {
-      "id": 11720,
-      "text": "handle redirctions ",
+      "id": 15558,
+      "text": "handle signals and there exit code",
       "priority": 1,
-      "created": "2026-02-14T18:04:38.857Z"
+      "created": "2026-02-14T22:45:09.017Z"
+    },
+    {
+      "id": 17707,
+      "text": "study envp and how to update bc builtins and handle builtins ",
+      "priority": 1,
+      "created": "2026-02-14T22:45:07.193Z"
     },
     {
       "id": 17736,
@@ -31,22 +37,10 @@
       "created": "2026-02-13T12:41:11.623Z"
     },
     {
-      "id": 17707,
-      "text": "study envp and how to update bc builtins and handle builtins ",
-      "priority": 2,
-      "created": "2026-02-13T12:36:47.994Z"
-    },
-    {
       "id": 13085,
       "text": "is_bulitin() make this fun  and this \texecute_builtin();",
       "priority": 3,
       "created": "2026-02-13T12:41:01.850Z"
-    },
-    {
-      "id": 15558,
-      "text": "handle signals and there exit code",
-      "priority": 3,
-      "created": "2026-02-08T22:30:06.358Z"
     },
     {
       "id": 14607,
@@ -73,6 +67,12 @@
       "text": "handle pipes with cmds  handle_pipes(prev_fd_in, pipes, cmd->redirects);",
       "priority": 1,
       "created": "2026-02-08T20:08:28.814Z"
+    },
+    {
+      "id": 11720,
+      "text": "handle redirctions ",
+      "priority": 1,
+      "created": "2026-02-14T18:04:38.857Z"
     }
   ]
 }

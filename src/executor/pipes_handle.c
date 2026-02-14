@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:12 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/15 00:53:30 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/15 01:45:41 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int	handle_pipes(int prev_fd_in, int pipes[], int remaining_cmd , t_shell *shell
 		if (prev_fd_in == -1)//first cmd
 		{
 			if (dup2(pipes[1] , 1) == -1)
-					return close_pipes(pipes);
+					return close_pipes(pipes ,shell);
 		}
 		else// not the first cmd soo there is previous pipe i should take the input from it
 		{//but them in if statement
 			if (dup2(prev_fd_in,0) == -1 || dup2(pipes[1] , 1) == -1)//now i am taking from the prev pipe and close it in parent bc it live in it
-					return close_pipes_prev(pipes , &prev_fd_in);
+					return close_pipes_prev(pipes , &prev_fd_in ,shell);
 		}
 	}
 	else if (remaining_cmd == 1) // the  last cmd  but what if 
@@ -57,7 +57,7 @@ int	handle_pipes(int prev_fd_in, int pipes[], int remaining_cmd , t_shell *shell
 			return TRUE;//there is nothing to do 
 		else // last cmd (dont have new pipe from parent) but have input comes from other cmds
 			if (dup2(prev_fd_in , 0) == -1)
-				return close_pipes_prev(pipes , &prev_fd_in);
+				return close_pipes_prev(pipes , &prev_fd_in ,shell);
 	}
 	close_pipes_prev(pipes , &prev_fd_in , shell);
 	shell->last_exit_status = 0;//it ok
