@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/08 22:33:09 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/15 00:39:40 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdarg.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include <sys/time.h>
 # include <sys/types.h>
 # include <sys/stat.h>

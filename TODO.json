@@ -1,28 +1,28 @@
 {
   "todo": [
     {
-      "id": 15899,
-      "text": "make void fork_cmd_helper();",
+      "id": 11720,
+      "text": "handle redirctions ",
       "priority": 1,
-      "created": "2026-02-13T19:08:01.705Z"
-    },
-    {
-      "id": 15402,
-      "text": "make void clean_up_v1();",
-      "priority": 1,
-      "created": "2026-02-13T19:06:26.088Z"
-    },
-    {
-      "id": 12487,
-      "text": "handle pipes with cmds  \t\thandle_pipes(prev_fd_in, pipes, cmd->redirects);",
-      "priority": 1,
-      "created": "2026-02-08T20:08:28.814Z"
+      "created": "2026-02-14T18:04:38.857Z"
     },
     {
       "id": 17736,
       "text": "handle error and exit code and how they works",
       "priority": 1,
       "created": "2026-02-08T20:08:04.062Z"
+    },
+    {
+      "id": 15899,
+      "text": "make void fork_cmd_helper();",
+      "priority": 2,
+      "created": "2026-02-14T18:04:31.878Z"
+    },
+    {
+      "id": 15402,
+      "text": "make void clean_up_v1();",
+      "priority": 2,
+      "created": "2026-02-14T18:04:30.752Z"
     },
     {
       "id": 10916,
@@ -35,12 +35,6 @@
       "text": "study envp and how to update bc builtins and handle builtins ",
       "priority": 2,
       "created": "2026-02-13T12:36:47.994Z"
-    },
-    {
-      "id": 11720,
-      "text": "handle redirctions ",
-      "priority": 2,
-      "created": "2026-02-13T12:36:43.096Z"
     },
     {
       "id": 13085,
@@ -73,6 +67,12 @@
       "text": "make custom struct ",
       "priority": 1,
       "created": "2026-02-08T23:05:50.802Z"
+    },
+    {
+      "id": 12487,
+      "text": "handle pipes with cmds  handle_pipes(prev_fd_in, pipes, cmd->redirects);",
+      "priority": 1,
+      "created": "2026-02-08T20:08:28.814Z"
     }
   ]
 }

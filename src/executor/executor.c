@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/13 22:13:47 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/15 00:51:27 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,37 +35,29 @@ pid_t	fork_cmd(t_shell *shell, t_command *cmd, char **find_path,
 	if (pid == -1)
 	{
 		shell->last_exit_status = 127; // we are now inside child soo the exit
-		error_syscall("fork", 127);
-		return (-1);
+		exit (error_syscall("fork", 127));
 	}
 	if (pid == 0)
 	{	// bc the env_list is always updated like envp and redir if it exist and pipes
 		envp = make_envp(shell->env_list);////but these 2 handles in if and check for errors and what the exit code should be bc we inside a child process
 		if (envp == NULL)
 		{
-			free(find_path);
-			close(pipes[0]);
-			close(pipes[1]);
+			ft_free_all((char*)find_path ,(char*) envp , NULL);
 			exit(error_syscall("envp" , 1));
 		}
-		if (!handle_pipes(prev_fd_in, pipes, remaining_cmds , shell) || !handle_redir(prev_fd_in, pipes,cmd->redirects,shell))
+		if (!handle_pipes(prev_fd_in, pipes, remaining_cmds , shell) ||
+		 !handle_redir(cmd->redirects,shell))
 		{
-			free(find_path);
-			close(pipes[0]);
-			close(pipes[1]);//
-			exit(error_syscall("dup2" , 1));
+			ft_free_all((char*)find_path ,(char*) envp , NULL);
+			exit(error_syscall("dup2" , shell->last_exit_status));
 		}//here pver ride the pipes and i see about prev_fd
 		if (!handle_signal())//this is also have exit inside it soo it must send pipes to it // make last thing dont forget the exit code not the same so u must send the shell to it// here we control where the input and output
 		{
-			free(find_path);
-			close(pipes[0]);
-			close(pipes[1]);
-			error_signal();
+			ft_free_all((char*)find_path ,(char*) envp , NULL);
+			exit (error_signal());
 		}
 		execve(find_path, cmd->args, envp);
 		free(find_path);
-		close(pipes[0]);
-		close(pipes[1]);//there is no need for them now 
 		error_execve(cmd->args[0]); // it also have exit code bc it child
 	}
 	free(find_path);
@@ -87,21 +79,21 @@ pid_t	execute_one_cmd(t_command *cmd, t_shell *shell, int prev_fd_in,
 	{
 		shell->last_exit_status = 127; // i just update here
 		error_cmd(cmd->args[0], "Command not found", 127);
-		return ;
+		return -1;
 	}
 	if (access(find_path, R_OK) == -1)
 	{
 		shell->last_exit_status = 126; // i just update here
 		error_cmd(find_path, "permission denied", 126);
 		free(find_path);
-		return ;
+		return -1;
 	}
 	if (access(find_path, X_OK) == -1)
 	{
 		shell->last_exit_status = 126; // i just update here
 		error_cmd(find_path, "Not executable", 126);
 		free(find_path);
-		return ;
+		return -1;
 	}
 	return (fork_cmd(shell, cmd, find_path, prev_fd_in, pipes));
 	// here is the continue for this fun
@@ -165,8 +157,9 @@ void execute_helper(t_ext *ext , t_shell *shell)
 				shell->last_exit_status = -1;
 				error_syscall("pipe", -1);
 				free(ext->pids);// i want for each 2 cmd to make them a pipe in first cmd
+				return;
 			}
-			else // if next cmd is null there is no  need for pipe
+		else // if next cmd is null there is no  need for pipe
 			{
 				ext->pipe_fds[0] = -1;
 				ext->pipe_fds[1] = -1;

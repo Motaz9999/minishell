@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/13 15:39:01 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/15 00:21:29 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_redirect
 	t_redir_type type;       // The category of redirection (from enum above).
 	char *file;              // Filename or heredoc delimiter.
 	int fd;                  // The file descriptor, filled in by the Executor.
+	int         heredoc_fd;  // For heredoc for the parser to set 
 	struct s_redirect *next; // Pointer to the next redirection in the list.
 }					t_redirect;
 
