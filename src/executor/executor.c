@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/15 00:51:27 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/15 21:23:43 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,9 @@ int	count_commands(t_command *cmds)
 
 
 
-
-
-
-
-
 void execute_helper2(t_ext *ext , t_shell *shell)
 {
-			if (is_builtin(ext->cmd))
+	    if (is_builtin(ext->cmd))
 			execute_builtin();// this type i totally work different with it bc the 2 types
 		else
 			ext->pids[ext->i] = execute_one_cmd(ext->cmd, shell, ext->prev_fd_in,
@@ -147,6 +142,7 @@ void execute_helper2(t_ext *ext , t_shell *shell)
 			ext->prev_fd_in = ext->pipe_fds[0]; // close in the next time 
 		}
 }
+
 void execute_helper(t_ext *ext , t_shell *shell)
 {
 	while (ext->cmd)

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/15 00:21:29 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/15 21:10:17 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,6 @@ typedef struct s_ext
 	pid_t			*pids;
 	int				i;
 	t_command		*cmd;
-}					t_ext;
+}				t_ext;
 
 #endif

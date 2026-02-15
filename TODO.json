@@ -1,6 +1,18 @@
 {
   "todo": [
     {
+      "id": 16182,
+      "text": "builtins errors and signals errors",
+      "priority": 1,
+      "created": "2026-02-15T18:25:29.660Z"
+    },
+    {
+      "id": 14607,
+      "text": "handle signals errors when do make signals",
+      "priority": 1,
+      "created": "2026-02-15T18:08:35.931Z"
+    },
+    {
       "id": 15558,
       "text": "handle signals and there exit code",
       "priority": 1,
@@ -41,12 +53,6 @@
       "text": "is_bulitin() make this fun  and this \texecute_builtin();",
       "priority": 3,
       "created": "2026-02-13T12:41:01.850Z"
-    },
-    {
-      "id": 14607,
-      "text": "handle signals errors when do make signals",
-      "priority": 3,
-      "created": "2026-02-08T22:29:45.200Z"
     }
   ],
   "completed": [
