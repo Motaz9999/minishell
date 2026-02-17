@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/15 21:23:43 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/17 02:43:15 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ pid_t	fork_cmd(t_shell *shell, t_command *cmd, char **find_path,
 	int		remaining_cmds;
 
 	remaining_cmds = count_commands(cmd);
+	g_in_cmd = 1;
 	pid = fork();                         // this is for the process
 	if (pid == -1)
 	{
@@ -39,6 +40,7 @@ pid_t	fork_cmd(t_shell *shell, t_command *cmd, char **find_path,
 	}
 	if (pid == 0)
 	{	// bc the env_list is always updated like envp and redir if it exist and pipes
+		setup_signals_child();
 		envp = make_envp(shell->env_list);////but these 2 handles in if and check for errors and what the exit code should be bc we inside a child process
 		if (envp == NULL)
 		{
@@ -165,6 +167,7 @@ void execute_helper(t_ext *ext , t_shell *shell)
 		ext->i++;
 	}
 }
+
 // this is the parent process
 // make a custom struct
 void	execute(t_shell *shell)
@@ -179,6 +182,10 @@ void	execute(t_shell *shell)
 	ext.cmd = shell->commands; // head
 	ext.i = 0;
 	// but the whole loop in another fun
-	execute_helper(&ext , shell);
-	waiting_loop_free_pids(); // here we waiting and also update the status
+	execute_helper(&ext , shell);//fork all child here
+	waiting_loop_free_pids(ext.pids , shell , count_commands(shell->commands)); // here we waiting and also update the status
+}
+void waiting_loop_free_pids(pid_t pids[] , t_shell *shell , int cmd_count)
+{
+	
 }

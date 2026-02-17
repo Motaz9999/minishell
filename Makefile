@@ -3,8 +3,10 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INC = -I includes -I libft
 LIBFT = libft/libft.a
+
+INC = -I includes -I libft
+LINK = -lreadline -lft
 
 SRC = src/main.c 
 
