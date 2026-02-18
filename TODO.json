@@ -7,18 +7,6 @@
       "created": "2026-02-15T18:25:29.660Z"
     },
     {
-      "id": 14607,
-      "text": "handle signals errors when do make signals",
-      "priority": 1,
-      "created": "2026-02-15T18:08:35.931Z"
-    },
-    {
-      "id": 15558,
-      "text": "handle signals and there exit code",
-      "priority": 1,
-      "created": "2026-02-14T22:45:09.017Z"
-    },
-    {
       "id": 17707,
       "text": "study envp and how to update bc builtins and handle builtins ",
       "priority": 1,
@@ -41,12 +29,6 @@
       "text": "make void clean_up_v1();",
       "priority": 2,
       "created": "2026-02-14T18:04:30.752Z"
-    },
-    {
-      "id": 10916,
-      "text": "waiting_loop this in the end (make the parent wait the process)",
-      "priority": 2,
-      "created": "2026-02-13T12:41:11.623Z"
     },
     {
       "id": 13085,
@@ -79,6 +61,24 @@
       "text": "handle redirctions ",
       "priority": 1,
       "created": "2026-02-14T18:04:38.857Z"
+    },
+    {
+      "id": 14607,
+      "text": "handle signals errors when do make signals",
+      "priority": 1,
+      "created": "2026-02-15T18:08:35.931Z"
+    },
+    {
+      "id": 15558,
+      "text": "handle signals and there exit code",
+      "priority": 1,
+      "created": "2026-02-14T22:45:09.017Z"
+    },
+    {
+      "id": 10916,
+      "text": "waiting_loop this in the end (make the parent wait the process)",
+      "priority": 2,
+      "created": "2026-02-13T12:41:11.623Z"
     }
   ]
 }
