@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/17 02:43:15 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/18 21:51:27 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ pid_t	fork_cmd(t_shell *shell, t_command *cmd, char **find_path,
 	int		remaining_cmds;
 
 	remaining_cmds = count_commands(cmd);
-	g_in_cmd = 1;
 	pid = fork();                         // this is for the process
 	if (pid == -1)
 	{
@@ -53,11 +52,12 @@ pid_t	fork_cmd(t_shell *shell, t_command *cmd, char **find_path,
 			ft_free_all((char*)find_path ,(char*) envp , NULL);
 			exit(error_syscall("dup2" , shell->last_exit_status));
 		}//here pver ride the pipes and i see about prev_fd
-		if (!handle_signal())//this is also have exit inside it soo it must send pipes to it // make last thing dont forget the exit code not the same so u must send the shell to it// here we control where the input and output
-		{
-			ft_free_all((char*)find_path ,(char*) envp , NULL);
-			exit (error_signal());
-		}
+		// i cant free signal ( or know when i got signal)
+		// if (!handle_signal())//this is also have exit inside it soo it must send pipes to it // make last thing dont forget the exit code not the same so u must send the shell to it// here we control where the input and output
+		// {
+		// 	ft_free_all((char*)find_path ,(char*) envp , NULL);
+		// 	exit (error_signal());
+		// }
 		execve(find_path, cmd->args, envp);
 		free(find_path);
 		error_execve(cmd->args[0]); // it also have exit code bc it child
@@ -126,9 +126,6 @@ int	count_commands(t_command *cmds)
 	return (count);
 }
 
-
-
-
 void execute_helper2(t_ext *ext , t_shell *shell)
 {
 	    if (is_builtin(ext->cmd))
@@ -185,7 +182,38 @@ void	execute(t_shell *shell)
 	execute_helper(&ext , shell);//fork all child here
 	waiting_loop_free_pids(ext.pids , shell , count_commands(shell->commands)); // here we waiting and also update the status
 }
+
+//WIFEXITED(status)  -> Did the child exit normally?
+//WEXITSTATUS(status) -> Extracts the exit code passed to exit()
+//WIFSIGNALED(status) -> Did the process die because of a signal?
+// User pressed Ctrl+C → SIGINT
+// User pressed Ctrl+\ → SIGQUIT
+// Program crashed (segfault) → SIGSEGV
+//WTERMSIG(status) -> Returns the signal number that killed the process.
 void waiting_loop_free_pids(pid_t pids[] , t_shell *shell , int cmd_count)
 {
+	int i ;
+	int status;
 	
+	i = 0;
+	while (i < cmd_count)
+	{
+		waitpid(pids[i] ,&status , 0);
+		if (i == cmd_count - 1)//last cmd
+		{
+			if (WIFEXITED(status))//normal exit so i can now get the exit code
+			{
+				shell->last_exit_status = WEXITSTATUS(status);
+			}
+			else if (WIFSIGNALED(status))//sig exit
+			{
+				status = WTERMSIG(status);//we want to save the exit code
+				shell->last_exit_status = status+128;//save it as signal type error (this for child) 
+				if (status == SIGQUIT)
+					write(1 , "Quit (core dumped)\n", 19);
+			}
+		}
+		i++;
+	}
+	free(pids);
 }

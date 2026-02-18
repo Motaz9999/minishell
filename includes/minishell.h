@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/17 02:15:28 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/18 21:46:32 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,13 @@
 // volatile => This variable can change at any time — don’t optimize it away
 // Without volatile,
 //	the compiler might cache the value and never see updates from the handler.
-volatile sig_atomic_t	g_in_cmd = 0;
+//volatile sig_atomic_t	g_in_cmd = 0; this false
 
+
+
+
+
+volatile sig_atomic_t g_sigint_received = 0;//this is right
 // path handler funs
 char					*resolve_path(char *cmd_name, t_env *env_list);
 // the execute funs for now

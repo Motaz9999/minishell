@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:05 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/17 02:15:00 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/18 21:53:02 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 // THIS IS FOR PARENT AND CHILD
 static void	handle_sigint(int sig)
 {
-	(void)sig;         // we cant do anything  with it now
-	if (g_in_cmd == 0) // interactive mode
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay(); //
-	}
+	(void)sig;
+	g_sigint_received = 1;         // we cant do anything  with it now
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay(); //
 }
 
 // here we setup the signals for parent
@@ -30,7 +28,7 @@ static void	handle_sigint(int sig)
 // like ctrl + c it mean here just preint \n and discard any input (the read)
 // and like ctrl+\ it dosent do anything  soo we but it SIG_IGN
 // here the global var g_in_cmd = 0 (interactive mode)
-void	setup_signals_parent(void)
+void	setup_signals_parent(t_shell *shell)
 {
 	struct sigaction	sa;
 
