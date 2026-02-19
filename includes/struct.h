@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/15 21:10:17 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/20 01:43:02 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,17 @@ typedef struct s_ext
 	int				i;
 	t_command		*cmd;
 }				t_ext;
+
+typedef enum e_builtin
+{
+    BI_NONE = 0,
+    BI_ECHO,
+    BI_CD,
+    BI_PWD,
+    BI_EXPORT,
+    BI_UNSET,
+    BI_ENV,
+    BI_EXIT
+}   t_builtin;
 
 #endif

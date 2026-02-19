@@ -1,6 +1,12 @@
 {
   "todo": [
     {
+      "id": 17215,
+      "text": "handle pipes and close them in parent in builtins and in child",
+      "priority": 1,
+      "created": "2026-02-19T22:39:10.345Z"
+    },
+    {
       "id": 16182,
       "text": "builtins errors and signals errors",
       "priority": 1,
