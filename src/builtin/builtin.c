@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 00:26:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/20 02:13:42 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/23 19:45:33 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 // soo i must recreate the pipes system and redirection for builtins
 t_builtin	get_builtin(t_command *cmd)
 {
-	if (!cmd->args || !cmd->args[0])
-		return (BI_NONE); // 0=> false
+	if (!cmd || !cmd->args || !cmd->args[0])
+		return (BI_NONE);
 	if (ft_strcmp(cmd->args[0], "echo") == 0)
 		return (BI_ECHO);
 	if (ft_strcmp(cmd->args[0], "cd") == 0)
@@ -44,50 +44,65 @@ t_builtin	get_builtin(t_command *cmd)
 pid_t	execute_builtin(t_ext *ext, t_shell *shell, int casee)
 {
 	pid_t	pid;
+	int		saved_stdin;
+	int		saved_stdout;
 
-	if (casee == 1)
+	if (casee == 1) // there is a child
 	{
 		pid = fork();
-		// now as a kid i also have pipes dont forget it and redir//dont forgot to close the pipes for the main
 		if (pid == -1)
-		{
-			shell->last_exit_status = 127;
-			// we are now inside child soo the exit
-			exit(error_syscall("fork", 127));
-		}
-		if (pid != 0)
-			return (pid); // end of parent if i had child to deals with (easy )
-		// now i am inside child soo what also child needs
-		setup_signals_child();
-		if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds,
-				count_commands(ext->cmd), shell)
-			|| !handle_redir(ext->cmd->redirects, shell))
-			exit(error_syscall("dup2", shell->last_exit_status));
-		// now i handle anything must be handled soo lets continue the code
+			return (error_syscall("fork", -1));
+		if (pid == 0)
+			execute_in_child(ext, shell);
+		// here there just use the the handles that u used in the fork for a child
+		return (pid);
 	}
-	else // this mean the parent process
-		pid = -1;
-	execute_builtin_cmd(ext, shell); // for single cmd and multi
-	return (pid);
+	// ok here i want to handle the redir if it in the parent (must save the IN AND OUT after handle the redir return it to the original)
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	if (saved_stdin == -1 || saved_stdout == -1)
+		return (error_syscall("dup", -1));
+	if (!handle_redir(ext->cmd->redirects, shell))
+		shell->last_exit_status = 1;
+	else
+		execute_builtin_cmd(ext, shell);
+	dup2(saved_stdin, STDIN_FILENO);   // return it into the original input
+	dup2(saved_stdout, STDOUT_FILENO); // return it into the original input
+	close(saved_stdin);
+	return (close(saved_stdout) - 1); // it return -1 EASY
+									  //-1 => pid_t is parent so no need to wait
+}
+
+// here i want to execute in child
+static void	execute_in_child(t_ext *ext, t_shell *shell)
+{
+	setup_signals_child();
+	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, count_commands(ext->cmd),
+			shell) || !handle_redir(ext->cmd->redirects, shell))
+		exit(error_syscall("dup2", 1));
+	execute_builtin_cmd(ext, shell);
+	exit(shell->last_exit_status);
 }
 
 // here we execute the cmds but first we decide what cmd we
 // use depends on get_builtin
-void	execute_builtin_cmd(t_ext *ext, t_shell *shell)
+static void	execute_builtin_cmd(t_ext *ext, t_shell *shell)
 {
-	t_builtin type = get_builtin(ext->cmd); // now i have type
+	t_builtin	type;
+
+	type = get_builtin(ext->cmd);
 	if (type == BI_CD)
-		cd(ext, shell);
+		shell->last_exit_status = builtin_cd(ext->cmd->args, shell);
 	else if (type == BI_ECHO)
-		echo(ext, shell);
+		shell->last_exit_status = builtin_echo(ext->cmd->args);
 	else if (type == BI_ENV)
-		env(ext, shell);
+		shell->last_exit_status = builtin_env(shell->env_list);
 	else if (type == BI_EXIT)
-		exit_bi(ext, shell);
+		builtin_exit(ext->cmd->args, shell);
 	else if (type == BI_EXPORT)
-		export(ext, shell);
+		shell->last_exit_status = builtin_export(ext->cmd->args, shell);
 	else if (type == BI_PWD)
-		pwd(ext, shell);
+		shell->last_exit_status = builtin_pwd();
 	else if (type == BI_UNSET)
-		unset(ext, shell);
+		shell->last_exit_status = builtin_unset(ext->cmd->args, shell);
 }
