@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/20 01:48:29 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/25 05:41:52 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,13 @@ int						error_syscall(char *context, int exit_code);
 void					setup_signals_child(void);
 void					setup_signals_parent(void);
 void					setup_signals_child(void);
-//builtins
-t_builtin get_builtin(t_command *cmd);
-pid_t	execute_builtin(t_ext *ext, t_shell *shell, int casee);
+// builtins
+t_builtin				get_builtin(t_command *cmd);
+pid_t					execute_builtin(t_ext *ext, t_shell *shell, int casee);
+int						echo(char **args);
+int						pwd(t_env *env_list);
+t_env					*find_node(t_env *env_list, char *key);
+void					update_env_pwd(t_env *env_list, char *new_pwd_val);
+int						cd(char **args, t_shell *shell);
 
 #endif

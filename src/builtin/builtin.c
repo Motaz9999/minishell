@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 00:26:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/23 19:45:33 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/25 05:05:49 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	execute_builtin_cmd(t_ext *ext, t_shell *shell)
 
 	type = get_builtin(ext->cmd);
 	if (type == BI_CD)
-		shell->last_exit_status = builtin_cd(ext->cmd->args, shell);
+		shell->last_exit_status = builtin_cd(ext, shell);
 	else if (type == BI_ECHO)
 		shell->last_exit_status = builtin_echo(ext->cmd->args);
 	else if (type == BI_ENV)
@@ -105,4 +105,9 @@ static void	execute_builtin_cmd(t_ext *ext, t_shell *shell)
 		shell->last_exit_status = builtin_pwd();
 	else if (type == BI_UNSET)
 		shell->last_exit_status = builtin_unset(ext->cmd->args, shell);
+	
+	if (shell->last_exit_status == TRUE)
+		shell->last_exit_status = 0;//this mean the process run ok
+	else
+		shell->last_exit_status = 1;// general error
 }
