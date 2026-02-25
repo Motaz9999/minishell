@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 00:26:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/25 05:05:49 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/25 06:25:33 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,19 @@ static void	execute_builtin_cmd(t_ext *ext, t_shell *shell)
 
 	type = get_builtin(ext->cmd);
 	if (type == BI_CD)
-		shell->last_exit_status = builtin_cd(ext, shell);
+		shell->last_exit_status = cd(ext, shell);
 	else if (type == BI_ECHO)
-		shell->last_exit_status = builtin_echo(ext->cmd->args);
+		shell->last_exit_status = echo(ext->cmd->args);
 	else if (type == BI_ENV)
-		shell->last_exit_status = builtin_env(shell->env_list);
+		shell->last_exit_status = env(shell->env_list);
 	else if (type == BI_EXIT)
 		builtin_exit(ext->cmd->args, shell);
 	else if (type == BI_EXPORT)
-		shell->last_exit_status = builtin_export(ext->cmd->args, shell);
+		shell->last_exit_status = export(ext->cmd->args, shell);
 	else if (type == BI_PWD)
-		shell->last_exit_status = builtin_pwd();
+		shell->last_exit_status = pwd();
 	else if (type == BI_UNSET)
-		shell->last_exit_status = builtin_unset(ext->cmd->args, shell);
+		shell->last_exit_status = unset(ext->cmd->args, shell);
 	
 	if (shell->last_exit_status == TRUE)
 		shell->last_exit_status = 0;//this mean the process run ok
