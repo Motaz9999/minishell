@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 18:04:10 by moodeh            #+#    #+#             */
-/*   Updated: 2025/12/11 04:37:54 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/26 15:12:42 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,24 @@ size_t				ft_strlen(const char *str);
 size_t				ft_strlcpy(char *dest, const char *src, size_t size);
 void				ft_free_all(void *first, ...);
 void				ft_free_all2(void **first, ...);
+
+/*
+** t_lst_ops — teach the generic functions about YOUR node type
+**
+**   next_offset : offsetof(your_type, next)
+**   dup         : malloc a new node, deep copy all fields, set next=NULL
+**   del         : free all inner pointers (key, value...) but NOT the node
+**                 pass NULL if your node has no inner pointers to free
+*/
+
+typedef struct s_lst_ops
+{
+	size_t			next_offset;
+	void			*(*dup)(void *node);
+	void			(*del)(void *node);
+}					t_lst_ops;
+
+void				*ft_lstcopy_generic(void *head, t_lst_ops ops);
+void				ft_lstfree_generic(void *head, t_lst_ops ops);
+
 #endif

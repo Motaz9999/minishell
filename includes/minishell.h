@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/25 05:41:52 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/26 15:25:32 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/readline.h>
 # include <signal.h> // this is for handling signals
 # include <stdarg.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <sys/stat.h>
 # include <sys/time.h>
@@ -65,5 +66,7 @@ int						pwd(t_env *env_list);
 t_env					*find_node(t_env *env_list, char *key);
 void					update_env_pwd(t_env *env_list, char *new_pwd_val);
 int						cd(char **args, t_shell *shell);
-
+void					del_env(void *raw);
+void					*dup_env(void *raw);
+void					merge_sort(t_env **head_ref);
 #endif

@@ -6,7 +6,7 @@
 #    By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 17:04:51 by moodeh            #+#    #+#              #
-#    Updated: 2025/12/11 03:16:12 by moodeh           ###   ########.fr        #
+#    Updated: 2026/02/26 15:13:49 by moodeh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ SRC = 		ft_atoi.c\
 		ft_printf.c\
 		ft_print.c\
 		ft_free_all.c\
+		ft_cpy_free_lst.c\
 		
 
 OBJ = $(SRC:.c=.o)
