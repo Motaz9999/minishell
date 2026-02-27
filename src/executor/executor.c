@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/20 01:46:47 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 12:25:34 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,29 +37,33 @@ void	fork_cmd_helper(char **envp, t_ext *ext, t_shell *shell,
 		free(find_path);
 		exit(error_syscall("envp", 1));
 	}
-	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, remaining_cmds, shell)
-		|| !handle_redir(ext->cmd->redirects, shell))
+	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, remaining_cmds, shell))
 	{
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
 		exit(error_syscall("dup2", shell->last_exit_status));
 	}
+	if (!handle_redir(ext->cmd->redirects, shell))
+	{
+		free(find_path);
+		ft_free_all2((void **)envp, NULL);
+		exit(shell->last_exit_status); // error already printed inside handle_redir
+	}
 }
+
+
 // here we fork the process
 // and make a new fun to deal with the dir of input and output
-pid_t	fork_cmd(t_shell *shell, t_ext *ext, char **find_path)
+pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 {
 	pid_t	pid;
 	char	**envp;
-	int		remaining_cmds;
-	char	*find_path;
 
-	remaining_cmds = count_commands(ext->cmd);
 	pid = fork(); // this is for the process
 	if (pid == -1)
 	{
-		shell->last_exit_status = 127; // we are now inside child soo the exit
-		exit(error_syscall("fork", 127));
+		shell->last_exit_status = error_syscall("fork", 127);; // we are now inside child soo the exit
+		return -1;
 	}
 	if (pid == 0)
 	{
@@ -70,7 +74,7 @@ pid_t	fork_cmd(t_shell *shell, t_ext *ext, char **find_path)
 		execve(find_path, ext->cmd->args, envp);
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
-		error_execve(cmd->args[0]); // it also have exit code bc it child
+		error_execve(ext->cmd->args[0]); // it also have exit code bc it child
 	}
 	free(find_path);
 	return (pid); // save it in parent
@@ -84,13 +88,13 @@ pid_t	fork_cmd(t_shell *shell, t_ext *ext, char **find_path)
 // also in this fun
 pid_t	execute_one_cmd(t_ext *ext, t_shell *shell)
 {
-	char	find_path;
+	char	*find_path;
 
 	if (get_builtin(ext->cmd) != FALSE)
-		return (execute_builtin(ext, shell, 1));                 
-			// dont need the others the 1 is for fork and must return pid
+		return (execute_builtin(ext, shell, 1));
+	// dont need the others the 1 is for fork and must return pid
 	find_path = resolve_path(ext->cmd->args[0], shell->env_list);
-		// handle and free all in fun make it later name it checking for file and
+	// handle and free all in fun make it later name it checking for file and
 	if (!find_path)
 	{
 		shell->last_exit_status = 127; // i just update here
@@ -112,7 +116,7 @@ pid_t	execute_one_cmd(t_ext *ext, t_shell *shell)
 		return (-1);
 	}
 	return (fork_cmd(shell, ext, find_path));
-		// here is the continue for this fun
+	// here is the continue for this fun
 }
 
 void	execute_helper2(t_ext *ext, t_shell *shell)
@@ -135,31 +139,29 @@ void	execute_helper2(t_ext *ext, t_shell *shell)
 
 void	execute_helper(t_ext *ext, t_shell *shell)
 {
-	if (count_commands(ext->cmd) == 1) // this mean that i have just 1 cmd
-		if (get_builtin(ext->cmd) != FALSE)      // check if it from the builtins
-			//its easy to check it here
+	if (count_commands(ext->cmd) == 1)      // this mean that i have just 1 cmd
+		if (get_builtin(ext->cmd) != FALSE) // check if it from the builtins
 		{
 			execute_builtin(ext, shell, 0);
-				// dont have to fork and dont need pid
 			return ;
 		}
 	while (ext->cmd)
 	{
 		if (ext->cmd->next != NULL)
-			if (pipe(ext->pipe_fds) == -1)
-				// here i create pipe (each 2 process have 2 types )
+		{
+			if (pipe(ext->pipe_fds) == -1)// here i create pipe (each 2 process have 2 types )
 			{
 				shell->last_exit_status = -1;
 				error_syscall("pipe", -1);
-				free(ext->pids);
-					// i want for each 2 cmd to make them a pipe in first cmd
+				free(ext->pids);// i want for each 2 cmd to make them a pipe in first cmd
 				return ;
 			}
-			else // if next cmd is null there is no  need for pipe
-			{
-				ext->pipe_fds[0] = -1;
-				ext->pipe_fds[1] = -1;
-			}
+		}
+		else // if next cmd is null there is no  need for pipe
+		{
+			ext->pipe_fds[0] = -1;
+			ext->pipe_fds[1] = -1;
+		}
 		execute_helper2(ext, shell);
 		ext->cmd = ext->cmd->next;
 		ext->i++;
@@ -176,16 +178,12 @@ void	execute(t_shell *shell)
 	if (!shell->commands)
 		return ;
 	ext.pids = malloc(sizeof(pid_t) * count_commands(shell->commands));
-	ext.prev_fd_in = -1;                                                     
-		// bc i dont have a previous pipe
-	ext.cmd = shell->commands;                                               
-		// head
-	ext.i = 0;                                                               
-		// but the whole loop in another fun
-	execute_helper(&ext, shell);                                             
-		// fork all child here
-	waiting_loop_free_pids(ext.pids, shell, count_commands(shell->commands));
-		// here we waiting and also update the status
+	ft_memset(ext.pids, -1, count_commands(shell->commands)*sizeof(pid_t));//init value
+	ext.prev_fd_in = -1;// bc i dont have a previous pipe
+	ext.cmd = shell->commands;// head
+	ext.i = 0;// but the whole loop in another fun
+	execute_helper(&ext, shell);// fork all child here
+	waiting_loop_free_pids(ext.pids, shell, count_commands(shell->commands));// here we waiting and also update the status
 }
 
 // WIFEXITED(status)  -> Did the child exit normally?
@@ -203,23 +201,23 @@ void	waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count)
 	i = 0;
 	while (i < cmd_count)
 	{
-		waitpid(pids[i], &status, 0);
-		if (i == cmd_count - 1) // last cmd
+		if (pids[i] != -1)
 		{
-			if (WIFEXITED(status)) // normal exit so i can now get the exit code
+			waitpid(pids[i], &status, 0);
+			if (i == cmd_count - 1) // last cmd: update exit status from child
 			{
-				shell->last_exit_status = WEXITSTATUS(status);
-			}
-			else if (WIFSIGNALED(status)) // sig exit
-			{
-				status = WTERMSIG(status);             
-					// we want to save the exit code
-				shell->last_exit_status = status + 128;
-					// save it as signal type error (this for child)
-				if (status == SIGQUIT)
-					write(1, "Quit (core dumped)\n", 19);
+				if (WIFEXITED(status))
+					shell->last_exit_status = WEXITSTATUS(status);
+				else if (WIFSIGNALED(status))
+				{
+					status = WTERMSIG(status);
+					shell->last_exit_status = status + 128;
+					if (status == SIGQUIT)
+						write(1, "Quit (core dumped)\n", 19);
+				}
 			}
 		}
+		// pids[i] == -1: cmd not found/no perm, last_exit_status already set
 		i++;
 	}
 	free(pids);

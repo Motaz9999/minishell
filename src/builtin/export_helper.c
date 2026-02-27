@@ -6,12 +6,11 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:19:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 06:36:22 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 12:13:08 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	find_args_count(char **args)
 {
@@ -60,9 +59,24 @@ void	*dup_env(void *raw)
 
 void	del_env(void *raw)
 {
-	t_env *node = (t_env *)raw;
+	t_env	*node;
 
+	node = (t_env *)raw;
 	free(node->key);
 	free(node->value);
-	free(node);
+}
+
+// returns a malloc'd copy of the key portion: arg[0..cut-1]
+char	*cut_key(char *arg, int cut)
+{
+	return (ft_substr(arg, 0, cut));
+}
+
+// returns a malloc'd copy of the value portion after '=',
+// or NULL if there is no '=' (bare export VAR with no value)
+char	*cut_value(char *arg, int cut)
+{
+	if (arg[cut] != '=')
+		return (NULL);
+	return (ft_strdup(arg + cut + 1));
 }

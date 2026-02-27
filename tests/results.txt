@@ -1,0 +1,362 @@
+MINISHELL TEST RESULTS — Fri Feb 27 12:15:29 +03 2026
+
+────────────────────────────────────────
+TEST : echo hello
+INPUT: echo hello
+GOT  : hello
+exit
+WANT : hello
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : echo -n hello
+INPUT: echo -n hello
+GOT  : hellominishell$ exit
+exit
+WANT : hello
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : echo multiple args
+INPUT: echo one two three
+GOT  : one two three
+exit
+WANT : one two three
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : echo empty
+INPUT: echo
+GOT  : 
+exit
+
+────────────────────────────────────────
+TEST : echo with quotes
+INPUT: echo "hello world"
+GOT  : hello world
+exit
+WANT : hello world
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : echo single quotes
+INPUT: echo 'hello world'
+GOT  : hello world
+exit
+WANT : hello world
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : echo $? after true
+INPUT: true; echo $?
+GOT  : minishell: true;: Command not found
+exit
+WANT : 0
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : echo $? after false
+INPUT: false; echo $?
+GOT  : minishell: false;: Command not found
+exit
+WANT : 1
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : pwd
+INPUT: pwd
+GOT  : /home/motaz/core/minishell
+exit
+WANT : /home/motaz/core/minishell
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : cd /tmp then pwd
+INPUT: cd /tmp; pwd
+GOT  : minishell: cd: too many arguments
+exit
+WANT : /tmp
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : cd ..
+INPUT: cd /tmp; cd ..; pwd
+GOT  : minishell: cd: too many arguments
+exit
+WANT : /
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : cd ~ 
+INPUT: cd ~; pwd
+GOT  : minishell: cd: too many arguments
+exit
+WANT : /home/motaz
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : cd no args
+INPUT: cd; pwd
+GOT  : minishell: cd;: Command not found
+exit
+WANT : /home/motaz
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : cd nonexistent
+INPUT: cd /nonexistent_dir_xyz
+GOT  : minishell: cd: No such file or directory
+exit
+WANT : minishell: cd: /nonexistent_dir_xyz: No such file or directory
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : env contains PATH
+INPUT: env | grep ^PATH
+GOT  : PATH=/home/motaz/.local/bin:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/motaz/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/bin/remote-cli:/home/motaz/.nvm/versions/node/v24.11.1/bin:/home/motaz/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Cloudflare/Cloudflare WARP/:/mnt/c/Users/Motaz/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Motaz/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/Motaz/OneDrive/Desktop/fluuter test/flutter/bin:/mnt/c/Program Files/AppServ/Apache24/bin:/mnt/c/Program Files/AppServ/php7:/mnt/c/Program Files/AppServ/MySQL/bin
+exit
+WANT : PATH=/home/motaz/.local/bin:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/motaz/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/bin/remote-cli:/home/motaz/.nvm/versions/node/v24.11.1/bin:/home/motaz/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Cloudflare/Cloudflare WARP/:/mnt/c/Users/Motaz/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Motaz/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/Motaz/OneDrive/Desktop/fluuter test/flutter/bin:/mnt/c/Program Files/AppServ/Apache24/bin:/mnt/c/Program Files/AppServ/php7:/mnt/c/Program Files/AppServ/MySQL/bin
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : export new var
+INPUT: export TESTVAR=hello; echo $TESTVAR
+GOT  : minishell: export: `': not a valid identifier
+exit
+WANT : hello
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : export no value
+INPUT: export BAREVAR; env | grep ^BAREVAR
+GOT  : minishell: export: `BAREVAR;': not a valid identifier
+exit
+WANT : BAREVAR
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : export no args
+INPUT: export
+GOT  : declare -x COLORTERM="truecolor"
+declare -x DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
+declare -x DISPLAY=":0"
+declare -x GIT_ASKPASS="/home/motaz/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass.sh"
+declare -x GIT_PAGER="cat"
+declare -x GK_GL_ADDR="http://127.0.0.1:46489"
+declare -x GK_GL_PATH="/tmp/gitkraken/gitlens/gitlens-ipc-server-439-46489.json"
+declare -x HOME="/home/motaz"
+declare -x HOSTTYPE="x86_64"
+declare -x LANG="C.UTF-8"
+declare -x LESS="-R"
+declare -x LOGNAME="motaz"
+declare -x LSCOLORS="Gxfxcxdxbxegedabagacad"
+declare -x LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:"
+declare -x NAME="motaz-PC"
+declare -x NVM_BIN="/home/motaz/.nvm/versions/node/v24.11.1/bin"
+declare -x NVM_CD_FLAGS="-q"
+declare -x NVM_DIR="/home/motaz/.nvm"
+declare -x NVM_INC="/home/motaz/.nvm/versions/node/v24.11.1/include/node"
+declare -x OLDPWD="/home/motaz/core/minishell"
+declare -x PAGER="less"
+declare -x PATH="/home/motaz/.local/bin:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/motaz/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/bin/remote-cli:/home/motaz/.nvm/versions/node/v24.11.1/bin:/home/motaz/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Cloudflare/Cloudflare WARP/:/mnt/c/Users/Motaz/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Motaz/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/Motaz/OneDrive/Desktop/fluuter test/flutter/bin:/mnt/c/Program Files/AppServ/Apache24/bin:/mnt/c/Program Files/AppServ/php7:/mnt/c/Program Files/AppServ/MySQL/bin"
+declare -x PULSE_SERVER="unix:/mnt/wslg/PulseServer"
+declare -x PWD="/home/motaz/core/minishell"
+declare -x SHELL="/usr/bin/zsh"
+declare -x SHLVL="1"
+declare -x TERM="xterm-256color"
+declare -x TERM_PROGRAM="vscode"
+declare -x TERM_PROGRAM_VERSION="1.109.5"
+declare -x USER="motaz"
+declare -x USER_ZDOTDIR="/home/motaz"
+declare -x VSCODE_GIT_ASKPASS_EXTRA_ARGS=""
+declare -x VSCODE_GIT_ASKPASS_MAIN="/home/motaz/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass-main.js"
+declare -x VSCODE_GIT_ASKPASS_NODE="/home/motaz/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/node"
+declare -x VSCODE_GIT_IPC_HANDLE="/run/user/1000/vscode-git-7726ed0154.sock"
+declare -x VSCODE_INJECTION="1"
+declare -x VSCODE_IPC_HOOK_CLI="/run/user/1000/vscode-ipc-bd1ee5d5-b2a5-41da-b312-8751f9fe0c1c.sock"
+declare -x VSCODE_PYTHON_AUTOACTIVATE_GUARD="1"
+declare -x WAYLAND_DISPLAY="wayland-0"
+declare -x WSL2_GUI_APPS_ENABLED="1"
+declare -x WSLENV="VSCODE_WSL_EXT_LOCATION/up"
+declare -x WSL_DISTRO_NAME="Ubuntu-22.04"
+declare -x WSL_INTEROP="/run/WSL/427_interop"
+declare -x XDG_RUNTIME_DIR="/run/user/1000/"
+declare -x ZDOTDIR="/home/motaz"
+declare -x ZSH="/home/motaz/.oh-my-zsh"
+declare -x _="./minishell"
+exit
+
+────────────────────────────────────────
+TEST : export invalid
+INPUT: export 1INVALID=x
+GOT  : minishell: export: `1INVALID=x': not a valid identifier
+exit
+WANT : minishell: export: `1INVALID=x': not a valid identifier
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : export update
+INPUT: export X=1; export X=2; echo $X
+GOT  : minishell: export: `': not a valid identifier
+exit
+WANT : 2
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : unset var
+INPUT: export DEL=yes; unset DEL; echo $DEL
+GOT  : minishell: export: `DEL;': not a valid identifier
+minishell: export: `': not a valid identifier
+exit
+
+────────────────────────────────────────
+TEST : unset nonexistent
+INPUT: unset DOESNOTEXIST; echo ok
+GOT  : exit
+WANT : ok
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : exit 0
+INPUT: exit 0
+GOT  : exit
+
+────────────────────────────────────────
+TEST : exit 42
+INPUT: exit 42
+GOT  : exit
+
+────────────────────────────────────────
+TEST : redir out >
+INPUT: echo hello > /tmp/ms_test.txt; cat /tmp/ms_test.txt
+GOT  : exit
+WANT : hello
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : redir append >>
+INPUT: echo a > /tmp/ms_test.txt; echo b >> /tmp/ms_test.txt; cat /tmp/ms_test.txt
+GOT  : exit
+WANT : a
+b
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : redir in <
+INPUT: echo world > /tmp/ms_in.txt; cat < /tmp/ms_in.txt
+GOT  : minishell: open: No such file or directory
+exit
+WANT : world
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : simple pipe
+INPUT: echo hello | cat
+GOT  : hello
+exit
+WANT : hello
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : pipe with grep
+INPUT: echo -e "a\nb\nc" | grep b
+GOT  : -e a\nb\nc
+exit
+WANT : b
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : multi pipe
+INPUT: echo hello | cat | cat
+GOT  : hello
+exit
+WANT : hello
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : heredoc basic
+INPUT: cat << EOF
+hello
+EOF
+GOT  : > hello
+> EOF
+hello
+exit
+WANT : hello
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : expand $HOME
+INPUT: echo $HOME
+GOT  : /home/motaz
+exit
+WANT : /home/motaz
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : expand $?
+INPUT: true; echo $?
+GOT  : minishell: true;: Command not found
+exit
+WANT : 0
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : no expand in ''
+INPUT: echo '$HOME'
+GOT  : $HOME
+exit
+WANT : $HOME
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : expand in ""
+INPUT: echo "$HOME"
+GOT  : /home/motaz
+exit
+WANT : /home/motaz
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : ls /tmp
+INPUT: ls /tmp
+GOT  : gitkraken
+mcp-oyKKkT
+motaz-code-zsh
+ms_in.txt;
+ms_test.txt;
+snap-private-tmp
+systemd-private-7d1226c69e634dde93f67527b1805dca-systemd-logind.service-T9Evhu
+systemd-private-7d1226c69e634dde93f67527b1805dca-systemd-resolved.service-9nHzJc
+systemd-private-7d1226c69e634dde93f67527b1805dca-systemd-timesyncd.service-b0m13I
+{B7BA82FB-BECD-484F-877B-EFCE16A07238}
+exit
+WANT : gitkraken
+mcp-oyKKkT
+motaz-code-zsh
+ms_in.txt;
+ms_test.txt;
+snap-private-tmp
+systemd-private-7d1226c69e634dde93f67527b1805dca-systemd-logind.service-T9Evhu
+systemd-private-7d1226c69e634dde93f67527b1805dca-systemd-resolved.service-9nHzJc
+systemd-private-7d1226c69e634dde93f67527b1805dca-systemd-timesyncd.service-b0m13I
+{B7BA82FB-BECD-484F-877B-EFCE16A07238}
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : cat /etc/hostname
+INPUT: cat /etc/hostname
+GOT  : motaz-PC
+exit
+WANT : motaz-PC
+STATUS: FAIL ✗
+
+────────────────────────────────────────
+TEST : cmd not found
+INPUT: notacmd_xyz
+GOT  : minishell: notacmd_xyz: Command not found
+exit
+WANT : minishell: notacmd_xyz: Command not found
+STATUS: FAIL ✗
+
+────────────────────────────────────────

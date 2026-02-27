@@ -90,6 +90,7 @@ size_t				ft_strlen(const char *str);
 size_t				ft_strlcpy(char *dest, const char *src, size_t size);
 void				ft_free_all(void *first, ...);
 void				ft_free_all2(void **first, ...);
+char				*ft_merge_join(char *s1, char *s2, char *s3);
 
 /*
 ** t_lst_ops — teach the generic functions about YOUR node type

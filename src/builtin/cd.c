@@ -61,8 +61,15 @@ int	cd(t_ext *ext, t_shell *shell)
 	}
 	else
 		path = ext->cmd->args[1];
-	if (chdir(path) == -1) // there are error in the path so i cant change it
-		return (error_syscall("cd", 0)); // fail on get into folder
+	if (chdir(path) == -1)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+		return (FALSE);
+	}
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 		return (error_syscall("getcwd", 0));

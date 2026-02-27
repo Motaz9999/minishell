@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 07:54:58 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 12:04:29 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,13 @@ int			count_commands(t_command *cmds);
 void		error_execve(char *cmd);
 int			error_cmd(char *cmd, char *msg, int exit_code);
 int			error_syscall(char *context, int exit_code);
+
+//redir + pipes handle
+int			handle_redir(t_redirect *redirections, t_shell *shell);
+int	handle_pipes(int prev_fd_in, int pipes[], int remaining_cmd , t_shell *shell);
 // signals
 void		setup_signals_child(void);
 void		setup_signals_parent(void);
-void		setup_signals_child(void);
 // builtins
 t_builtin	get_builtin(t_command *cmd);
 pid_t		execute_builtin(t_ext *ext, t_shell *shell, int casee);
@@ -84,4 +87,19 @@ int			exit_shell(t_ext *ext);
 // unset
 void		update_env_unset(t_env **head, char *args);
 int			unset(char **args, t_shell *shell);
+// parser / lexer
+t_token		*lexer(const char *line);
+void		expand_tokens(t_token *tokens, t_shell *shell);
+t_command	*parser(t_token *tokens, t_shell *shell);
+void		parse_and_execute(char *line, t_shell *shell);
+void		free_tokens(t_token *tokens);
+void		free_commands(t_command *cmds);
+int			fill_heredoc(t_redirect *redir, t_shell *shell);
+// env init
+t_env		*init_env(char **envp);
+// envp handle
+char		**make_envp(t_env *env_list);
+int			count_env_vars(t_env *env);
+// executor internals
+void		waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count);
 #endif

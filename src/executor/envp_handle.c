@@ -41,7 +41,7 @@ char	**make_envp(t_env *envp_list)
 	curr = envp_list;
 	while (curr)
 	{
-		envp[i] = ft_strjoin(envp_list->key, envp_list->value);
+		envp[i] = ft_merge_join(curr->key, "=", curr->value);
 		if (envp[i] == NULL)
 		{
 			ft_free_all2((void **)envp, NULL);

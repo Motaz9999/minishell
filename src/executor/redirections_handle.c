@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:01 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/15 01:41:42 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 12:30:28 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,19 +110,15 @@ int	handle_redir(t_redirect *redirections, t_shell *shell)
 	redir = redirections;
 	while (redir != NULL)
 	{
-		// Don't return! Just call the function
-		if (redir->type == REDIR_HEREDOC)
-		    if (!handle_redir_heredoc(redir, shell))
-				return (FALSE); // Only return on ERROR
-		else if (redir->type == REDIR_IN)
-			if (!handle_redir_in(redir, shell))
-				return (FALSE);
-		else if (redir->type == REDIR_OUT)
-			if (!handle_redir_out(redir, shell))
-				return (FALSE);
-		else if (redir->type == REDIR_APPEND)
-			if (!handle_redir_append(redir, shell))
-				return (FALSE);
+		if (redir->type == REDIR_HEREDOC && !handle_redir_heredoc(redir, shell))
+			return (FALSE);
+		else if (redir->type == REDIR_IN && !handle_redir_in(redir, shell))
+			return (FALSE);
+		else if (redir->type == REDIR_OUT && !handle_redir_out(redir, shell))
+			return (FALSE);
+		else if (redir->type == REDIR_APPEND && !handle_redir_append(redir,
+				shell))
+			return (FALSE);
 		redir = redir->next;
 	}
 	return (TRUE);

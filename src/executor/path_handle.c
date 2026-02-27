@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path_handler.c                                     :+:      :+:    :+:   */
+/*   path_handle.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 21:05:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/08 22:40:21 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 11:58:24 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// here i get the path of the commands and t_env
-// soo i must find the command relative or abs
-static int	is_relative_or_abs(char *cmd)
+// Returns 1 if cmd is an absolute (/foo) or relative (./foo ../foo) path,
+// 0 if it is a bare command name that must be searched in PATH.
+static int	is_path(char *cmd)
 {
-	int	i;
-
-	i = 0;
-	// abs
 	if (cmd[0] == '/')
-		return (1); // true  (here i dont have to add full path to test)
-					// relative
+		return (1);
 	if (cmd[0] == '.' && (cmd[1] == '/' || (cmd[1] == '.' && cmd[2] == '/')))
-		return (0); //  false i have to add full path to test
+		return (1);
+	return (0);
 }
 
-// f_ok r_ok x_ok these flags for access to use bitwise |
 // F_OK → Test if the file exists.
-//paths it is all after PATH= split between :
+// Paths are all entries after PATH= split by ':'
+// here the case 2
 static char	*test_cmd_and_free(char *cmd, char **paths)
 {
 	int		i;
@@ -41,11 +37,11 @@ static char	*test_cmd_and_free(char *cmd, char **paths)
 	{
 		if (cmd == NULL)
 			break ;
-		full_path_test = ft_strjoin(paths[i], cmd);
+		full_path_test = ft_merge_join(paths[i], "/", cmd);
 		if (full_path_test == NULL)
 			break ;
 		if (access(full_path_test, F_OK) == 0)
-			break ; // found it
+			break ;
 		free(full_path_test);
 		full_path_test = NULL;
 		i++;
@@ -55,28 +51,26 @@ static char	*test_cmd_and_free(char *cmd, char **paths)
 	return (full_path_test);
 }
 
-// this fun for find if the cmd is correct and it executable
-// dont forgot to free it after use it
+// Find the command's full path. Returns a malloc'd string or NULL.
+// Case 1: absolute/relative path → duplicate and return as-is.
+// Case 2: bare name → search each directory listed in PATH.
 char	*resolve_path(char *cmd_name, t_env *env_list)
 {
-	char	*real_path;
+	t_env	*path_node;
 	char	**split_paths;
 
-	while (env_list->key != "PATH")
-		env_list = env_list->next;
-	if (env_list->key != "PATH")
-		return (FALSE);
-	split_paths = ft_split(env_list->value, ':');
+	if (is_path(cmd_name))//now we know this cmd is start with ./ or ../  or /  so no need to search inside PATH
+		return (ft_strdup(cmd_name));//just run it
+	path_node = find_node(env_list, "PATH");
+	if (!path_node || !path_node->value)
+		return (NULL);
+	split_paths = ft_split(path_node->value, ':');
 	if (split_paths == NULL)
-		return (FALSE);
+		return (NULL);
 	if (*split_paths == NULL)
 	{
 		free(split_paths);
-		return (FALSE);
+		return (NULL);
 	}
-	if (!is_relative_or_abs(cmd_name))
-		real_path = make_it_abs(cmd_name);
-	else
-		real_path = ft_strdup(cmd_name);
-	return (test_cmd_and_free(real_path, split_paths));
+	return (test_cmd_and_free(ft_strdup(cmd_name), split_paths));
 }

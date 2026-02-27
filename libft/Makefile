@@ -54,6 +54,7 @@ SRC = 		ft_atoi.c\
 		ft_printf.c\
 		ft_print.c\
 		ft_free_all.c\
+		ft_join.c\
 		ft_cpy_free_lst.c\
 		
 
