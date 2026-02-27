@@ -1,22 +1,10 @@
 {
   "todo": [
     {
-      "id": 14411,
-      "text": "        else if (!add_key_env(env_list , key , value))",
+      "id": 15791,
+      "text": "herdoc",
       "priority": 1,
-      "created": "2026-02-26T14:45:24.737Z"
-    },
-    {
-      "id": 16679,
-      "text": "        if (!check_key_exist(env_list , key) && value == NULL)    make this fun ",
-      "priority": 1,
-      "created": "2026-02-26T14:45:04.680Z"
-    },
-    {
-      "id": 16182,
-      "text": "builtins errors and signals errors",
-      "priority": 1,
-      "created": "2026-02-15T18:25:29.660Z"
+      "created": "2026-02-27T04:57:38.750Z"
     },
     {
       "id": 17736,
@@ -97,6 +85,24 @@
       "text": "is_bulitin() make this fun  and this \texecute_builtin();",
       "priority": 3,
       "created": "2026-02-13T12:41:01.850Z"
+    },
+    {
+      "id": 14411,
+      "text": "        else if (!add_key_env(env_list , key , value))",
+      "priority": 1,
+      "created": "2026-02-26T14:45:24.737Z"
+    },
+    {
+      "id": 16679,
+      "text": "        if (!check_key_exist(env_list , key) && value == NULL)    make this fun ",
+      "priority": 1,
+      "created": "2026-02-26T14:45:04.680Z"
+    },
+    {
+      "id": 16182,
+      "text": "builtins errors and signals errors",
+      "priority": 1,
+      "created": "2026-02-15T18:25:29.660Z"
     }
   ]
 }
