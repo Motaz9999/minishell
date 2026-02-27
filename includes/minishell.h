@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 09:11:37 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 09:50:27 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 
 extern volatile sig_atomic_t g_sigint_received; // defined in signal_handle.c
 // parser
+
 t_token		*lexer(const char *input);
 void		expand_tokens(t_token *tokens, t_shell *shell);
 t_command	*parser(t_token *tokens, t_shell *shell);
@@ -56,13 +57,15 @@ void		parse_and_execute(char *line, t_shell *shell);
 t_env		*init_env(char **envp);
 // path handler funs
 char		*resolve_path(char *cmd_name, t_env *env_list);
-char		*make_it_abs(char *cmd_name); // TODO: implement relative path resolution
+char		*make_it_abs(char *cmd_name);
+// TODO: implement relative path resolution
 // the execute funs for now
 void		execute(t_shell *shell);
 int			count_commands(t_command *cmds);
 void		waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count);
 // pipes & redirections
-int			handle_pipes(int prev_fd_in, int pipes[], int remaining_cmd, t_shell *shell);
+int			handle_pipes(int prev_fd_in, int pipes[], int remaining_cmd,
+				t_shell *shell);
 int			handle_redir(t_redirect *redirections, t_shell *shell);
 // envp
 char		**make_envp(t_env *envp_list);

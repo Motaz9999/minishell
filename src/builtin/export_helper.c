@@ -6,12 +6,11 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:19:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 09:33:34 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 10:09:31 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	find_args_count(char **args)
 {
@@ -60,11 +59,11 @@ void	*dup_env(void *raw)
 
 void	del_env(void *raw)
 {
-	t_env *node = (t_env *)raw;
+	t_env	*node;
 
+	node = (t_env *)raw;
 	free(node->key);
 	free(node->value);
-	free(node);
 }
 
 // cut_key: returns a copy of arg[0..cut-1]  (the part before '=')

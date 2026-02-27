@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 21:05:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 09:35:46 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 09:40:39 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ char	*resolve_path(char *cmd_name, t_env *env_list)
 			return (real_path);
 		free(real_path);
 		return (NULL);
-	}
-	// Case 3: plain name - search through PATH entries
+	}// Case 3: plain name - search through PATH entries
 	while (env_list && ft_strcmp(env_list->key, "PATH") != 0)
 		env_list = env_list->next;
 	if (!env_list)

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 09:16:18 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 10:12:00 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void	execute(t_shell *shell)
 		error_syscall("malloc", 1);
 		return ;
 	}
+	ft_memset(ext.pids, -1,count_commands(shell->commands)); // just to be safe
 	ext.prev_fd_in = -1;                                                     
 		// bc i dont have a previous pipe
 	ext.cmd = shell->commands;                                               
@@ -206,6 +207,7 @@ void	waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count)
 	int	status;
 
 	i = 0;
+	status = 0;
 	while (i < cmd_count)
 	{
 		if (pids[i] > 0)
