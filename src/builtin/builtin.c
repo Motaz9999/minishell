@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 00:26:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/25 06:25:33 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 07:55:24 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static void	execute_builtin_cmd(t_ext *ext, t_shell *shell)
 	else if (type == BI_ENV)
 		shell->last_exit_status = env(shell->env_list);
 	else if (type == BI_EXIT)
-		builtin_exit(ext->cmd->args, shell);
+		shell->last_exit_status = exit_shell(ext);
 	else if (type == BI_EXPORT)
 		shell->last_exit_status = export(ext->cmd->args, shell);
 	else if (type == BI_PWD)
