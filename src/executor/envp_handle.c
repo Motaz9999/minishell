@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 22:05:49 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/18 23:02:07 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 09:02:36 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,21 @@ int	count_env_vars(t_env *env)
 	return (count);
 }
 
+char *merge_key_value(t_env *env)
+{
+	char	*merged;
+	char	*temp;
+
+	temp = ft_strjoin(env->key, "=");
+	if (temp == NULL)
+		return (NULL);
+	merged = ft_strjoin(temp, env->value);
+	free(temp);
+	if (merged == NULL)
+		return (NULL);
+	return (merged);
+}
+
 // this fun make envp and merge the envp list i well be givin
 char	**make_envp(t_env *envp_list)
 {
@@ -41,7 +56,7 @@ char	**make_envp(t_env *envp_list)
 	curr = envp_list;
 	while (curr)
 	{
-		envp[i] = ft_strjoin(envp_list->key, envp_list->value);
+		envp[i] = merge_key_value(curr);
 		if (envp[i] == NULL)
 		{
 			ft_free_all2((void **)envp, NULL);

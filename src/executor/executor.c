@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/20 01:46:47 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 09:16:18 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,17 @@ void	fork_cmd_helper(char **envp, t_ext *ext, t_shell *shell,
 }
 // here we fork the process
 // and make a new fun to deal with the dir of input and output
-pid_t	fork_cmd(t_shell *shell, t_ext *ext, char **find_path)
+pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 {
 	pid_t	pid;
 	char	**envp;
-	int		remaining_cmds;
-	char	*find_path;
 
-	remaining_cmds = count_commands(ext->cmd);
 	pid = fork(); // this is for the process
 	if (pid == -1)
 	{
 		shell->last_exit_status = 127; // we are now inside child soo the exit
-		exit(error_syscall("fork", 127));
+		error_syscall("fork", 127); // code is for child and we just print the error
+		return -1;// we just return it and handle it in the parent
 	}
 	if (pid == 0)
 	{
@@ -70,7 +68,7 @@ pid_t	fork_cmd(t_shell *shell, t_ext *ext, char **find_path)
 		execve(find_path, ext->cmd->args, envp);
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
-		error_execve(cmd->args[0]); // it also have exit code bc it child
+		error_execve(ext->cmd->args[0]); // it also have exit code bc it child
 	}
 	free(find_path);
 	return (pid); // save it in parent
@@ -84,7 +82,7 @@ pid_t	fork_cmd(t_shell *shell, t_ext *ext, char **find_path)
 // also in this fun
 pid_t	execute_one_cmd(t_ext *ext, t_shell *shell)
 {
-	char	find_path;
+	char	*find_path;
 
 	if (get_builtin(ext->cmd) != FALSE)
 		return (execute_builtin(ext, shell, 1));                 
@@ -136,30 +134,31 @@ void	execute_helper2(t_ext *ext, t_shell *shell)
 void	execute_helper(t_ext *ext, t_shell *shell)
 {
 	if (count_commands(ext->cmd) == 1) // this mean that i have just 1 cmd
-		if (get_builtin(ext->cmd) != FALSE)      // check if it from the builtins
-			//its easy to check it here
+	{
+		if (get_builtin(ext->cmd) != FALSE) // check if it from the builtins
 		{
 			execute_builtin(ext, shell, 0);
-				// dont have to fork and dont need pid
+				// dont have to fork and dont need pid here
 			return ;
 		}
+	}
 	while (ext->cmd)
 	{
 		if (ext->cmd->next != NULL)
+		{
 			if (pipe(ext->pipe_fds) == -1)
-				// here i create pipe (each 2 process have 2 types )
 			{
 				shell->last_exit_status = -1;
 				error_syscall("pipe", -1);
 				free(ext->pids);
-					// i want for each 2 cmd to make them a pipe in first cmd
 				return ;
 			}
-			else // if next cmd is null there is no  need for pipe
-			{
-				ext->pipe_fds[0] = -1;
-				ext->pipe_fds[1] = -1;
-			}
+		}
+		else // next cmd is null, no pipe needed
+		{
+			ext->pipe_fds[0] = -1;
+			ext->pipe_fds[1] = -1;
+		}
 		execute_helper2(ext, shell);
 		ext->cmd = ext->cmd->next;
 		ext->i++;
@@ -176,6 +175,12 @@ void	execute(t_shell *shell)
 	if (!shell->commands)
 		return ;
 	ext.pids = malloc(sizeof(pid_t) * count_commands(shell->commands));
+	if (ext.pids == NULL)
+	{
+		shell->last_exit_status = 1;
+		error_syscall("malloc", 1);
+		return ;
+	}
 	ext.prev_fd_in = -1;                                                     
 		// bc i dont have a previous pipe
 	ext.cmd = shell->commands;                                               
@@ -203,13 +208,12 @@ void	waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count)
 	i = 0;
 	while (i < cmd_count)
 	{
-		waitpid(pids[i], &status, 0);
+		if (pids[i] > 0)
+			waitpid(pids[i], &status, 0);
 		if (i == cmd_count - 1) // last cmd
 		{
 			if (WIFEXITED(status)) // normal exit so i can now get the exit code
-			{
 				shell->last_exit_status = WEXITSTATUS(status);
-			}
 			else if (WIFSIGNALED(status)) // sig exit
 			{
 				status = WTERMSIG(status);             

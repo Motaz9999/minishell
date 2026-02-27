@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 07:54:58 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 09:11:37 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,16 @@
 extern volatile sig_atomic_t g_sigint_received; // defined in signal_handle.c
 // path handler funs
 char		*resolve_path(char *cmd_name, t_env *env_list);
+char		*make_it_abs(char *cmd_name); // TODO: implement relative path resolution
 // the execute funs for now
 void		execute(t_shell *shell);
 int			count_commands(t_command *cmds);
+void		waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count);
+// pipes & redirections
+int			handle_pipes(int prev_fd_in, int pipes[], int remaining_cmd, t_shell *shell);
+int			handle_redir(t_redirect *redirections, t_shell *shell);
+// envp
+char		**make_envp(t_env *envp_list);
 // error handles
 void		error_execve(char *cmd);
 int			error_cmd(char *cmd, char *msg, int exit_code);

@@ -110,19 +110,26 @@ int	handle_redir(t_redirect *redirections, t_shell *shell)
 	redir = redirections;
 	while (redir != NULL)
 	{
-		// Don't return! Just call the function
 		if (redir->type == REDIR_HEREDOC)
-		    if (!handle_redir_heredoc(redir, shell))
-				return (FALSE); // Only return on ERROR
+		{
+			if (!handle_redir_heredoc(redir, shell))
+				return (FALSE);
+		}
 		else if (redir->type == REDIR_IN)
+		{
 			if (!handle_redir_in(redir, shell))
 				return (FALSE);
+		}
 		else if (redir->type == REDIR_OUT)
+		{
 			if (!handle_redir_out(redir, shell))
 				return (FALSE);
+		}
 		else if (redir->type == REDIR_APPEND)
+		{
 			if (!handle_redir_append(redir, shell))
 				return (FALSE);
+		}
 		redir = redir->next;
 	}
 	return (TRUE);
