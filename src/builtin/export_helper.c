@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:19:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 06:36:22 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 09:33:34 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,19 @@ void	del_env(void *raw)
 	free(node->key);
 	free(node->value);
 	free(node);
+}
+
+// cut_key: returns a copy of arg[0..cut-1]  (the part before '=')
+char	*cut_key(char *arg, int cut)
+{
+	return (ft_substr(arg, 0, cut));
+}
+
+// cut_value: returns a copy of arg[cut+1..end] (the part after '=')
+// Returns NULL if there is no '=' (key-only export)
+char	*cut_value(char *arg, int cut)
+{
+	if (arg[cut] != '=')
+		return (NULL);
+	return (ft_strdup(arg + cut + 1));
 }

@@ -45,6 +45,15 @@
 // volatile sig_atomic_t	g_in_cmd = 0; this false
 
 extern volatile sig_atomic_t g_sigint_received; // defined in signal_handle.c
+// parser
+t_token		*lexer(const char *input);
+void		expand_tokens(t_token *tokens, t_shell *shell);
+t_command	*parser(t_token *tokens, t_shell *shell);
+int			fill_heredoc(t_redirect *redir, t_shell *shell);
+void		free_tokens(t_token *tokens);
+void		free_commands(t_command *cmds);
+void		parse_and_execute(char *line, t_shell *shell);
+t_env		*init_env(char **envp);
 // path handler funs
 char		*resolve_path(char *cmd_name, t_env *env_list);
 char		*make_it_abs(char *cmd_name); // TODO: implement relative path resolution

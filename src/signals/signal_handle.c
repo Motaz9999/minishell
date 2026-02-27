@@ -29,7 +29,7 @@ static void	handle_sigint(int sig)
 // like ctrl + c it mean here just preint \n and discard any input (the read)
 // and like ctrl+\ it dosent do anything  soo we but it SIG_IGN
 // here the global var g_in_cmd = 0 (interactive mode)
-void	setup_signals_parent(t_shell *shell)
+void	setup_signals_parent(void)
 {
 	struct sigaction	sa;
 
