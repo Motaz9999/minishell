@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 21:05:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 09:14:49 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 09:19:45 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,19 @@ static char	*test_cmd_and_free(char *cmd, char **paths)
 
 // this fun for find if the cmd is correct and it executable
 // dont forgot to free it after use it
+char *make_it_abs(char *cmd_name)
+{
+	char	*cwd;
+	char	*full_path;
+
+	cwd = getcwd(NULL, 0);//this fun return the current working directory as a string, and it allocates memory for it. 
+	if (cwd == NULL)
+		return (NULL);
+	full_path = make_full_path(cwd, cmd_name);
+	free(cwd);
+	return (full_path);
+}
+
 char	*resolve_path(char *cmd_name, t_env *env_list)
 {
 	char	*real_path;
