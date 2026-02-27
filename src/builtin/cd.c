@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 22:34:11 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/25 05:56:35 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 07:21:30 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@ int	check_on_args(char **args)
 {
 	int	count;
 
+	if (!args)
+		return (FALSE);
 	count = 0;
 	while (args[count] != NULL)
 		count++;
-	if (count == 2 || count == 1) // cd or cd dir/..
-		return (TRUE);            // here it find home
-	else
-		return (FALSE); // cd dir1 dir2 // this is false
+	if (count == 1 || count == 2)
+		return (TRUE);
+	ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+	return (FALSE);
 }
+
 char	*get_home_path(t_env *env_list)
 {
 	char	*path;
@@ -59,12 +62,11 @@ int	cd(t_ext *ext, t_shell *shell)
 	else
 		path = ext->cmd->args[1];
 	if (chdir(path) == -1) // there are error in the path so i cant change it
-	{
-		
 		return (error_syscall("cd", 0)); // fail on get into folder
-	}//now we change path
-	cwd = getcwd(NULL , 0);
-	update_env_pwd(shell->env_list , cwd);
-	free(cmd);//already get a copy of it inside the update
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
+		return (error_syscall("getcwd", 0));
+	update_env_pwd(shell->env_list, cwd);
+	free(cwd); // already copied inside update_env_pwd
 	return (TRUE);
 }

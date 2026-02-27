@@ -40,10 +40,18 @@ int	echo(char **args)
 
 	i = 1;
 	n_flag = FALSE;
-	if (is_n_flag(args[i]))
-		n_flag = TRUE; // here i skip the n
+	while (is_n_flag(args[i]))
+	{
+		n_flag = TRUE;
+		i++; // skip the -n flag itself
+	}
 	while (args[i] != NULL)
-		ft_printf("%s", args[i++]);
+	{
+		ft_printf("%s", args[i]);
+		if (args[i + 1] != NULL)
+			ft_printf(" ");
+		i++;
+	}
 	if (!n_flag) //! true == false
 		ft_printf("\n");
 	return (TRUE);

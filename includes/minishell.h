@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/26 15:25:32 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/26 16:56:34 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 //	the compiler might cache the value and never see updates from the handler.
 // volatile sig_atomic_t	g_in_cmd = 0; this false
 
-volatile sig_atomic_t	g_sigint_received = 0; // this is right
+extern volatile sig_atomic_t	g_sigint_received; // defined in signal_handle.c
 // path handler funs
 char					*resolve_path(char *cmd_name, t_env *env_list);
 // the execute funs for now
@@ -62,11 +62,24 @@ void					setup_signals_child(void);
 t_builtin				get_builtin(t_command *cmd);
 pid_t					execute_builtin(t_ext *ext, t_shell *shell, int casee);
 int						echo(char **args);
+int						env(t_env *env_list);
 int						pwd(t_env *env_list);
 t_env					*find_node(t_env *env_list, char *key);
 void					update_env_pwd(t_env *env_list, char *new_pwd_val);
-int						cd(char **args, t_shell *shell);
+int						cd(t_ext *ext, t_shell *shell);
 void					del_env(void *raw);
 void					*dup_env(void *raw);
 void					merge_sort(t_env **head_ref);
+int						find_args_count(char **args);
+// export
+int						valid_arg(char *arg);
+int						check_key_exist(t_env *env_list, char *key);
+int						add_key_env(t_env **env_list, char *key, char *value);
+int						update_env_export(char **args, t_env **env_list);
+int						export(char **args, t_shell *shell);
+char					*cut_key(char *arg, int cut);
+char					*cut_value(char *arg, int cut);
+// unset
+void					update_env_unset(t_env **head, char *args);
+int						unset(char **args, t_shell *shell);
 #endif

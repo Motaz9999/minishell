@@ -22,7 +22,8 @@ int	env(t_env *env_list)
 	curr = env_list;
 	while (curr)
 	{
-		printf("%s=%s\n", curr->key, curr->value); // print the key + value
+		if (curr->value != NULL) // only print vars that have a value
+			printf("%s=%s\n", curr->key, curr->value);
 		curr = curr->next;
 	}
 	return (TRUE);

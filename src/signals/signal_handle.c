@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-// THIS IS FOR PARENT AND CHILD
+/* Single definition of the global signal flag */
+volatile sig_atomic_t	g_sigint_received = 0;
 static void	handle_sigint(int sig)
 {
 	(void)sig;

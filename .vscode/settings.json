@@ -1,7 +1,8 @@
 {
     "cSpell.words": [
         "fclean",
-        "libft"
+        "libft",
+        "minishell"
     ],
     "C_Cpp.errorSquiggles": "disabled"
 }

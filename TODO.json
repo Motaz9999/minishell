@@ -1,6 +1,18 @@
 {
   "todo": [
     {
+      "id": 14411,
+      "text": "        else if (!add_key_env(env_list , key , value))",
+      "priority": 1,
+      "created": "2026-02-26T14:45:24.737Z"
+    },
+    {
+      "id": 16679,
+      "text": "        if (!check_key_exist(env_list , key) && value == NULL)    make this fun ",
+      "priority": 1,
+      "created": "2026-02-26T14:45:04.680Z"
+    },
+    {
       "id": 16182,
       "text": "builtins errors and signals errors",
       "priority": 1,

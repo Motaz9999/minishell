@@ -6,11 +6,11 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 12:30:34 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/26 15:13:25 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/02/27 06:59:24 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_lst_generic.h"
+#include "libft.h"
 
 // get the next pointer of any node using the offset
 static void	*get_next(void *node, size_t offset)

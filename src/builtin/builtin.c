@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+static void	execute_in_child(t_ext *ext, t_shell *shell);
+static void	execute_builtin_cmd(t_ext *ext, t_shell *shell);
+
 // so here we check on the cmd if it builtin or not
 // if it builtin it works different from the cmds in bins
 // soo i must recreate the pipes system and redirection for builtins
@@ -59,9 +62,14 @@ pid_t	execute_builtin(t_ext *ext, t_shell *shell, int casee)
 	}
 	// ok here i want to handle the redir if it in the parent (must save the IN AND OUT after handle the redir return it to the original)
 	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	if (saved_stdin == -1 || saved_stdout == -1)
+	if (saved_stdin == -1)
 		return (error_syscall("dup", -1));
+	saved_stdout = dup(STDOUT_FILENO);
+	if (saved_stdout == -1)
+	{
+		close(saved_stdin);
+		return (error_syscall("dup", -1));
+	}
 	if (!handle_redir(ext->cmd->redirects, shell))
 		shell->last_exit_status = 1;
 	else
@@ -102,7 +110,7 @@ static void	execute_builtin_cmd(t_ext *ext, t_shell *shell)
 	else if (type == BI_EXPORT)
 		shell->last_exit_status = export(ext->cmd->args, shell);
 	else if (type == BI_PWD)
-		shell->last_exit_status = pwd();
+		shell->last_exit_status = pwd(shell->env_list);
 	else if (type == BI_UNSET)
 		shell->last_exit_status = unset(ext->cmd->args, shell);
 	
