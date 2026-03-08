@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:41:00 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 18:43:05 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 //	the compiler might cache the value and never see updates from the handler.
 // volatile sig_atomic_t	g_in_cmd = 0; this false
 
-extern volatile sig_atomic_t g_sigint_received; // defined in signal_handle.c
+extern volatile sig_atomic_t	g_sigint_received;
 // path handler funs
 char		*resolve_path(char *cmd_name, t_env *env_list);
 // the execute funs for now
@@ -92,6 +92,7 @@ int			find_args_count(char **args);
 int			error_cmd_export(char *input);
 int			print_all_env_in_order(t_env *env_list);
 // parser / lexer
+/*
 t_token		*lexer(const char *line);
 void		expand_tokens(t_token *tokens, t_shell *shell);
 t_command	*parser(t_token *tokens, t_shell *shell);
@@ -99,6 +100,7 @@ void		parse_and_execute(char *line, t_shell *shell);
 void		free_tokens(t_token *tokens);
 void		free_commands(t_command *cmds);
 int			fill_heredoc(t_redirect *redir, t_shell *shell);
+*/
 // env init
 t_env		*init_env(char **envp);
 // envp handle

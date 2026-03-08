@@ -6,22 +6,28 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:05 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 12:05:25 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 18:35:35 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Single definition of the global signal flag */
+//	g_sigint_received = 1;         // we cant do anything  with it now
 volatile sig_atomic_t	g_sigint_received = 0;
+//  ^         ^
+//  |         |
+//  |         └── one instruction read/write, no torn values
+//  └── always read from memory, never from register/cache
+
 static void	handle_sigint(int sig)
 {
 	(void)sig;
-	g_sigint_received = 1;         // we cant do anything  with it now
+	g_sigint_received = 1;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_redisplay(); //
+	rl_redisplay();
 }
 
 // here we setup the signals for parent
@@ -29,17 +35,20 @@ static void	handle_sigint(int sig)
 // like ctrl + c it mean here just preint \n and discard any input (the read)
 // and like ctrl+\ it dosent do anything  soo we but it SIG_IGN
 // here the global var g_in_cmd = 0 (interactive mode)
+//	sigemptyset(&sa.sa_mask); // bc i want to see if it sent any signals
+//	sa.sa_flags = SA_RESTART; // dont fails read and write
+// now to works as signal fun but is more advanced
+// dont forgot to skip SIGQUIT ctrl+ (\)
+// sa.sa_handler = SIG_IGN; // ignore it
 void	setup_signals_parent(void)
 {
 	struct sigaction	sa;
 
 	sa.sa_handler = handle_sigint;
-	sigemptyset(&sa.sa_mask); // bc i want to see if it sent any signals
-	sa.sa_flags = SA_RESTART; // dont fails read and write
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
-	// now to works as signal fun but is more advanced
-	// dont forgot to skip SIGQUIT ctrl+ (\)
-	sa.sa_handler = SIG_IGN; // ignore it
+	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
