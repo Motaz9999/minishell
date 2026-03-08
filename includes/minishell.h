@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:18:27 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:41:00 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,18 +76,21 @@ void		*dup_env(void *raw);
 void		merge_sort(t_env **head_ref);
 int			find_args_count(char **args);
 // export
-int			valid_arg(char *arg);
-int			check_key_exist(t_env *env_list, char *key);
 int			add_key_env(t_env **env_list, char *key, char *value);
-int			update_env_export(char **args, t_env **env_list);
 int			export(char **args, t_shell *shell);
-char		*cut_key(char *arg, int cut);
-char		*cut_value(char *arg, int cut);
-int			find_args_count(char **args);
 int			exit_shell(t_ext *ext);
 // unset
 void		update_env_unset(t_env **head, char *args);
 int			unset(char **args, t_shell *shell);
+// export helpers
+int			valid_arg(char *arg);
+int			check_key_exist(t_env *env_list, char *key);
+int			update_env_export(char **args, t_env **env_list);
+char		*cut_key(char *arg, int cut);
+char		*cut_value(char *arg, int cut);
+int			find_args_count(char **args);
+int			error_cmd_export(char *input);
+int			print_all_env_in_order(t_env *env_list);
 // parser / lexer
 t_token		*lexer(const char *line);
 void		expand_tokens(t_token *tokens, t_shell *shell);
@@ -108,12 +111,4 @@ void		waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count);
 pid_t		execute_one_cmd(t_ext *ext, t_shell *shell);
 void		execute_in_child(t_ext *ext, t_shell *shell);
 void		execute_builtin_cmd(t_ext *ext, t_shell *shell);
-void		del_env(void *raw);
-char		*cut_key(char *arg, int cut);
-char		*cut_value(char *arg, int cut);
-int			error_cmd_export(char *input);
-int			check_key_exist(t_env *env_list, char *key);
-int			print_all_env_in_order(t_env *env_list);
-int			valid_arg(char *arg);
-int			update_env_export(char **args, t_env **env_list);
 #endif
