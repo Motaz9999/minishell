@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 20:53:19 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/25 05:12:38 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 15:39:39 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	error_syscall(char *context, int exit_code)
 	return (exit_code);
 }
 
-// used for "cmd not found" and for logic errors  like "custom errors" but but the cmd as NULL
+// used for "cmd not found" and for logic errors
+// like "custom errors" but but the cmd as NULL
 int	error_cmd(char *cmd, char *msg, int exit_code)
 {
 	ft_putstr_fd("minishell: ", 2);
@@ -43,7 +44,7 @@ int	error_cmd(char *cmd, char *msg, int exit_code)
 }
 
 // execve failure handler (just for child)
-//this is used after execve (it dosent work for a resone)
+// this is used after execve (it dosent work for a resone)
 void	error_execve(char *cmd)
 {
 	ft_putstr_fd("minishell: ", 2);
@@ -51,8 +52,8 @@ void	error_execve(char *cmd)
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putstr_fd("\n", 2);
-	if (errno == EACCES)//
+	if (errno == EACCES)
 		exit(126);
 	exit(127);
 }
-//there also builtins errors and signals errors but for later 
+// there also builtins errors and signals errors but for later

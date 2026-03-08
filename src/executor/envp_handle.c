@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 22:05:49 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/18 23:02:07 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 15:41:58 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ int	count_env_vars(t_env *env)
 }
 
 // this fun make envp and merge the envp list i well be givin
+// so see the size of the envp list
+// the head is here
 char	**make_envp(t_env *envp_list)
 {
 	char	**envp;
 	int		i;
-	int count;   // so see the size of the envp list
-	t_env *curr; // the head is here
+	int		count;
+	t_env	*curr;
 
-    count = count_env_vars(envp_list);
+	count = count_env_vars(envp_list);
 	envp = malloc(sizeof(char *) * (count + 1));
 	if (!envp)
 		return (NULL);

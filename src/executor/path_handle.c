@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 21:05:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 11:58:24 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 15:41:41 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ static char	*test_cmd_and_free(char *cmd, char **paths)
 // Find the command's full path. Returns a malloc'd string or NULL.
 // Case 1: absolute/relative path → duplicate and return as-is.
 // Case 2: bare name → search each directory listed in PATH.
+// now we know this cmd is start with ./ or ../  or
+//  so no need to search inside PATH
 char	*resolve_path(char *cmd_name, t_env *env_list)
 {
 	t_env	*path_node;
 	char	**split_paths;
 
-	if (is_path(cmd_name))//now we know this cmd is start with ./ or ../  or /  so no need to search inside PATH
-		return (ft_strdup(cmd_name));//just run it
+	if (is_path(cmd_name))
+		return (ft_strdup(cmd_name));
 	path_node = find_node(env_list, "PATH");
 	if (!path_node || !path_node->value)
 		return (NULL);

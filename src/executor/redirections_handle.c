@@ -6,23 +6,24 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:01 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 12:30:28 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 15:38:40 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// here we handle  heredoc redir <<
+// here we handle  heredoc redir << // already opend  and filed and sent
+// open fails
 static int	handle_redir_heredoc(t_redirect *redir, t_shell *shell)
 {
-	if (redir->heredoc_fd == -1) // already opend  and filed and sent
+	if (redir->heredoc_fd == -1)
 	{
 		error_syscall("open", 1);
 		return (FALSE);
 	}
 	if (dup2(redir->heredoc_fd, 0) == -1)
 	{
-		shell->last_exit_status = 1; // open fails
+		shell->last_exit_status = 1;
 		close(redir->heredoc_fd);
 		return (error_syscall("dup2", 1) - 1);
 	}
@@ -31,17 +32,20 @@ static int	handle_redir_heredoc(t_redirect *redir, t_shell *shell)
 }
 
 // here we handle input redir <
+// open fails
+// 1 => true
+// open fails
 static int	handle_redir_in(t_redirect *redir, t_shell *shell)
 {
 	redir->fd = open(redir->file, O_RDONLY);
 	if (redir->fd == -1)
 	{
-		shell->last_exit_status = 1;           // open fails
-		return (error_syscall("open", 1) - 1); // 1 => true
+		shell->last_exit_status = 1;
+		return (error_syscall("open", 1) - 1);
 	}
 	if (dup2(redir->fd, 0) == -1)
 	{
-		shell->last_exit_status = 1; // open fails
+		shell->last_exit_status = 1;
 		close(redir->fd);
 		return (error_syscall("dup2", 1) - 1);
 	}
@@ -55,12 +59,12 @@ static int	handle_redir_out(t_redirect *redir, t_shell *shell)
 	redir->fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (redir->fd == -1)
 	{
-		shell->last_exit_status = 1;           // open fails
-		return (error_syscall("open", 1) - 1); // 1 => true
+		shell->last_exit_status = 1;
+		return (error_syscall("open", 1) - 1);
 	}
 	if (dup2(redir->fd, 1) == -1)
 	{
-		shell->last_exit_status = 1; // open fails
+		shell->last_exit_status = 1;
 		close(redir->fd);
 		return (error_syscall("dup2", 1) - 1);
 	}
@@ -74,12 +78,12 @@ static int	handle_redir_append(t_redirect *redir, t_shell *shell)
 	redir->fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (redir->fd == -1)
 	{
-		shell->last_exit_status = 1;           // open fails
-		return (error_syscall("open", 1) - 1); // 1 => true
+		shell->last_exit_status = 1;
+		return (error_syscall("open", 1) - 1);
 	}
 	if (dup2(redir->fd, 1) == -1)
 	{
-		shell->last_exit_status = 1; // open fails
+		shell->last_exit_status = 1;
 		close(redir->fd);
 		return (error_syscall("dup2", 1) - 1);
 	}
