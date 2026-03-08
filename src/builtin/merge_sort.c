@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 10:11:54 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/26 15:25:10 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:37:16 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ static void	split_into_half(t_env *head, t_env **left, t_env **right)
 	*right = slow->next;
 	slow->next = NULL;
 }
-
+// if (ft_strcmp(left->key, right->key) <= 0)
+// this mean right < left// right then left// merge right then left
+//	else // right > left // merge left then right
 static t_env	*sorted_merge(t_env *left, t_env *right)
 {
 	t_env	*head;
@@ -52,12 +54,11 @@ static t_env	*sorted_merge(t_env *left, t_env *right)
 	if (right == NULL)
 		return (left);
 	if (ft_strcmp(left->key, right->key) <= 0)
-	// this mean right < left// right then left// merge right then left
 	{
 		head = left;
 		head->next = sorted_merge(head->next, right);
 	}
-	else // right > left // merge left then right
+	else
 	{
 		head = right;
 		head->next = sorted_merge(left, right->next);
@@ -70,7 +71,8 @@ static t_env	*sorted_merge(t_env *left, t_env *right)
 // the bigO(n*log n)
 // the merge sort
 // btw this is list is just a copy
-// the head ref is always changed but the head is FOR EACH TIME U CALL WE HAVE NEW HEAD
+// the head ref is always changed but the
+// head is FOR EACH TIME U CALL WE HAVE NEW HEAD
 // bc its new linked list
 void	merge_sort(t_env **head_ref)
 {

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 15:55:07 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:18:27 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,12 @@ void		waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count);
 pid_t		execute_one_cmd(t_ext *ext, t_shell *shell);
 void		execute_in_child(t_ext *ext, t_shell *shell);
 void		execute_builtin_cmd(t_ext *ext, t_shell *shell);
-
+void		del_env(void *raw);
+char		*cut_key(char *arg, int cut);
+char		*cut_value(char *arg, int cut);
+int			error_cmd_export(char *input);
+int			check_key_exist(t_env *env_list, char *key);
+int			print_all_env_in_order(t_env *env_list);
+int			valid_arg(char *arg);
+int			update_env_export(char **args, t_env **env_list);
 #endif

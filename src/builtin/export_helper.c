@@ -6,22 +6,34 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:19:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 12:13:08 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:17:43 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//	count = 1; // bc we are at (after the cmd)
 int	find_args_count(char **args)
 {
 	int	count;
 
-	count = 1; // bc we are at (after the cmd)
+	count = 1;
 	if (args == NULL || *args == NULL)
 		return (0);
 	while (args[count] != NULL)
 		count++;
 	return (count);
+}
+static int	dup_env_helper(t_env *node, t_env *new)
+{
+	new->value = ft_strdup(node->value);
+	if (!new->value)
+	{
+		free(new->key);
+		free(new);
+		return (FALSE);
+	}
+	return (TRUE);
 }
 
 // deep copies ONE node
@@ -43,13 +55,8 @@ void	*dup_env(void *raw)
 	}
 	if (node->value)
 	{
-		new->value = ft_strdup(node->value);
-		if (!new->value)
-		{
-			free(new->key);
-			free(new);
+		if (!dup_env_helper(node, new))
 			return (NULL);
-		}
 	}
 	else
 		new->value = NULL;
@@ -57,26 +64,72 @@ void	*dup_env(void *raw)
 	return (new);
 }
 
-void	del_env(void *raw)
-{
-	t_env	*node;
+// print all the env vars with specific format AND in ASCII order
+// 1- we make a new env_list and sort it using (...)
+// for the sorting we want sort using ASCII
+// 2- print declare-x
+//		to every variable and puts double quotes around the value
+// If the variable has a value: declare -x USER="moulinette"
+// If the variable is empty (VAR=): declare -x VAR=""
+// If the variable was exported without a value (export VAR):
+// declare -x VAR (notice there is no = and no quotes).
+//	t_lst_ops ops; // this for copying
+//	merge_sort(&copy); // sort it
+//			printf("declare -x %s\n", print->key); // export VAR
+//			printf("declare -x %s=\"\"\n", print->key); // VAR=
+//	ft_lstfree_generic(copy, ops); // free it all
+//	return (TRUE);                 // in case we print everything we must print
 
-	node = (t_env *)raw;
-	free(node->key);
-	free(node->value);
+int	print_all_env_in_order(t_env *env_list)
+{
+	t_env		*copy;
+	t_env		*print;
+	t_lst_ops	ops;
+
+	ops.del = del_env;
+	ops.dup = dup_env;
+	ops.next_offset = offsetof(t_env, next);
+	copy = ft_lstcopy_generic(env_list, ops);
+	if (!copy)
+		return (FALSE);
+	merge_sort(&copy);
+	print = copy;
+	while (print != NULL)
+	{
+		if (print->value == NULL)
+			printf("declare -x %s\n", print->key);
+		else if (print->value[0] == '\0')
+			printf("declare -x %s=\"\"\n", print->key);
+		else
+			printf("declare -x %s=\"%s\"\n", print->key, print->value);
+		print = print->next;
+	}
+	ft_lstfree_generic(copy, ops);
+	return (TRUE);
 }
 
-// returns a malloc'd copy of the key portion: arg[0..cut-1]
-char	*cut_key(char *arg, int cut)
-{
-	return (ft_substr(arg, 0, cut));
-}
+// this fun is for checking for the input rules
+// first we need no see the whole word or till i find =
+// it return where to cut
+// if this is null this mean i just have name
+// must check the first letter A-Za-z or _
+//			break ; // end the key
 
-// returns a malloc'd copy of the value portion after '=',
-// or NULL if there is no '=' (bare export VAR with no value)
-char	*cut_value(char *arg, int cut)
+int	valid_arg(char *arg)
 {
-	if (arg[cut] != '=')
-		return (NULL);
-	return (ft_strdup(arg + cut + 1));
+	int	i;
+
+	i = 0;
+	if (!(ft_isalpha(arg[i]) || arg[i] == '_'))
+		return (FALSE);
+	i++;
+	while (arg[i] != '\0')
+	{
+		if (arg[i] == '=')
+			break ;
+		if (!(ft_isalnum(arg[i]) || arg[i] == '_'))
+			return (FALSE);
+		i++;
+	}
+	return (i);
 }

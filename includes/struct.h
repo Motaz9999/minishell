@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/20 01:43:02 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:20:55 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,16 @@ typedef struct s_redirect
 	t_redir_type type;       // The category of redirection (from enum above).
 	char *file;              // Filename or heredoc delimiter.
 	int fd;                  // The file descriptor, filled in by the Executor.
-	int         heredoc_fd;  // For heredoc for the parser to set 
+	int heredoc_fd;          // For heredoc for the parser to set
 	struct s_redirect *next; // Pointer to the next redirection in the list.
 }					t_redirect;
 
 // Purpose: To represent a single command with all its parts.
 typedef struct s_command
 {
-	char **args;            // NULL-terminated array for execve().
-	t_redirect *redirects; 
-		// A linked list of all redirections for this command.
+	char **args; // NULL-terminated array for execve().
+	t_redirect		*redirects;
+	// A linked list of all redirections for this command.
 	struct s_command *next; // Pointer to the next command in a pipeline.
 }					t_command;
 
@@ -116,18 +116,27 @@ typedef struct s_ext
 	pid_t			*pids;
 	int				i;
 	t_command		*cmd;
-}				t_ext;
+}					t_ext;
 
 typedef enum e_builtin
 {
-    BI_NONE = 0,
-    BI_ECHO,
-    BI_CD,
-    BI_PWD,
-    BI_EXPORT,
-    BI_UNSET,
-    BI_ENV,
-    BI_EXIT
-}   t_builtin;
+	BI_NONE = 0,
+	BI_ECHO,
+	BI_CD,
+	BI_PWD,
+	BI_EXPORT,
+	BI_UNSET,
+	BI_ENV,
+	BI_EXIT
+}					t_builtin;
+
+typedef struct s_update_env
+{
+	int				i;
+	char			*key;
+	char			*value;
+	int				cut;
+	int				ret;
+}					t_update_env;
 
 #endif
