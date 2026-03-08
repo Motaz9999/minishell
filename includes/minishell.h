@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 12:04:29 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 15:55:07 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 # define _POSIX_C_SOURCE 200809L
 # include "libft.h"
 # include "struct.h"
-# include <dirent.h> //for readdie and opendir and close dir
+# include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <signal.h> // this is for handling signals
+# include <signal.h>
 # include <stdarg.h>
 # include <stddef.h>
 # include <stdio.h>
@@ -55,9 +55,10 @@ void		error_execve(char *cmd);
 int			error_cmd(char *cmd, char *msg, int exit_code);
 int			error_syscall(char *context, int exit_code);
 
-//redir + pipes handle
+// redir + pipes handle
 int			handle_redir(t_redirect *redirections, t_shell *shell);
-int	handle_pipes(int prev_fd_in, int pipes[], int remaining_cmd , t_shell *shell);
+int			handle_pipes(int prev_fd_in, int pipes[], int remaining_cmd,
+				t_shell *shell);
 // signals
 void		setup_signals_child(void);
 void		setup_signals_parent(void);
@@ -102,4 +103,10 @@ char		**make_envp(t_env *env_list);
 int			count_env_vars(t_env *env);
 // executor internals
 void		waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count);
+
+// utitles
+pid_t		execute_one_cmd(t_ext *ext, t_shell *shell);
+void		execute_in_child(t_ext *ext, t_shell *shell);
+void		execute_builtin_cmd(t_ext *ext, t_shell *shell);
+
 #endif

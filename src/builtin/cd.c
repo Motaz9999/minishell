@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 22:34:11 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 07:21:30 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:00:44 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char	*get_home_path(t_env *env_list)
 // so just make sure to fork it there are a pipe
 // and it must TAKE ONLY ONE PATH ELSE PRINT ERROR
 // args[0] => cd  args[1] =>dir  args[2] => error
+//free(cwd); // already copied inside update_env_pwd
 int	cd(t_ext *ext, t_shell *shell)
 {
 	char	*path;
@@ -74,6 +75,6 @@ int	cd(t_ext *ext, t_shell *shell)
 	if (cwd == NULL)
 		return (error_syscall("getcwd", 0));
 	update_env_pwd(shell->env_list, cwd);
-	free(cwd); // already copied inside update_env_pwd
+	free(cwd);
 	return (TRUE);
 }
