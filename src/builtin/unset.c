@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 06:14:11 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:39:00 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:50:29 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,14 @@ void	update_env_unset(t_env **head, char *args)
 // here it just disable any cmd that well have
 // it take 0 or 1 or more VAR and unset
 //	curr = args + 1; // start from after the cmd
+
 int	unset(char **args, t_shell *shell)
 {
-	char **curr;
-	int i;
+	char	**curr;
+	int		i;
 
 	i = 0;
-	curr = args + 1; // start from after the cmd
+	curr = args + 1;
 	while (curr[i] != NULL)
 		update_env_unset(&shell->env_list, curr[i++]);
 	return (TRUE);

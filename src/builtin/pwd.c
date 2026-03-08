@@ -35,7 +35,9 @@ void	update_env_pwd(t_env *env_list, char *new_pwd_val)
 	if (node_old && node_pwd)
 	{
 		free(node_old->value);
-		node_old->value = node_pwd->value ? ft_strdup(node_pwd->value) : NULL;
+		node_old->value = NULL;
+		if (node_pwd->value)
+			node_old->value = ft_strdup(node_pwd->value);
 	}
 	if (node_pwd && new_pwd_val)
 	{

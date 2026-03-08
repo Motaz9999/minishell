@@ -43,7 +43,9 @@ int	exit_shell(t_ext *ext)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (FALSE);
 	}
-	exit_code = ext->cmd->args[1] ? ft_atoi(ext->cmd->args[1]) : 0;
+	exit_code = 0;
+	if (ext->cmd->args[1])
+		exit_code = ft_atoi(ext->cmd->args[1]);
 	if (exit_code < 0)
 		exit_code = 256 + exit_code;
 	else if (exit_code > 255)

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:19:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:17:43 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:57:02 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	find_args_count(char **args)
 		count++;
 	return (count);
 }
+
 static int	dup_env_helper(t_env *node, t_env *new)
 {
 	new->value = ft_strdup(node->value);

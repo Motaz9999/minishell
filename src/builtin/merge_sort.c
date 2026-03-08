@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 10:11:54 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:37:16 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:57:22 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	split_into_half(t_env *head, t_env **left, t_env **right)
 	*right = slow->next;
 	slow->next = NULL;
 }
+
 // if (ft_strcmp(left->key, right->key) <= 0)
 // this mean right < left// right then left// merge right then left
 //	else // right > left // merge left then right

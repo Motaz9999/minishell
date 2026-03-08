@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 06:14:01 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:35:40 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:44:33 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	add_key_env_helper(char *value, t_env *ptr, char *key)
 		free(value);
 	free(key);
 }
+
 // this add the key into the env list if it not exist and update
 // it if it exist
 int	add_key_env(t_env **env_list, char *key, char *value)

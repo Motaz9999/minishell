@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 19:46:56 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:03:58 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:57:43 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	is_n_flag(char *arg)
 			return (FALSE);
 		i++;
 	}
-	return (TRUE); // this mean we skip it all
+	return (TRUE);
 }
 
 // this is fun for printing

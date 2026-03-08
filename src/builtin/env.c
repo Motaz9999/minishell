@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 04:04:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:04:38 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:55:08 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int	env(t_env *env_list)
 {
-	t_env *curr;
+	t_env	*curr;
 
 	if (env_list == NULL)
 		return (FALSE);

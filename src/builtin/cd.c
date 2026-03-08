@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 22:34:11 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:04:09 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/08 16:44:49 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static int	cd_helper_error(char *path)
 // so i need first to check_on pipes (the in pipe)
 // first i want to build the cmd that is execute in parent process
 // return true if i change the loc and false if not with error massage
-// must be single cmd WITH NO pipe BUT if there are a pipe i should execute in child process
+// must be single cmd WITH NO pipe BUT 
+//if there are a pipe i should execute in child process
 // so just make sure to fork it there are a pipe
 // and it must TAKE ONLY ONE PATH ELSE PRINT ERROR
 // args[0] => cd  args[1] =>dir  args[2] => error
