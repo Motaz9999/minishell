@@ -8,32 +8,28 @@ LIBFT = libft/libft.a
 INC = -I includes -I libft
 LINK = -lreadline -lft
 
-SRC =	src/main.c \
-	src/builtin/builtin.c \
-	src/builtin/cd.c \
-	src/builtin/echo.c \
-	src/builtin/env.c \
-	src/builtin/exit.c \
-	src/builtin/export.c \
-	src/builtin/export_helper.c \
-	src/builtin/merge_sort.c \
-	src/builtin/pwd.c \
-	src/builtin/unset.c \
-	src/executor/cleanup.c \
-	src/executor/envp_handle.c \
-	src/executor/error_handle.c \
-	src/executor/executor.c \
-	src/executor/path_handle.c \
-	src/executor/pipes_handle.c \
-	src/executor/redirections_handle.c \
-	src/parser/env_init.c \
-	src/parser/expander.c \
-	src/parser/heredoc.c \
-	src/parser/lexer.c \
-	src/parser/parse_execute.c \
-	src/parser/parser.c \
-	src/parser/parser_cleanup.c \
-	src/signals/signal_handle.c
+SRC =	SRC =	src/main.c \
+    src/builtin/builtin.c \
+    src/builtin/builtin_utils.c \
+    src/builtin/cd.c \
+    src/builtin/echo.c \
+    src/builtin/env.c \
+    src/builtin/exit.c \
+    src/builtin/export.c \
+    src/builtin/export_helper.c \
+    src/builtin/export_helper2.c \
+    src/builtin/export_utils.c \
+    src/builtin/merge_sort.c \
+    src/builtin/pwd.c \
+    src/builtin/unset.c \
+    src/executor/envp_handle.c \
+    src/executor/error_handle.c \
+    src/executor/executor.c \
+    src/executor/executor_utils.c \
+    src/executor/path_handle.c \
+    src/executor/pipes_handle.c \
+    src/executor/redirections_handle.c \
+    src/signals/signal_handle.c
 
 OBJ = $(SRC:.c=.o)
 
