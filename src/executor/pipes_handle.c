@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_handle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aamr <aamr <aamr@student.42.fr>>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:12 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/15 01:45:41 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/14 04:27:09 by aamr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int close_pipes(int pipes[] , t_shell *shell)
 	shell->last_exit_status = 1;
 	return (FALSE);
 }
+
 int close_pipes_prev(int pipes[] , int *prev , t_shell *shell)
 {
 	close_pipes(pipes , shell);

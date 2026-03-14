@@ -8,7 +8,7 @@ LIBFT = libft/libft.a
 INC = -I includes -I libft
 LINK = -lreadline -lft
 
-SRC = src/main.c 
+SRC = $(wildcard src/**/*.c) $(wildcard src/*.c) 
 
 OBJ = $(SRC:.c=.o)
 
