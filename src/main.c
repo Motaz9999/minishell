@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 01:19:47 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 11:30:21 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/23 21:06:06 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	ft_memset(&shell, 0, sizeof(shell));
-	shell.env_list = init_env(envp);
+	if (!envp)
+		shell.env_list = init_env(envp);
 	setup_signals_parent();
 	shell_loop(&shell);
 	return (shell.last_exit_status);

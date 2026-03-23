@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 18:04:10 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/26 15:12:42 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/23 20:25:00 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char				*ft_merge_join(char *s1, char *s2, char *s3);
 /*
 ** t_lst_ops — teach the generic functions about YOUR node type
 **
-**   next_offset : offsetof(your_type, next)
+**   next_offset : offsetof(your_type, next) -- count the bytes 
 **   dup         : malloc a new node, deep copy all fields, set next=NULL
 **   del         : free all inner pointers (key, value...) but NOT the node
 **                 pass NULL if your node has no inner pointers to free
