@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/23 17:58:34 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/23 18:09:39 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_token
 	t_token_type		type;
 	char				*value;
 	int					quote_type;
-
 	struct s_token		*next;
 }						t_token;
 
@@ -104,14 +103,23 @@ typedef struct s_command
 	char **args; // NULL-terminated array for execve().
 	t_redirect			*redirects;
 	// A linked list of all redirections for this command.
+		t_quote_type         *quote_types;//this a what type of quote it have and it have one per arg (this is an array or linked list as the same size as args)
 	struct s_command *next; // Pointer to the next command in a pipeline.
 }						t_command;
 */
+
+typedef enum e_quote_type
+{
+	NO_QUOTE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE
+}						t_quote_type;
+
 typedef struct s_command
 {
 	char				**args;
 	t_redirect			*redirects;
-	int         *quote_types;
+	t_quote_type         *quote_types;
 	struct s_command	*next;
 }						t_command;
 
