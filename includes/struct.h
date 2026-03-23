@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/23 19:16:20 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/23 20:08:10 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,12 +184,9 @@ typedef struct s_expander_data
 	char	*key;
 	char	*value;
 	char	*suffix;
-	char	*tmp;
 	int		dollar_pos;
 	int		key_start;
 	int		key_len;
-	int		len_of_value;
-
 } t_expander;
 
 #endif
