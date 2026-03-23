@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 18:43:05 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/23 20:16:11 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,12 @@ void		waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count);
 pid_t		execute_one_cmd(t_ext *ext, t_shell *shell);
 void		execute_in_child(t_ext *ext, t_shell *shell);
 void		execute_builtin_cmd(t_ext *ext, t_shell *shell);
+
+//expander 
+void	expand_args_from_cmd(t_shell *shell, t_command *cmd);
+int	search_for_special(char *word);
+int	check_valid_key_char(char c);
+char	*extract_key_value(char *key, t_env *env_list, int last_exit_status);
+//replace str 
+char	*replace_str(char *expand_it, t_shell *shell);
 #endif

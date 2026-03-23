@@ -6,13 +6,11 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/23 20:12:14 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/23 20:16:41 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	search_for_special(char *word);
 
 char	*extract_key_value(char *key, t_env *env_list, int last_exit_status)
 {
@@ -42,76 +40,7 @@ int	check_valid_key_char(char c)
 	return (FALSE);
 }
 
-// now i have 3 strs just join them and return the join
-char	*replace_str_helper_2(char *expand_it, t_expander *exp1)
-{
-	exp1->new_one = ft_merge_join(exp1->prefix, exp1->value, exp1->suffix);
-	if (exp1->new_one == NULL)
-	{
-		ft_free_all((void *)exp1->key, (void *)exp1->prefix,
-			(void *)exp1->suffix, (void *)exp1->value, NULL);
-		return (expand_it);
-	}
-	ft_free_all((void *)exp1->key, (void *)exp1->prefix, (void *)exp1->suffix,
-		(void *)exp1->value, (void *)expand_it, NULL);
-	return (exp1->new_one);
-}
 
-char	*replace_str_helper_1(char *expand_it, t_expander *exp1, t_shell *shell)
-{
-	exp1->prefix = ft_substr(expand_it, 0, exp1->dollar_pos);
-	// anything before the $
-	if (!exp1->prefix)
-	{
-		ft_free_all((void *)exp1->key, NULL);
-		return (expand_it);
-	}
-	exp1->suffix = ft_substr(expand_it, exp1->key_start + exp1->key_len,
-			ft_strlen(expand_it + exp1->key_start + exp1->key_len));
-	if (!exp1->suffix)
-	{
-		ft_free_all((void *)exp1->key, (void *)exp1->prefix, NULL);
-		return (expand_it);
-	}
-	exp1->value = extract_key_value(exp1->key, shell->env_list,
-			shell->last_exit_status);
-	if (!exp1->value)
-	{
-		ft_free_all((void *)exp1->key, (void *)exp1->prefix,
-			(void *)exp1->suffix, NULL);
-		return (expand_it);
-	}
-	return (replace_str_helper_2(expand_it, exp1));
-}
-
-char	*replace_str(char *expand_it, t_shell *shell)
-{
-	t_expander	exp1;
-
-	ft_memset(&exp1, 0, sizeof(exp1));
-	exp1.dollar_pos = search_for_special(expand_it); // where $ located
-	if (exp1.dollar_pos < 0)
-		return (expand_it);
-	if (expand_it[exp1.dollar_pos] != '$')
-		return (expand_it);
-	exp1.key_start = exp1.dollar_pos + 1;
-	exp1.key_len = 0;
-	if (expand_it[exp1.key_start] == '?') // check for exit code here
-		exp1.key_len = 1;
-	else
-	{
-		while (expand_it[exp1.key_start + exp1.key_len] != '\0'
-			&& check_valid_key_char(expand_it[exp1.key_start + exp1.key_len]))
-			exp1.key_len++;
-	}
-	if (exp1.key_len == 0) // no key exist
-		return (expand_it);
-	// return the original word// now after i make sure there is a key and have len
-	exp1.key = cut_key(expand_it + exp1.dollar_pos + 1, exp1.key_len);
-	if (exp1.key == NULL)
-		return (expand_it);
-	return (replace_str_helper_1(expand_it, &exp1, shell));
-}
 
 // Yes, all expansions start with $, but NO it doesn't have to be at the start:
 // echo $HOME          # start → expands
@@ -133,7 +62,7 @@ int	search_for_special(char *word)
 }
 // ok this fun is for expanding the cmd (replace it with new one that have more info)
 // anything u want to expand must start with $ if it not exist just skip it and return the original str
-char	*expand_cmd(char *expand_it, t_shell *shell)
+static char	*expand_cmd(char *expand_it, t_shell *shell)
 {
 	char	*new_one;
 
