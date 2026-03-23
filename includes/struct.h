@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 21:32:23 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/23 17:58:34 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct s_command
 {
 	char				**args;
 	t_redirect			*redirects;
+	int         *quote_types;
 	struct s_command	*next;
 }						t_command;
 
