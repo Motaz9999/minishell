@@ -8,7 +8,7 @@ LIBFT = libft/libft.a
 INC = -I includes -I libft
 LINK = -lreadline -lft
 
-SRC =	SRC =	src/main.c \
+SRC =	src/main.c \
     src/builtin/builtin.c \
     src/builtin/builtin_utils.c \
     src/builtin/cd.c \
@@ -22,6 +22,7 @@ SRC =	SRC =	src/main.c \
     src/builtin/merge_sort.c \
     src/builtin/pwd.c \
     src/builtin/unset.c \
+    src/env_list/env_list.c \
     src/executor/envp_handle.c \
     src/executor/error_handle.c \
     src/executor/executor.c \
