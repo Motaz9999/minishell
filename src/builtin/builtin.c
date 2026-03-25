@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 00:26:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 15:58:23 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/24 21:08:43 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ t_builtin	get_builtin(t_command *cmd)
 int	execute_builtin_helper(t_ext *ext, t_shell *shell, int *saved_stdin,
 		int *saved_stdout)
 {
+	(void)ext;
+	(void)shell;
 	*saved_stdin = dup(STDIN_FILENO);
 	if (*saved_stdin == -1)
 		return (error_syscall("dup", -1));

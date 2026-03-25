@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 16:12:35 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:27:27 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/24 21:09:06 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 int	update_env_export_helper(char **args, t_env **env_list, t_update_env *u_env)
 {
+	(void)env_list;
 	u_env->cut = valid_arg(args[u_env->i]);
 	if (u_env->cut == FALSE)
 	{

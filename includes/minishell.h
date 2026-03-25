@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/23 20:16:11 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/23 22:21:08 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,19 @@ int			find_args_count(char **args);
 int			error_cmd_export(char *input);
 int			print_all_env_in_order(t_env *env_list);
 // parser / lexer
-/*
 t_token		*lexer(const char *line);
 void		expand_tokens(t_token *tokens, t_shell *shell);
 t_command	*parser(t_token *tokens, t_shell *shell);
 void		parse_and_execute(char *line, t_shell *shell);
 void		free_tokens(t_token *tokens);
-void		free_commands(t_command *cmds);
+void		free_commands(t_command *commands);
+void		free_redirects(t_redirect *redirects);
+int			count_tokens(t_token *tokens);
+t_token		*get_token_at(t_token *tokens, int index);
+void		print_tokens(t_token *tokens);
+int			count_commands_parser(t_command *commands);
+void		print_commands(t_command *commands);
 int			fill_heredoc(t_redirect *redir, t_shell *shell);
-*/
 // env init
 t_env		*init_env(char **envp);
 // envp handle

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:00:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 15:34:54 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/24 21:16:50 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	fork_cmd_helper(char **envp, t_ext *ext, t_shell *shell,
 // and make a new fun to deal with the dir of input and output
 // this is for the process
 // bc the env_list is always updated like envp and redir if it exist and pipes
-// but these 2 handles in if and check for errors and what 
+// but these 2 handles in if and check for errors and what
 // the exit code should be bc we inside a child process
 // helper to make it short
 // it also have exit code bc it child
@@ -86,8 +86,8 @@ static pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 	return (pid);
 }
 
-// i have 2 line here it enough for the if statement 
-//and dont forget the signal
+// i have 2 line here it enough for the if statement
+// and dont forget the signal
 // first thing i must do is execute just one command
 // F_OK → Test if the file exists.
 // R_OK → Test if the file is readable.
@@ -99,6 +99,8 @@ pid_t	execute_one_cmd(t_ext *ext, t_shell *shell)
 {
 	char	*find_path;
 
+	if (!ext || !ext->cmd || !ext->cmd->args || !ext->cmd->args[0])
+		return (-1);
 	if (get_builtin(ext->cmd) != FALSE)
 		return (execute_builtin(ext, shell, 1));
 	find_path = resolve_path(ext->cmd->args[0], shell->env_list);

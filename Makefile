@@ -30,7 +30,14 @@ SRC =	src/main.c \
     src/executor/path_handle.c \
     src/executor/pipes_handle.c \
     src/executor/redirections_handle.c \
-    src/signals/signal_handle.c
+    src/signals/signal_handle.c \
+    src/lexer/lexer.c \
+    src/lexer/lexer_utils.c \
+    src/expander/expander.c \
+    src/expander/replace_str.c \
+    src/parsing/parser.c \
+    src/parsing/parser_utils.c \
+    src/parsing/parse_and_execute.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -1,4 +1,4 @@
-ULTIMATE MINISHELL TEST — Fri Feb 27 12:35:23 +03 2026
+ULTIMATE MINISHELL TEST — Wed Mar 25 20:41:42 +03 2026
 
 
 ══ ECHO ══
@@ -116,13 +116,10 @@ ULTIMATE MINISHELL TEST — Fri Feb 27 12:35:23 +03 2026
   ✓ expand $USER
   ✓ expand in double quote
   ✓ no expand in single ''
-  ✗ expand $? = 0
-      INPUT : true; echo $?
-      WANTED: 
-      GOT   : minishell: true;: Command not found
+  ✓ expand $? = 0
   ✓ $? is 0 at shell start
 
 ══════════════════════════════════════════
-  PASSED : 65 / 68
-  FAILED : 3 / 68
+  PASSED : 66 / 68
+  FAILED : 2 / 68
 ══════════════════════════════════════════

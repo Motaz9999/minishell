@@ -1,4 +1,4 @@
-MINISHELL TEST RESULTS — Mon Mar 23 20:09:53 +03 2026
+MINISHELL TEST RESULTS — Wed Mar 25 20:41:59 +03 2026
 
 ────────────────────────────────────────
 TEST : echo hello
@@ -49,16 +49,14 @@ STATUS: FAIL ✗
 ────────────────────────────────────────
 TEST : echo $? after true
 INPUT: true; echo $?
-GOT  : minishell: true;: Command not found
-exit
+GOT  : exit
 WANT : 0
 STATUS: FAIL ✗
 
 ────────────────────────────────────────
 TEST : echo $? after false
 INPUT: false; echo $?
-GOT  : minishell: false;: Command not found
-exit
+GOT  : exit
 WANT : 1
 STATUS: FAIL ✗
 
@@ -97,7 +95,7 @@ STATUS: FAIL ✗
 ────────────────────────────────────────
 TEST : cd no args
 INPUT: cd; pwd
-GOT  : minishell: cd;: Command not found
+GOT  : minishell: cd: pwd: No such file or directory
 exit
 WANT : /home/motaz
 STATUS: FAIL ✗
@@ -113,9 +111,9 @@ STATUS: FAIL ✗
 ────────────────────────────────────────
 TEST : env contains PATH
 INPUT: env | grep ^PATH
-GOT  : PATH=/home/motaz/.local/bin:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/motaz/.vscode-server/bin/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/bin/remote-cli:/home/motaz/.nvm/versions/node/v24.11.1/bin:/home/motaz/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Cloudflare/Cloudflare WARP/:/mnt/c/Users/Motaz/.local/bin:/mnt/c/Users/Motaz/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Motaz/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/Motaz/OneDrive/Desktop/fluuter test/flutter/bin:/mnt/c/Program Files/AppServ/Apache24/bin:/mnt/c/Program Files/AppServ/php7:/mnt/c/Program Files/AppServ/MySQL/bin:/mnt/c/Users/Motaz/AppData/Local/Python/bin
+GOT  : PATH=/home/motaz/.local/bin:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/motaz/.vscode-server/bin/07ff9d6178ede9a1bd12ad3399074d726ebe6e43/bin/remote-cli:/home/motaz/.nvm/versions/node/v24.11.1/bin:/home/motaz/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Cloudflare/Cloudflare WARP/:/mnt/c/Users/Motaz/.local/bin:/mnt/c/Users/Motaz/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Motaz/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/Motaz/OneDrive/Desktop/fluuter test/flutter/bin:/mnt/c/Program Files/AppServ/Apache24/bin:/mnt/c/Program Files/AppServ/php7:/mnt/c/Program Files/AppServ/MySQL/bin:/mnt/c/Users/Motaz/AppData/Local/Python/bin
 exit
-WANT : PATH=/home/motaz/.local/bin:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/motaz/.vscode-server/bin/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/bin/remote-cli:/home/motaz/.nvm/versions/node/v24.11.1/bin:/home/motaz/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Cloudflare/Cloudflare WARP/:/mnt/c/Users/Motaz/.local/bin:/mnt/c/Users/Motaz/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Motaz/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/Motaz/OneDrive/Desktop/fluuter test/flutter/bin:/mnt/c/Program Files/AppServ/Apache24/bin:/mnt/c/Program Files/AppServ/php7:/mnt/c/Program Files/AppServ/MySQL/bin:/mnt/c/Users/Motaz/AppData/Local/Python/bin
+WANT : PATH=/home/motaz/.local/bin:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/motaz/.vscode-server/bin/07ff9d6178ede9a1bd12ad3399074d726ebe6e43/bin/remote-cli:/home/motaz/.nvm/versions/node/v24.11.1/bin:/home/motaz/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Cloudflare/Cloudflare WARP/:/mnt/c/Users/Motaz/.local/bin:/mnt/c/Users/Motaz/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Motaz/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/Motaz/OneDrive/Desktop/fluuter test/flutter/bin:/mnt/c/Program Files/AppServ/Apache24/bin:/mnt/c/Program Files/AppServ/php7:/mnt/c/Program Files/AppServ/MySQL/bin:/mnt/c/Users/Motaz/AppData/Local/Python/bin
 STATUS: FAIL ✗
 
 ────────────────────────────────────────
@@ -129,8 +127,7 @@ STATUS: FAIL ✗
 ────────────────────────────────────────
 TEST : export no value
 INPUT: export BAREVAR; env | grep ^BAREVAR
-GOT  : minishell: export: `BAREVAR;': not a valid identifier
-exit
+GOT  : exit
 WANT : BAREVAR
 STATUS: FAIL ✗
 
@@ -140,12 +137,12 @@ INPUT: export
 GOT  : declare -x COLORTERM="truecolor"
 declare -x DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
 declare -x DISPLAY=":0"
-declare -x GIT_ASKPASS="/home/motaz/.vscode-server/bin/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/extensions/git/dist/askpass.sh"
+declare -x GIT_ASKPASS="/home/motaz/.vscode-server/bin/07ff9d6178ede9a1bd12ad3399074d726ebe6e43/extensions/git/dist/askpass.sh"
 declare -x GIT_EDITOR=":"
 declare -x GIT_MERGE_AUTOEDIT="no"
 declare -x GIT_PAGER="cat"
-declare -x GK_GL_ADDR="http://127.0.0.1:42307"
-declare -x GK_GL_PATH="/tmp/gitkraken/gitlens/gitlens-ipc-server-1302-42307.json"
+declare -x GK_GL_ADDR="http://127.0.0.1:44097"
+declare -x GK_GL_PATH="/tmp/gitkraken/gitlens/gitlens-ipc-server-1278-44097.json"
 declare -x HOME="/home/motaz"
 declare -x HOSTTYPE="x86_64"
 declare -x LANG="C.UTF-8"
@@ -160,28 +157,28 @@ declare -x NVM_DIR="/home/motaz/.nvm"
 declare -x NVM_INC="/home/motaz/.nvm/versions/node/v24.11.1/include/node"
 declare -x OLDPWD="/home/motaz/core/minishell"
 declare -x PAGER="less"
-declare -x PATH="/home/motaz/.local/bin:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/motaz/.vscode-server/bin/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/bin/remote-cli:/home/motaz/.nvm/versions/node/v24.11.1/bin:/home/motaz/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Cloudflare/Cloudflare WARP/:/mnt/c/Users/Motaz/.local/bin:/mnt/c/Users/Motaz/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Motaz/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/Motaz/OneDrive/Desktop/fluuter test/flutter/bin:/mnt/c/Program Files/AppServ/Apache24/bin:/mnt/c/Program Files/AppServ/php7:/mnt/c/Program Files/AppServ/MySQL/bin:/mnt/c/Users/Motaz/AppData/Local/Python/bin"
+declare -x PATH="/home/motaz/.local/bin:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/motaz/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/motaz/.vscode-server/bin/07ff9d6178ede9a1bd12ad3399074d726ebe6e43/bin/remote-cli:/home/motaz/.nvm/versions/node/v24.11.1/bin:/home/motaz/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Cloudflare/Cloudflare WARP/:/mnt/c/Users/Motaz/.local/bin:/mnt/c/Users/Motaz/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Motaz/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/Motaz/OneDrive/Desktop/fluuter test/flutter/bin:/mnt/c/Program Files/AppServ/Apache24/bin:/mnt/c/Program Files/AppServ/php7:/mnt/c/Program Files/AppServ/MySQL/bin:/mnt/c/Users/Motaz/AppData/Local/Python/bin"
 declare -x PULSE_SERVER="unix:/mnt/wslg/PulseServer"
 declare -x PWD="/home/motaz/core/minishell"
 declare -x SHELL="/usr/bin/zsh"
 declare -x SHLVL="2"
 declare -x TERM="xterm-256color"
 declare -x TERM_PROGRAM="vscode"
-declare -x TERM_PROGRAM_VERSION="1.111.0"
+declare -x TERM_PROGRAM_VERSION="1.112.0"
 declare -x USER="motaz"
 declare -x USER_ZDOTDIR="/home/motaz"
 declare -x VSCODE_GIT_ASKPASS_EXTRA_ARGS=""
-declare -x VSCODE_GIT_ASKPASS_MAIN="/home/motaz/.vscode-server/bin/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/extensions/git/dist/askpass-main.js"
-declare -x VSCODE_GIT_ASKPASS_NODE="/home/motaz/.vscode-server/bin/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/node"
+declare -x VSCODE_GIT_ASKPASS_MAIN="/home/motaz/.vscode-server/bin/07ff9d6178ede9a1bd12ad3399074d726ebe6e43/extensions/git/dist/askpass-main.js"
+declare -x VSCODE_GIT_ASKPASS_NODE="/home/motaz/.vscode-server/bin/07ff9d6178ede9a1bd12ad3399074d726ebe6e43/node"
 declare -x VSCODE_GIT_IPC_HANDLE="/run/user/1000/vscode-git-7726ed0154.sock"
 declare -x VSCODE_INJECTION="1"
-declare -x VSCODE_IPC_HOOK_CLI="/run/user/1000/vscode-ipc-2f9f0e2d-1928-4b06-a09c-780e57cec241.sock"
+declare -x VSCODE_IPC_HOOK_CLI="/run/user/1000/vscode-ipc-fc7abe17-dafb-465e-b416-a17a36693ebf.sock"
 declare -x VSCODE_PYTHON_AUTOACTIVATE_GUARD="1"
 declare -x WAYLAND_DISPLAY="wayland-0"
 declare -x WSL2_GUI_APPS_ENABLED="1"
 declare -x WSLENV="ELECTRON_RUN_AS_NODE/w:"
 declare -x WSL_DISTRO_NAME="Ubuntu-22.04"
-declare -x WSL_INTEROP="/run/WSL/1290_interop"
+declare -x WSL_INTEROP="/run/WSL/1266_interop"
 declare -x XDG_RUNTIME_DIR="/run/user/1000/"
 declare -x ZDOTDIR="/home/motaz"
 declare -x ZSH="/home/motaz/.oh-my-zsh"
@@ -207,8 +204,7 @@ STATUS: FAIL ✗
 ────────────────────────────────────────
 TEST : unset var
 INPUT: export DEL=yes; unset DEL; echo $DEL
-GOT  : minishell: export: `DEL;': not a valid identifier
-minishell: export: `': not a valid identifier
+GOT  : minishell: export: `': not a valid identifier
 exit
 
 ────────────────────────────────────────
@@ -246,8 +242,7 @@ STATUS: FAIL ✗
 ────────────────────────────────────────
 TEST : redir in <
 INPUT: echo world > /tmp/ms_in.txt; cat < /tmp/ms_in.txt
-GOT  : minishell: open: No such file or directory
-exit
+GOT  : exit
 WANT : world
 STATUS: FAIL ✗
 
@@ -262,7 +257,7 @@ STATUS: FAIL ✗
 ────────────────────────────────────────
 TEST : pipe with grep
 INPUT: echo -e "a\nb\nc" | grep b
-GOT  : -e a\nb\nc
+GOT  : b
 exit
 WANT : b
 STATUS: FAIL ✗
@@ -298,8 +293,7 @@ STATUS: FAIL ✗
 ────────────────────────────────────────
 TEST : expand $?
 INPUT: true; echo $?
-GOT  : minishell: true;: Command not found
-exit
+GOT  : exit
 WANT : 0
 STATUS: FAIL ✗
 
@@ -323,38 +317,48 @@ STATUS: FAIL ✗
 TEST : ls /tmp
 INPUT: ls /tmp
 GOT  : gitkraken
-mcp-ODDQL7
+mcp-zBH2S4
 motaz-code-zsh
 ms_app.txt
-ms_in.txt;
+ms_combo_in.txt
+ms_in.txt
 ms_in2.txt
 ms_pipe_redir.txt
+ms_pr.txt
 ms_redir.txt
-ms_test.txt;
+ms_test.txt
+ms_u1.txt
+ms_u2.txt
+ms_u_exit.txt
 remote-wsl-loc.txt
 snap-private-tmp
-systemd-private-77baed0e771d4ef2bf1b2ded78ce5583-systemd-logind.service-oAlTv2
-systemd-private-77baed0e771d4ef2bf1b2ded78ce5583-systemd-resolved.service-S4L4B5
-systemd-private-77baed0e771d4ef2bf1b2ded78ce5583-systemd-timesyncd.service-UsfdQF
-vscode-distro-env.ZwXWnl
-{F443F6FB-BC65-4F43-ADF2-D849382CCE63}
+systemd-private-602c1634ef8b49e59e8ab984e6d4e1f0-systemd-logind.service-bmMUyp
+systemd-private-602c1634ef8b49e59e8ab984e6d4e1f0-systemd-resolved.service-RclHdc
+systemd-private-602c1634ef8b49e59e8ab984e6d4e1f0-systemd-timesyncd.service-sxbhtF
+vscode-distro-env.joz3IO
+{63FD2EE6-C3A1-4439-B049-2627394489CC}
 exit
 WANT : gitkraken
-mcp-ODDQL7
+mcp-zBH2S4
 motaz-code-zsh
 ms_app.txt
-ms_in.txt;
+ms_combo_in.txt
+ms_in.txt
 ms_in2.txt
 ms_pipe_redir.txt
+ms_pr.txt
 ms_redir.txt
-ms_test.txt;
+ms_test.txt
+ms_u1.txt
+ms_u2.txt
+ms_u_exit.txt
 remote-wsl-loc.txt
 snap-private-tmp
-systemd-private-77baed0e771d4ef2bf1b2ded78ce5583-systemd-logind.service-oAlTv2
-systemd-private-77baed0e771d4ef2bf1b2ded78ce5583-systemd-resolved.service-S4L4B5
-systemd-private-77baed0e771d4ef2bf1b2ded78ce5583-systemd-timesyncd.service-UsfdQF
-vscode-distro-env.ZwXWnl
-{F443F6FB-BC65-4F43-ADF2-D849382CCE63}
+systemd-private-602c1634ef8b49e59e8ab984e6d4e1f0-systemd-logind.service-bmMUyp
+systemd-private-602c1634ef8b49e59e8ab984e6d4e1f0-systemd-resolved.service-RclHdc
+systemd-private-602c1634ef8b49e59e8ab984e6d4e1f0-systemd-timesyncd.service-sxbhtF
+vscode-distro-env.joz3IO
+{63FD2EE6-C3A1-4439-B049-2627394489CC}
 STATUS: FAIL ✗
 
 ────────────────────────────────────────
