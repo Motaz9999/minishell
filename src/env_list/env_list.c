@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 20:21:44 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 19:20:11 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 21:34:06 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,53 +28,79 @@ void	free_env_list(t_env *list)
 	}
 }
 
-//this fun is the one it create node
 // each time it have 1 part of the envp
-//then make it a node
-//if one is not true it return false
-static int	init_env_add_one(t_env **list, char *entry)
+// then make it a node
+// if one is not true it return false
+static int	setup_node(char *entry, char **key, char **value)
 {
-	char	*key;
-	char	*value;
-	int		cut;
+	int	cut;
 
 	cut = 0;
 	while (entry[cut] && entry[cut] != '=')
 		cut++;
-	key = cut_key(entry, cut);
-	if (!key)
+	*key = cut_key(entry, cut);
+	if (!*key)
 		return (FALSE);
-	value = cut_value(entry, cut);	
-	if (entry[cut] == '=' && !value)
+	*value = cut_value(entry, cut);
+	if (entry[cut] == '=' && !*value)
 	{
-		free(key);
-		return (FALSE);
-	}
-	if (!add_key_env(list, key, value))
-	{
-		ft_free_all((void *)key, (void *)value, NULL);
+		free(*key);
 		return (FALSE);
 	}
 	return (TRUE);
 }
 
+t_env	*new_node(char *envp)
+{
+	t_env	*new_node;
+
+	new_node = malloc(sizeof(t_env) * 1);
+	if (new_node == NULL)
+		return (NULL);
+	ft_memset(new_node, 0, sizeof(t_env));
+	if (!setup_node(envp, &new_node->key, &new_node->value))
+	{
+		free(new_node);
+		return (NULL);
+	}
+	return (new_node);
+}
+
+//add to the list
+void	add_back(t_env **head, t_env *new_node)
+{
+	t_env	*curr;
+
+	if (!*head)
+	{
+		*head = new_node;
+		return ;
+	}
+	curr = *head;
+	while (curr->next)
+		curr = curr->next;
+	curr->next = new_node;
+}
+
+//create new list of env
 t_env	*init_env(char **envp)
 {
 	int		i;
-	t_env	*list;
+	t_env	*head;
+	t_env	*node;
 
-	if (!envp)
-		return (NULL);
-	list = NULL;
 	i = 0;
-	while (envp[i] != NULL)
+	head = NULL;
+	while (envp[i])
 	{
-		if (!init_env_add_one(&list, envp[i]))
+		node = new_node(envp[i]);
+		if (new_node == NULL)
 		{
-			free_env_list(list);
+			free_env_list(head);
 			return (NULL);
 		}
+		add_back(&head, new_node);
 		i++;
 	}
-	return (list);
+	return (head);
 }
