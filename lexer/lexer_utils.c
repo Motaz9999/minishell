@@ -6,11 +6,11 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 21:10:00 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/23 22:20:21 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 17:37:23 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 // Free all tokens
 void	free_tokens(t_token *tokens)

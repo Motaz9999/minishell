@@ -6,11 +6,11 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 21:10:00 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/24 21:33:12 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 17:37:49 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 int	fill_heredoc(t_redirect *redir, t_shell *shell)
 {

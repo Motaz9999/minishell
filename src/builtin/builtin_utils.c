@@ -39,7 +39,7 @@ void	execute_builtin_cmd(t_ext *ext, t_shell *shell)
 	else if (type == BI_ENV)
 		shell->last_exit_status = env(shell->env_list);
 	else if (type == BI_EXIT)
-		shell->last_exit_status = exit_shell(ext);
+		shell->last_exit_status = exit_shell(ext, shell);
 	else if (type == BI_EXPORT)
 		shell->last_exit_status = export(ext->cmd->args, shell);
 	else if (type == BI_PWD)

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:00:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/24 21:16:50 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 20:53:33 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 	if (pid == -1)
 	{
 		shell->last_exit_status = error_syscall("fork", 127);
+		free(find_path);
 		return (-1);
 	}
 	if (pid == 0)
@@ -78,9 +79,9 @@ static pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 		envp = make_envp(shell->env_list);
 		fork_cmd_helper(envp, ext, shell, find_path);
 		execve(find_path, ext->cmd->args, envp);
-		error_execve(ext->cmd->args[0]);
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
+		error_execve(ext->cmd->args[0]);
 	}
 	free(find_path);
 	return (pid);

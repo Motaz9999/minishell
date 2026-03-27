@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 22:05:49 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 15:41:58 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 21:10:22 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	count_env_vars(t_env *env)
 	int	count;
 
 	count = 0;
+	if (env == NULL)
+		return (count);
 	while (env)
 	{
 		count++;
@@ -37,6 +39,7 @@ char	**make_envp(t_env *envp_list)
 
 	count = count_env_vars(envp_list);
 	envp = malloc(sizeof(char *) * (count + 1));
+	ft_memset(envp, 0, sizeof(char *) * (count + 1));
 	if (!envp)
 		return (NULL);
 	i = 0;
@@ -52,6 +55,5 @@ char	**make_envp(t_env *envp_list)
 		curr = curr->next;
 		i++;
 	}
-	envp[i] = NULL;
 	return (envp);
 }

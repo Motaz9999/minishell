@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 01:19:47 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/24 21:32:31 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 19:26:26 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ int	main(int argc, char **argv, char **envp)
 		shell.env_list = init_env(envp);
 	setup_signals_parent();
 	shell_loop(&shell);
+	free_shell(&shell);
 	return (shell.last_exit_status);
 }

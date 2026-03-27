@@ -6,11 +6,11 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 21:10:00 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/23 22:21:58 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 17:37:49 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 // Create a new command
 static t_command	*create_command(void)

@@ -27,7 +27,7 @@ int	ft_str_isdigit(const char *str)
 	return (TRUE);
 }
 
-int	exit_shell(t_ext *ext)
+int	exit_shell(t_ext *ext, t_shell *shell)
 {
 	int	exit_code;
 
@@ -36,6 +36,7 @@ int	exit_shell(t_ext *ext)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(ext->cmd->args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
+		free_shell(shell);
 		exit(2);
 	}
 	else if (find_args_count(ext->cmd->args) > 2)
@@ -51,5 +52,6 @@ int	exit_shell(t_ext *ext)
 	else if (exit_code > 255)
 		exit_code = exit_code % 256;
 	ft_putstr_fd("exit\n", 1);
+	free_shell(shell);
 	exit(exit_code);
 }

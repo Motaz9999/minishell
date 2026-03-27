@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 17:03:47 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 19:29:22 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int								find_args_count(char **args);
 int								add_key_env(t_env **env_list, char *key,
 									char *value);
 int								export(char **args, t_shell *shell);
-int								exit_shell(t_ext *ext);
+int								exit_shell(t_ext *ext, t_shell *shell);
 // unset
 void							update_env_unset(t_env **head, char *args);
 int								unset(char **args, t_shell *shell);
@@ -112,12 +112,16 @@ void							print_commands(t_command *commands);
 int								fill_heredoc(t_redirect *redir, t_shell *shell);
 // env init
 t_env							*init_env(char **envp);
+void							free_env_list(t_env *list);
 // envp handle
 char							**make_envp(t_env *env_list);
 int								count_env_vars(t_env *env);
 // executor internals
 void							waiting_loop_free_pids(pid_t pids[],
 									t_shell *shell, int cmd_count);
+
+// shell cleanup
+void							free_shell(t_shell *shell);
 
 // utitles
 pid_t							execute_one_cmd(t_ext *ext, t_shell *shell);
