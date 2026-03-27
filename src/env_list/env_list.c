@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 20:21:44 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 21:34:06 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 21:35:56 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ t_env	*init_env(char **envp)
 	while (envp[i])
 	{
 		node = new_node(envp[i]);
-		if (new_node == NULL)
+		if (node == NULL)
 		{
 			free_env_list(head);
 			return (NULL);
 		}
-		add_back(&head, new_node);
+		add_back(&head, node);
 		i++;
 	}
 	return (head);

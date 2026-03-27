@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 15:54:00 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 16:55:48 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 21:59:44 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ void	execute_in_child(t_ext *ext, t_shell *shell)
 	setup_signals_child();
 	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, count_commands(ext->cmd),
 			shell) || !handle_redir(ext->cmd->redirects, shell))
+	{
+		free_shell(shell);
 		exit(error_syscall("dup2", 1));
+	}
 	execute_builtin_cmd(ext, shell);
+	free_shell(shell);
 	exit(shell->last_exit_status);
 }
 

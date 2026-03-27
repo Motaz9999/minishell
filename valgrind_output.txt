@@ -1,138 +1,161 @@
-==72459== Memcheck, a memory error detector
-==72459== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==72459== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==72459== Command: ./minishell
-==72459== Parent PID: 420
-==72459== 
-==72524== 
-==72524== HEAP SUMMARY:
-==72524==     in use at exit: 213,307 bytes in 359 blocks
-==72524==   total heap usage: 728 allocs, 369 frees, 244,692 bytes allocated
-==72524== 
-==72524== 2 bytes in 1 blocks are still reachable in loss record 1 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E418: ft_strdup (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10CA81: lexer (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10DFB2: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 8 bytes in 1 blocks are still reachable in loss record 3 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10B706: execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10E0C3: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 14 bytes in 3 blocks are still reachable in loss record 10 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E29C: ft_calloc (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10C81B: extract_word (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10CC48: lexer (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10DFB2: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 14 bytes in 3 blocks are still reachable in loss record 11 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E418: ft_strdup (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10D831: parser (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10E020: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 20 bytes in 2 blocks are still reachable in loss record 16 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E29C: ft_calloc (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10D68C: add_arg_to_command (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10D845: parser (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10E020: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 32 bytes in 1 blocks are still reachable in loss record 19 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E29C: ft_calloc (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10C547: create_token (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10CCA8: lexer (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10DFB2: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 32 bytes in 1 blocks are still reachable in loss record 20 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E29C: ft_calloc (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10D49E: create_command (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10D7FF: parser (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10E020: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 32 bytes in 1 blocks are still reachable in loss record 21 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E29C: ft_calloc (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10C547: create_token (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10CA93: lexer (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10DFB2: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 32 bytes in 1 blocks are still reachable in loss record 22 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E29C: ft_calloc (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10D49E: create_command (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10D86D: parser (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10E020: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 40 bytes in 2 blocks are still reachable in loss record 24 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E29C: ft_calloc (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10D673: add_arg_to_command (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10D845: parser (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10E020: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 96 bytes in 3 blocks are still reachable in loss record 33 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E29C: ft_calloc (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10C547: create_token (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10CC67: lexer (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10DFB2: parse_and_execute (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 341 bytes in 35 blocks are still reachable in loss record 38 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E520: ft_substr (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10A89D: cut_key (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10AF70: init_env_add_one (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10B072: init_env (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095A6: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 840 bytes in 35 blocks are still reachable in loss record 42 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10A1DB: add_key_env (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10AFDF: init_env_add_one (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10B072: init_env (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095A6: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== 3,435 bytes in 35 blocks are still reachable in loss record 56 of 81
-==72524==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==72524==    by 0x10E418: ft_strdup (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10A8E5: cut_value (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10AF96: init_env_add_one (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x10B072: init_env (in /home/motaz/core/minishell/minishell)
-==72524==    by 0x1095A6: main (in /home/motaz/core/minishell/minishell)
-==72524== 
-==72524== LEAK SUMMARY:
-==72524==    definitely lost: 0 bytes in 0 blocks
-==72524==    indirectly lost: 0 bytes in 0 blocks
-==72524==      possibly lost: 0 bytes in 0 blocks
-==72524==    still reachable: 4,938 bytes in 124 blocks
-==72524==         suppressed: 208,369 bytes in 235 blocks
-==72524== 
-==72524== For lists of detected and suppressed errors, rerun with: -s
-==72524== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==84013== Memcheck, a memory error detector
+==84013== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==84013== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==84013== Command: ./minishell
+==84013== Parent PID: 420
+==84013== 
+==84040== 
+==84040== HEAP SUMMARY:
+==84040==     in use at exit: 213,134 bytes in 345 blocks
+==84040==   total heap usage: 679 allocs, 334 frees, 246,158 bytes allocated
+==84040== 
+==84040== 2 bytes in 1 blocks are still reachable in loss record 1 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E4C9: ft_strdup (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10CC94: lexer (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E063: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 4 bytes in 1 blocks are still reachable in loss record 2 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E4C9: ft_strdup (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D8E2: parser (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E0D1: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 4 bytes in 1 blocks are still reachable in loss record 3 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10B7B7: execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E174: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 8 bytes in 1 blocks are still reachable in loss record 6 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E34D: ft_calloc (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D73D: add_arg_to_command (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D8F6: parser (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E0D1: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 16 bytes in 1 blocks are still reachable in loss record 15 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E34D: ft_calloc (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D724: add_arg_to_command (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D8F6: parser (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E0D1: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 17 bytes in 1 blocks are still reachable in loss record 16 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E4C9: ft_strdup (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D967: parser (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E0D1: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 21 bytes in 2 blocks are still reachable in loss record 18 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E34D: ft_calloc (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10C8CC: extract_word (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10CCF9: lexer (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E063: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 32 bytes in 1 blocks are still reachable in loss record 24 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E34D: ft_calloc (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10C5F8: create_token (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10CCA6: lexer (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E063: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 32 bytes in 1 blocks are still reachable in loss record 25 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E34D: ft_calloc (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10C5F8: create_token (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10CD59: lexer (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E063: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 32 bytes in 1 blocks are still reachable in loss record 26 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E34D: ft_calloc (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D54F: create_command (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D8B0: parser (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E0D1: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 32 bytes in 1 blocks are still reachable in loss record 27 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E34D: ft_calloc (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D5B8: create_redirect (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10D974: parser (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E0D1: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 64 bytes in 2 blocks are still reachable in loss record 31 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E34D: ft_calloc (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10C5F8: create_token (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10CD18: lexer (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10E063: parse_and_execute (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x109545: shell_loop (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095BB: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 341 bytes in 35 blocks are still reachable in loss record 39 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E5D1: ft_substr (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10A89D: cut_key (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10AF74: setup_node (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10B040: new_node (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10B109: init_env (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095A6: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 840 bytes in 35 blocks are still reachable in loss record 43 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10AFFD: new_node (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10B109: init_env (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095A6: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== 3,435 bytes in 35 blocks are still reachable in loss record 57 of 82
+==84040==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==84040==    by 0x10E4C9: ft_strdup (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10A8E5: cut_value (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10AF9F: setup_node (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10B040: new_node (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x10B109: init_env (in /home/motaz/core/minishell/minishell)
+==84040==    by 0x1095A6: main (in /home/motaz/core/minishell/minishell)
+==84040== 
+==84040== LEAK SUMMARY:
+==84040==    definitely lost: 0 bytes in 0 blocks
+==84040==    indirectly lost: 0 bytes in 0 blocks
+==84040==      possibly lost: 0 bytes in 0 blocks
+==84040==    still reachable: 4,880 bytes in 119 blocks
+==84040==         suppressed: 208,254 bytes in 226 blocks
+==84040== 
+==84040== For lists of detected and suppressed errors, rerun with: -s
+==84040== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==84013== 
+==84013== HEAP SUMMARY:
+==84013==     in use at exit: 208,177 bytes in 223 blocks
+==84013==   total heap usage: 623 allocs, 400 frees, 241,958 bytes allocated
+==84013== 
+==84013== LEAK SUMMARY:
+==84013==    definitely lost: 0 bytes in 0 blocks
+==84013==    indirectly lost: 0 bytes in 0 blocks
+==84013==      possibly lost: 0 bytes in 0 blocks
+==84013==    still reachable: 0 bytes in 0 blocks
+==84013==         suppressed: 208,177 bytes in 223 blocks
+==84013== 
+==84013== For lists of detected and suppressed errors, rerun with: -s
+==84013== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

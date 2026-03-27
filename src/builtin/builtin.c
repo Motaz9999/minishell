@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 00:26:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 20:26:30 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 21:36:23 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ pid_t	execute_builtin(t_ext *ext, t_shell *shell, int casee)
 	if (!handle_redir(ext->cmd->redirects, shell))
 		shell->last_exit_status = 1;
 	else
-		execute_builtin_cmd(ext, shell);//if redir return true
-	dup2(saved_stdin, STDIN_FILENO);//restore original stdin and out
+		execute_builtin_cmd(ext, shell);
+	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
 	close(saved_stdout);

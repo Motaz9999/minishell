@@ -123,3 +123,10 @@ ULTIMATE MINISHELL TEST — Wed Mar 25 20:41:42 +03 2026
   PASSED : 66 / 68
   FAILED : 2 / 68
 ══════════════════════════════════════════
+minishell$ cat << EOF | grep hello
+> eof
+> EOF
+minishell$ echo $?
+1
+
+cat < nonexistent_file -> leaks
