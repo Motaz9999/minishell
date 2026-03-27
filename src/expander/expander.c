@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/23 20:16:41 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 17:08:49 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ int	check_valid_key_char(char c)
 	return (FALSE);
 }
 
-
-
-// Yes, all expansions start with $, but NO it doesn't have to be at the start:
+// Yes, all expansions start with $, but NO it
+// doesn't have to be at the start:
 // echo $HOME          # start → expands
 // echo hello$HOME     # middle → expands
 // echo hello$HOME/end # middle → expands
-// it return false if there nothing to expand and len if true
+// it return false if there nothing to expand
+// and len if true
 int	search_for_special(char *word)
 {
 	int	i;
@@ -60,8 +60,11 @@ int	search_for_special(char *word)
 		return (i);
 	return (-1);
 }
-// ok this fun is for expanding the cmd (replace it with new one that have more info)
-// anything u want to expand must start with $ if it not exist just skip it and return the original str
+
+// ok this fun is for expanding the cmd
+// (replace it with new one that have more info)
+// anything u want to expand must start with $
+// if it not exist just skip it and return the original str
 static char	*expand_cmd(char *expand_it, t_shell *shell)
 {
 	char	*new_one;
@@ -77,8 +80,12 @@ static char	*expand_cmd(char *expand_it, t_shell *shell)
 	}
 	return (expand_it);
 }
+
 // first what i well deal with is shell and cmds
 // this fun is used once for each cmd
+//		if (cmd->quote_types[i] == SINGLE_QUOTE) // skip here
+//		} // double and none i want to expand it
+
 void	expand_args_from_cmd(t_shell *shell, t_command *cmd)
 {
 	int	i;
@@ -88,11 +95,11 @@ void	expand_args_from_cmd(t_shell *shell, t_command *cmd)
 	i = 0;
 	while (cmd->args[i])
 	{
-		if (cmd->quote_types[i] == SINGLE_QUOTE) // skip here
+		if (cmd->quote_types[i] == SINGLE_QUOTE)
 		{
 			i++;
 			continue ;
-		} // double and none i want to expand it
+		}
 		cmd->args[i] = expand_cmd(cmd->args[i], shell);
 		i++;
 	}
