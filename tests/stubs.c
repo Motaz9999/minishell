@@ -1,6 +1,13 @@
 /* ************************************************************************** */
-/*  stubs.c — minimal stubs for functions not yet implemented                 */
-/*  Only used by the test binary; never linked into the real minishell.       */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stubs.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 12:00:00 by moodeh            #+#    #+#             */
+/*   Updated: 2026/03/27 17:05:16 by moodeh           ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"

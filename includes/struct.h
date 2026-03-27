@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/23 20:08:10 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 17:06:31 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ typedef struct s_command
 	char **args; // NULL-terminated array for execve().
 	t_redirect			*redirects;
 	// A linked list of all redirections for this command.
-		t_quote_type         *quote_types;//this a what type of quote it have and it have one per arg (this is an array or linked list as the same size as args)
+		t_quote_type		*quote_types;
+		// one quote type per arg; same cardinality as args
 	struct s_command *next; // Pointer to the next command in a pipeline.
 }						t_command;
 */
@@ -119,7 +120,7 @@ typedef struct s_command
 {
 	char				**args;
 	t_redirect			*redirects;
-	t_quote_type         *quote_types;
+	t_quote_type		*quote_types;
 	struct s_command	*next;
 }						t_command;
 
@@ -187,6 +188,6 @@ typedef struct s_expander_data
 	int		dollar_pos;
 	int		key_start;
 	int		key_len;
-} t_expander;
+}	t_expander;
 
 #endif
