@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:00:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 21:59:14 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/27 22:01:13 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,6 @@ int	count_commands(t_command *cmds)
 	return (count);
 }
 
-static void	child_cleanup_and_exit(t_shell *shell, char *find_path,
-		char **envp, int status)
-{
-	if (find_path)
-		free(find_path);
-	if (envp)
-		ft_free_all2((void **)envp, NULL);
-	free_shell(shell);
-	exit(status);
-}
-
 // error already printed inside handle_redir
 static void	fork_cmd_helper(char **envp, t_ext *ext, t_shell *shell,
 		char *find_path)
@@ -46,14 +35,21 @@ static void	fork_cmd_helper(char **envp, t_ext *ext, t_shell *shell,
 	remaining_cmds = count_commands(ext->cmd);
 	if (envp == NULL)
 	{
-		child_cleanup_and_exit(shell, find_path, NULL,
-			error_syscall("envp", 1));
+		free(find_path);
+		exit(error_syscall("envp", 1));
 	}
 	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, remaining_cmds, shell))
-		child_cleanup_and_exit(shell, find_path, envp,
-			error_syscall("dup2", shell->last_exit_status));
+	{
+		free(find_path);
+		ft_free_all2((void **)envp, NULL);
+		exit(error_syscall("dup2", shell->last_exit_status));
+	}
 	if (!handle_redir(ext->cmd->redirects, shell))
-		child_cleanup_and_exit(shell, find_path, envp, shell->last_exit_status);
+	{
+		free(find_path);
+		ft_free_all2((void **)envp, NULL);
+		exit(shell->last_exit_status);
+	}
 }
 
 // here we fork the process
@@ -83,7 +79,6 @@ static pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 		envp = make_envp(shell->env_list);
 		fork_cmd_helper(envp, ext, shell, find_path);
 		execve(find_path, ext->cmd->args, envp);
-		free_shell(shell);
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
 		error_execve(ext->cmd->args[0]);
