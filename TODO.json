@@ -1,24 +1,5 @@
 {
-  "todo": [
-    {
-      "id": 15791,
-      "text": "herdoc",
-      "priority": 1,
-      "created": "2026-02-27T04:57:38.750Z"
-    },
-    {
-      "id": 17736,
-      "text": "handle error and exit code and how they works",
-      "priority": 1,
-      "created": "2026-02-08T20:08:04.062Z"
-    },
-    {
-      "id": 15402,
-      "text": "make void clean_up_v1();",
-      "priority": 3,
-      "created": "2026-02-26T05:24:52.551Z"
-    }
-  ],
+  "todo": [],
   "completed": [
     {
       "id": 13177,
@@ -103,6 +84,24 @@
       "text": "builtins errors and signals errors",
       "priority": 1,
       "created": "2026-02-15T18:25:29.660Z"
+    },
+    {
+      "id": 15791,
+      "text": "herdoc",
+      "priority": 1,
+      "created": "2026-02-27T04:57:38.750Z"
+    },
+    {
+      "id": 17736,
+      "text": "handle error and exit code and how they works",
+      "priority": 1,
+      "created": "2026-02-08T20:08:04.062Z"
+    },
+    {
+      "id": 15402,
+      "text": "make void clean_up_v1();",
+      "priority": 3,
+      "created": "2026-02-26T05:24:52.551Z"
     }
   ]
 }

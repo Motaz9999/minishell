@@ -1,0 +1,6 @@
+ valgrind --leak-check=full \
+         --show-leak-kinds=all \
+         --track-origins=yes \
+         --suppressions=./readline.supp \
+         --log-file=valgrind_output.txt \
+         ./minishell
