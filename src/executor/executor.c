@@ -127,6 +127,7 @@ void	execute(t_shell *shell)
 		ext.prev_fd_in = -1;
 		ext.pipe_fds[0] = -1;
 		ext.pipe_fds[1] = -1;
+		ext.pids = NULL;
 		ext.i = 0;
 		execute_builtin(&ext, shell, 0);
 		return ;

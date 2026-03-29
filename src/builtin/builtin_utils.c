@@ -17,12 +17,23 @@ void	execute_in_child(t_ext *ext, t_shell *shell)
 {
 	setup_signals_child();
 	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, count_commands(ext->cmd),
-			shell) || !handle_redir(ext->cmd->redirects, shell))
+			shell))
 	{
+		if (ext && ext->pids)
+			free(ext->pids);
 		free_shell(shell);
 		exit(error_syscall("dup2", 1));
 	}
+	if (!handle_redir(ext->cmd->redirects, shell))
+	{
+		if (ext && ext->pids)
+			free(ext->pids);
+		free_shell(shell);
+		exit(shell->last_exit_status);
+	}
 	execute_builtin_cmd(ext, shell);
+	if (ext && ext->pids)
+		free(ext->pids);
 	free_shell(shell);
 	exit(shell->last_exit_status);
 }

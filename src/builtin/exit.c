@@ -36,6 +36,8 @@ int	exit_shell(t_ext *ext, t_shell *shell)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(ext->cmd->args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
+		if (ext && ext->pids)
+			free(ext->pids);
 		free_shell(shell);
 		exit(2);
 	}
@@ -52,6 +54,8 @@ int	exit_shell(t_ext *ext, t_shell *shell)
 	else if (exit_code > 255)
 		exit_code = exit_code % 256;
 	ft_putstr_fd("exit\n", 1);
+	if (ext && ext->pids)
+		free(ext->pids);
 	free_shell(shell);
 	exit(exit_code);
 }

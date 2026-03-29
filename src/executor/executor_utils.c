@@ -6,11 +6,17 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:00:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 22:01:13 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 01:25:05 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_pids(t_ext *ext)
+{
+	if (ext && ext->pids)
+		free(ext->pids);
+}
 
 // counter for cmd num
 int	count_commands(t_command *cmds)
@@ -36,18 +42,21 @@ static void	fork_cmd_helper(char **envp, t_ext *ext, t_shell *shell,
 	if (envp == NULL)
 	{
 		free(find_path);
+		free_pids(ext);
 		exit(error_syscall("envp", 1));
 	}
 	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, remaining_cmds, shell))
 	{
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
+		free_pids(ext);
 		exit(error_syscall("dup2", shell->last_exit_status));
 	}
 	if (!handle_redir(ext->cmd->redirects, shell))
 	{
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
+		free_pids(ext);
 		exit(shell->last_exit_status);
 	}
 }
@@ -81,6 +90,7 @@ static pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 		execve(find_path, ext->cmd->args, envp);
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
+		free_pids(ext);
 		error_execve(ext->cmd->args[0]);
 	}
 	free(find_path);

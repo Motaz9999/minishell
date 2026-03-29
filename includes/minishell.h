@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 19:29:22 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 01:26:22 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int								count_env_vars(t_env *env);
 // executor internals
 void							waiting_loop_free_pids(pid_t pids[],
 									t_shell *shell, int cmd_count);
-
+void							free_pids(t_ext *ext);
 // shell cleanup
 void							free_shell(t_shell *shell);
 
