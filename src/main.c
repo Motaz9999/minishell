@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 01:19:47 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 19:26:26 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 20:23:05 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	shell_loop(t_shell *shell)
 
 	while (1)
 	{
+		ft_printf("%s %s", GREEN, BOLD);
 		line = readline("minishell$ ");
 		if (g_sigint_received)
 		{
@@ -32,8 +33,10 @@ static void	shell_loop(t_shell *shell)
 			g_sigint_received = 0;
 			parse_and_execute(line, shell);
 		}
+		ft_printf("%s", RESET);
 		free(line);
 	}
+	rl_clear_history();
 }
 
 int	main(int argc, char **argv, char **envp)

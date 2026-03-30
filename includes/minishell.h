@@ -6,13 +6,14 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 19:57:12 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 20:01:28 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # define _POSIX_C_SOURCE 200809L
+# include "colors.h"
 # include "libft.h"
 # include "struct.h"
 # include <dirent.h>
