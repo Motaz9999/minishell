@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:00:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 01:25:05 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 18:49:01 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,33 +100,25 @@ static pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 // i have 2 line here it enough for the if statement
 // and dont forget the signal
 // first thing i must do is execute just one command
-// F_OK → Test if the file exists.
-// R_OK → Test if the file is readable.
-// X_OK → Test if the file is executable.
+
 // also in this fun
 // dont need the others the 1 is for fork and must return pid
 // here is the continue for this fun
+//	if (!ext || !ext->cmd
+//		|| !ext->cmd->args) this is for check if cmd struct is exist
+//
 pid_t	execute_one_cmd(t_ext *ext, t_shell *shell)
 {
 	char	*find_path;
 
-	if (!ext || !ext->cmd || !ext->cmd->args || !ext->cmd->args[0])
+	find_path = NULL;
+	if (!ext || !ext->cmd || !ext->cmd->args || !ext->cmd->args[0]
+		|| ext->cmd->args[0][0] == '\0')
 		return (-1);
 	if (get_builtin(ext->cmd) != FALSE)
 		return (execute_builtin(ext, shell, 1));
-	find_path = resolve_path(ext->cmd->args[0], shell->env_list);
+	resolve_path(&find_path, ext->cmd->args[0], shell->env_list);
 	if (!find_path)
-	{
-		shell->last_exit_status = 127;
-		error_cmd(ext->cmd->args[0], "Command not found", 127);
 		return (-1);
-	}
-	if (access(find_path, X_OK) == -1)
-	{
-		shell->last_exit_status = 126;
-		error_cmd(find_path, "Permission denied", 126);
-		free(find_path);
-		return (-1);
-	}
 	return (fork_cmd(shell, ext, find_path));
 }
