@@ -24,7 +24,7 @@ static int	is_path(char *cmd)
 }
 
 // this fun for if u give it a bare cmd like ls or cat
-void	handle_bare_cmd(char **find_path, char *cmd_name, char **paths,
+static void	handle_bare_cmd(char **find_path, char *cmd_name, char **paths,
 		t_shell *shell)
 {
 	int		i;
@@ -66,7 +66,7 @@ void	handle_bare_cmd(char **find_path, char *cmd_name, char **paths,
 //   time_t  st_ctime;// last status change
 // };
 // and i will be using different fun to check
-int	check_on_dir(char *cmd, t_shell *shell)
+static int	check_on_dir(char *cmd, t_shell *shell)
 {
 	struct stat	path_stat;
 
@@ -90,7 +90,7 @@ int	check_on_dir(char *cmd, t_shell *shell)
 // R_OK → Test if the file is readable.
 // X_OK → Test if the file is executable.
 //	if (access(cmd_name, F_OK) != TRUE) // dose the file exist
-void	handle_path_cmd(char **find_path, char *cmd_name, t_shell *shell)
+static void	handle_path_cmd(char **find_path, char *cmd_name, t_shell *shell)
 {
 	if (access(cmd_name, F_OK) != 0)
 	{
@@ -98,7 +98,6 @@ void	handle_path_cmd(char **find_path, char *cmd_name, t_shell *shell)
 				"No such file or directory", 127);
 		return ;
 	}
-	// but what if it a dir ?
 	if (!check_on_dir(cmd_name, shell))
 		return ;
 	if (access(cmd_name, X_OK) != 0)

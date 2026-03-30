@@ -32,13 +32,13 @@ SRC =	src/main.c \
     src/executor/redirections_handle.c \
     src/signals/signal_handle.c \
     src/utils/free_shell.c \
-    lexer/lexer.c \
-    lexer/lexer_utils.c \
+    tests/lexer/lexer.c \
+    tests/lexer/lexer_utils.c \
     src/expander/expander.c \
     src/expander/replace_str.c \
-    parsing/parser.c \
-    parsing/parser_utils.c \
-    parsing/parse_and_execute.c
+    tests/parsing/parser.c \
+    tests/parsing/parser_utils.c \
+    tests/parsing/parse_and_execute.c
 
 OBJ = $(SRC:.c=.o)
 

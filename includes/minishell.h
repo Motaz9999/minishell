@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 19:14:12 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 19:57:12 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@
 
 extern volatile sig_atomic_t	g_sigint_received;
 // path handler funs
-void	resolve_path(char **find_path, char *cmd_name, t_env *env_list,
-					t_shell *shell); // the execute funs for now
+void							resolve_path(char **p, char *c, t_env *e,
+									t_shell *s);
 void							execute(t_shell *shell);
 int								count_commands(t_command *cmds);
 // error handles
@@ -58,8 +58,8 @@ int								error_syscall(char *context, int exit_code);
 // redir + pipes handle
 int								handle_redir(t_redirect *redirections,
 									t_shell *shell);
-int								handle_pipes(int prev_fd_in, int pipes[],
-									int remaining_cmd, t_shell *shell);
+int								handle_pipes(int p, int fds[], int rem,
+									t_shell *s);
 // signals
 void							setup_signals_child(void);
 void							setup_signals_parent(void);
@@ -93,7 +93,6 @@ int								update_env_export(char **args,
 									t_env **env_list);
 char							*cut_key(char *arg, int cut);
 char							*cut_value(char *arg, int cut);
-int								find_args_count(char **args);
 int								error_cmd_export(char *input);
 int								print_all_env_in_order(t_env *env_list);
 // parser / lexer
@@ -117,8 +116,6 @@ void							free_env_list(t_env *list);
 char							**make_envp(t_env *env_list);
 int								count_env_vars(t_env *env);
 // executor internals
-void							waiting_loop_free_pids(pid_t pids[],
-									t_shell *shell, int cmd_count);
 void							free_pids(t_ext *ext);
 // shell cleanup
 void							free_shell(t_shell *shell);
@@ -133,8 +130,6 @@ void							expand_args_from_cmd(t_shell *shell,
 									t_command *cmd);
 int								search_for_special(char *word);
 int								check_valid_key_char(char c);
-char							*extract_key_value(char *key, t_env *env_list,
-									int last_exit_status);
 // replace str
 char							*replace_str(char *expand_it, t_shell *shell);
 #endif

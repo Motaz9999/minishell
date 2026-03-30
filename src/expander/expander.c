@@ -6,31 +6,11 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 19:36:08 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 19:41:40 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*extract_key_value(char *key, t_env *env_list, int last_exit_status)
-{
-	t_env	*node;
-	char	*value;
-
-	if (ft_strcmp(key, "?") == 0)
-		value = ft_itoa(last_exit_status);
-	else
-	{
-		node = find_node(env_list, key);
-		if (node && node->value)
-			value = ft_strdup(node->value);
-		else
-			value = ft_strdup("");
-	}
-	if (!value)
-		return (NULL);
-	return (value);
-}
 
 // check on chars that is the same form as key in env list
 int	check_valid_key_char(char c)

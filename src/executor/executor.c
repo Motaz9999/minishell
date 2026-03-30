@@ -21,7 +21,7 @@
 // WTERMSIG(status) -> Returns the signal number that killed the process.
 // last cmd: update exit status from child
 // pids[i] == -1: cmd not found/no perm, last_exit_status already set
-void	waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count)
+static void	waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count)
 {
 	int	i;
 	int	status;
@@ -58,7 +58,7 @@ void	waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count)
 // else  // the normal cmd
 // always close it in parent
 // close in the next time
-void	execute_helper3(t_ext *ext, t_shell *shell)
+static void	execute_helper3(t_ext *ext, t_shell *shell)
 {
 	ext->pids[ext->i] = execute_one_cmd(ext, shell);
 	if (ext->prev_fd_in != -1)
@@ -71,7 +71,7 @@ void	execute_helper3(t_ext *ext, t_shell *shell)
 }
 
 // this fun to make a pipe for cmds
-int	execute_helper2(t_ext *ext, t_shell *shell)
+static int	execute_helper2(t_ext *ext, t_shell *shell)
 {
 	if (!ext->cmd->next)
 	{
@@ -92,7 +92,7 @@ int	execute_helper2(t_ext *ext, t_shell *shell)
 // here i create pipe (each 2 process have 2 types )
 // i want for each 2 cmd to make them a pipe in first cmd
 // if next cmd is null there is no  need for pipe
-void	execute_helper(t_ext *ext, t_shell *shell)
+static void	execute_helper(t_ext *ext, t_shell *shell)
 {
 	while (ext->cmd)
 	{
@@ -121,24 +121,20 @@ void	execute(t_shell *shell)
 	if (!shell->commands)
 		return ;
 	count_cmd = count_commands(shell->commands);
+	ft_memset(&ext, 0, sizeof(t_ext));
+	ext.cmd = shell->commands;
+	ext.prev_fd_in = -1;
 	if (count_cmd == 1 && get_builtin(shell->commands) != BI_NONE)
 	{
-		ext.cmd = shell->commands;
-		ext.prev_fd_in = -1;
 		ext.pipe_fds[0] = -1;
 		ext.pipe_fds[1] = -1;
-		ext.pids = NULL;
-		ext.i = 0;
 		execute_builtin(&ext, shell, 0);
 		return ;
 	}
 	ext.pids = malloc(sizeof(pid_t) * count_cmd);
 	if (ext.pids == NULL)
 		return ;
-	ft_memset(ext.pids, -1, count_commands(shell->commands) * sizeof(pid_t));
-	ext.prev_fd_in = -1;
-	ext.cmd = shell->commands;
-	ext.i = 0;
+	ft_memset(ext.pids, -1, count_cmd * sizeof(pid_t));
 	execute_helper(&ext, shell);
-	waiting_loop_free_pids(ext.pids, shell, count_commands(shell->commands));
+	waiting_loop_free_pids(ext.pids, shell, count_cmd);
 }
