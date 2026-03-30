@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 21:05:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 19:04:02 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 19:31:33 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ void	handle_bare_cmd(char **find_path, char *cmd_name, char **paths,
 	}
 	*find_path = full_path_test;
 	if (*find_path == NULL)
-		shell->last_exit_status = error_cmd(cmd_name, "Command not found", 127);
+		shell->last_exit_status = error_cmd(cmd_name, "command not found", 127);
 }
+
 // this stat fun is used to give me info about the file/folder
 // like size it is a dir or a file and last update
 // all this stored in struct of type stat
@@ -91,35 +92,23 @@ int	check_on_dir(char *cmd, t_shell *shell)
 //	if (access(cmd_name, F_OK) != TRUE) // dose the file exist
 void	handle_path_cmd(char **find_path, char *cmd_name, t_shell *shell)
 {
-	if (access(cmd_name, F_OK) != TRUE)
+	if (access(cmd_name, F_OK) != 0)
 	{
-		shell->last_exit_status = error_cmd(ext->cmd->args[0],
+		shell->last_exit_status = error_cmd(cmd_name,
 				"No such file or directory", 127);
 		return ;
 	}
 	// but what if it a dir ?
 	if (!check_on_dir(cmd_name, shell))
 		return ;
-	if (access(cmd_name, X_OK) != TRUE)
+	if (access(cmd_name, X_OK) != 0)
 	{
-		shell->last_exit_status = error_cmd(ext->cmd->args[0],
-				"Permission denied", 126);
+		shell->last_exit_status = error_cmd(cmd_name, "Permission denied", 126);
 		return ;
 	}
-	*find_path = cmd_name;
-}
-
-// ok this fun is for resolving what path and it have everything
-// first i have 2 types of paths one start with '/'
-//	if (is_path(cmd_name)) // bare cmd or path cmd
-
-void	resolve_path_helper(char **find_path, char *cmd_name, char **paths,
-		t_shell *shell)
-{
-	if (is_path(cmd_name))
-		handle_path_cmd(find_path, cmd_name, shell);
-	else
-		handle_bare_cmd(find_path, cmd_name, paths, shell);
+	*find_path = ft_strdup(cmd_name);
+	if (*find_path == NULL)
+		shell->last_exit_status = error_syscall("malloc", 1);
 }
 
 // Find the command's full path. Returns a malloc'd string or NULL.
@@ -127,25 +116,34 @@ void	resolve_path_helper(char **find_path, char *cmd_name, char **paths,
 // Case 2: bare name → search each directory listed in PATH.
 // now we know this cmd is start with ./ or ../  or
 //  so no need to search inside PATH
-char	*resolve_path(char **find_path, char *cmd_name, t_env *env_list,
+// ok this fun is for resolving what path and it have everything
+// first i have 2 types of paths one start with '/'
+//	if (is_path(cmd_name)) // bare cmd or path cmd
+void	resolve_path(char **find_path, char *cmd_name, t_env *env_list,
 		t_shell *shell)
 {
 	t_env	*path_node;
 	char	**split_paths;
 
 	if (is_path(cmd_name))
-		return (ft_strdup(cmd_name));
+	{
+		handle_path_cmd(find_path, cmd_name, shell);
+		return ;
+	}
 	path_node = find_node(env_list, "PATH");
 	if (!path_node || !path_node->value)
-		return (NULL);
+	{
+		shell->last_exit_status = error_cmd(cmd_name, "command not found", 127);
+		return ;
+	}
 	split_paths = ft_split(path_node->value, ':');
 	if (split_paths == NULL)
-		return (NULL);
+		return ;
 	if (*split_paths == NULL)
 	{
 		free(split_paths);
-		return (NULL);
+		return ;
 	}
-	resolve_path_helper(find_path, cmd_name, split_paths, shell);
+	handle_bare_cmd(find_path, cmd_name, split_paths, shell);
 	ft_free_all2((void *)split_paths, NULL);
 }

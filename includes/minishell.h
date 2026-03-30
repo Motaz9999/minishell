@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 01:26:22 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 19:14:12 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@
 
 extern volatile sig_atomic_t	g_sigint_received;
 // path handler funs
-char							*resolve_path(char *cmd_name, t_env *env_list);
-// the execute funs for now
+void	resolve_path(char **find_path, char *cmd_name, t_env *env_list,
+					t_shell *shell); // the execute funs for now
 void							execute(t_shell *shell);
 int								count_commands(t_command *cmds);
 // error handles

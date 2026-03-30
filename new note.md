@@ -1,41 +1,85 @@
-# new note
+# minishell fixes note
 
-Main failing-test sources
+Date: 2026-03-30
 
-1. PATH lookup accepts non-executable entries
-- File: [src/executor/path_handle.c](src/executor/path_handle.c#L43)
-- Current behavior: uses access with F_OK when searching PATH.
-- Problem: directories can be treated like valid command paths, especially when command is empty.
+This note records what was fixed for failing tests around command resolution,
+path execution, and empty-variable expansion.
 
-2. Command error mapping is too generic
-- File: [src/executor/executor_utils.c](src/executor/executor_utils.c#L122)
-- Current behavior: any access X_OK failure becomes Permission denied with exit 126.
-- Problem: missing files should be No such file or directory with exit 127.
+## 1) Path commands were skipped in resolve_path
 
-How this maps to your failing tests
+File: src/executor/path_handle.c
+Lines: 131-141
 
-1. Test 134 ($EMPTY)
-2. Test 135 ($EMPTY echo hi)
-- Root cause: empty first token reaches PATH search and matches wrong candidate.
-- Related lines: [src/executor/path_handle.c](src/executor/path_handle.c#L43), [src/executor/executor_utils.c](src/executor/executor_utils.c#L115)
+What was wrong:
+- Path-like commands such as /bin/ls, ./prog, ../prog, and expanded values like $PWD
+	were detected by is_path, then resolve_path returned immediately.
+- That skipped all path validations and never set find_path.
 
-1. Test 137 (./missing.out)
-2. Test 142 (/test_files)
-- Root cause: execution failure branch always maps to Permission denied/126.
-- Related line: [src/executor/executor_utils.c](src/executor/executor_utils.c#L122)
+Why this broke tests:
+- execute_one_cmd returned -1 when find_path stayed NULL.
+- No child was forked, so no execution error was printed.
+- Exit code often remained old value (commonly 0), causing mismatch with bash.
 
-1. Test 133 ($PWD) warning
-2. Test 141 (./test_files) warning
-- Root cause: directory-execution message does not match bash wording.
-- Related line: [src/executor/executor_utils.c](src/executor/executor_utils.c#L122)
+What was fixed:
+- When is_path(cmd_name) is true, resolve_path now calls handle_path_cmd first,
+	then returns.
 
-Fix order (highest impact first)
+Result:
+- Path commands now get proper checks and proper bash-like status/errors.
 
-1. In PATH search, check executability (X_OK), not just existence (F_OK), and reject directories.
-2. In execute path handling, map errors by errno:
-- ENOENT -> No such file or directory, exit 127
-- EACCES -> Permission denied, exit 126
-- directory case -> Is a directory, exit 126
-3. Before resolve_path, handle empty command after expansion (args[0] == "").
+## 2) access checks were inverted for path execution
 
-After these changes, rerun tester cases 133 to 142 first.
+File: src/executor/path_handle.c
+Lines: 94 and 103
+
+What was wrong:
+- Code compared access(...) against TRUE.
+- access returns 0 on success, not 1.
+
+Why this broke tests:
+- Existing directory/file paths could be treated as missing.
+- Example symptom: running $PWD printed No such file or directory instead of
+	Is a directory.
+
+What was fixed:
+- Changed checks to compare with 0:
+	- access(cmd_name, F_OK) != 0
+	- access(cmd_name, X_OK) != 0
+
+Result:
+- Correct distinction between existing path, directory, and permission errors.
+
+## 3) Empty unquoted expansion blocked valid commands
+
+File: src/expander/expander.c
+Lines: 84-132
+
+What was wrong:
+- Expansion could produce empty string arguments from unquoted vars.
+- For input like: $EMPTY echo hi
+	args became ["", "echo", "hi"].
+- execute_one_cmd rejects empty args[0], so command was skipped.
+
+What was fixed:
+- Added remove_empty_unquoted_args.
+- After expansion, unquoted empty args are removed by shifting the argv arrays.
+- Called this cleanup at end of expand_args_from_cmd.
+
+Result:
+- $EMPTY echo hi now behaves like bash and runs echo hi.
+
+## 4) Behavior after fixes for reported tests
+
+- Test 133 ($PWD): now returns Is a directory, exit 126.
+- Test 135 ($EMPTY echo hi): now outputs hi, exit 0.
+- Test 136 (./test_files/invalid_permission): now can reach proper path checks
+	instead of silently skipping.
+- Test 137 (./missing.out): now returns No such file or directory, exit 127.
+- Test 141 (./test_files): now returns Is a directory, exit 126.
+- Test 142 (/test_files): now returns No such file or directory, exit 127.
+
+## 5) Key lesson
+
+In command execution, small control-flow shortcuts before validation are risky.
+For shell behavior compatibility, path-like commands must always pass through
+the same validation pipeline that sets both message and exit status.

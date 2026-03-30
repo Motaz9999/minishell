@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:00:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 18:49:01 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 19:11:10 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ pid_t	execute_one_cmd(t_ext *ext, t_shell *shell)
 		return (-1);
 	if (get_builtin(ext->cmd) != FALSE)
 		return (execute_builtin(ext, shell, 1));
-	resolve_path(&find_path, ext->cmd->args[0], shell->env_list);
-	if (!find_path)
+	resolve_path(&find_path, ext->cmd->args[0], shell->env_list, shell);
+	if (find_path == NULL)
 		return (-1);
 	return (fork_cmd(shell, ext, find_path));
 }

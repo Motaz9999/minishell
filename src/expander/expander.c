@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 17:08:49 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/03/30 19:36:08 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,38 @@ static char	*expand_cmd(char *expand_it, t_shell *shell)
 	return (expand_it);
 }
 
+//this fun is for removing any empty "" '' 
+//its doing by free it then shifiting the array
+static void	remove_empty_unquoted_args(t_command *cmd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (cmd->args[i])
+	{
+		if (cmd->quote_types[i] == NO_QUOTE && cmd->args[i][0] == '\0')
+		{
+			free(cmd->args[i]);
+			j = i;
+			while (cmd->args[j + 1])
+			{
+				cmd->args[j] = cmd->args[j + 1];
+				cmd->quote_types[j] = cmd->quote_types[j + 1];
+				j++;
+			}
+			cmd->args[j] = NULL;
+			cmd->quote_types[j] = NO_QUOTE;
+			continue ;
+		}
+		i++;
+	}
+}
+
 // first what i well deal with is shell and cmds
 // this fun is used once for each cmd
 //		if (cmd->quote_types[i] == SINGLE_QUOTE) // skip here
 //		} // double and none i want to expand it
-
 void	expand_args_from_cmd(t_shell *shell, t_command *cmd)
 {
 	int	i;
@@ -103,4 +130,5 @@ void	expand_args_from_cmd(t_shell *shell, t_command *cmd)
 		cmd->args[i] = expand_cmd(cmd->args[i], shell);
 		i++;
 	}
+	remove_empty_unquoted_args(cmd);
 }
