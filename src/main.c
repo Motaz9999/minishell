@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 01:19:47 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 20:25:53 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/03 22:30:36 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	shell_loop(t_shell *shell)
 	rl_clear_history();
 }
 
+// ft_printf("%s %s", GREEN, BOLD);
+// ft_printf("%s", RESET);
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
@@ -47,9 +49,7 @@ int	main(int argc, char **argv, char **envp)
 	if (envp)
 		shell.env_list = init_env(envp);
 	setup_signals_parent();
-	ft_printf("%s %s", GREEN, BOLD);
 	shell_loop(&shell);
-	ft_printf("%s", RESET);
 	free_shell(&shell);
 	return (shell.last_exit_status);
 }
