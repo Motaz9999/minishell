@@ -199,3 +199,38 @@ parse_and_execute(line , &shell)
     free_tokens(tokens);
     free_commands(commands);
 }
+t_token	*lexer(char *line)
+{
+	t_token			*head;
+	t_token			*tok;
+	char			*word;
+	int				i;
+	t_quote_type	quote_type;
+
+	head = NULL;
+	i = 0;
+	while (line[i])
+	{
+		while (line[i] && is_space(line[i]))
+			i++;
+		if (!line[i])
+			break ;
+		if (is_operator_char(line[i]))
+			tok = read_operator(line, &i);
+		else
+		{
+			word = read_word(line, &i, &quote_type);
+			if (!word)
+				return (free_tokens(head), NULL);
+			tok = new_token(TOKEN_WORD, word, quote_type);
+		}
+		if (!tok)
+			return (free_tokens(head), NULL);
+		token_add_back(&head, tok);
+	}
+	tok = new_token(TOKEN_EOF, NULL, QUOTE_NONE);
+	if (!tok)
+		return (free_tokens(head), NULL);
+	token_add_back(&head, tok);
+	return (head);
+}
