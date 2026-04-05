@@ -1,0 +1,57 @@
+static int	set_quote_type(int has_single, int has_double)
+{
+	if (has_double)
+		return (DOUBLE_QUOTE);
+	if (has_single)
+		return (SINGLE_QUOTE);
+	return (NO_QUOTE);
+}
+
+char	*read_plain_part(char *line, int *i)
+{
+	int	start;
+
+	start = *i;
+	while (line[*i] && !is_space(line[*i]) && !is_operator_char(line[*i])
+		&& line[*i] != '\'' && line[*i] != '"')
+		(*i)++;
+	return (ft_substr(line, start, *i - start));
+}
+
+static char	*read_part(char *line, int *i, int *has_single, int *has_double)
+{
+	if (line[*i] == '\'')
+	{
+		*has_single = 1;
+		return (read_single_quoted(line, i));
+	}
+	if (line[*i] == '"')
+	{
+		*has_double = 1;
+		return (read_double_quoted(line, i));
+	}
+	return (read_plain_part(line, i));
+}
+
+char	*read_word(char *line, int *i, int *quote_type)
+{
+	char	*word;
+	char	*part;
+	int		has_single;
+	int		has_double;
+
+	word = NULL;
+	has_single = 0;
+	has_double = 0;
+	while (line[*i] && !is_space(line[*i]) && !is_operator_char(line[*i]))
+	{
+		part = read_part(line, i, &has_single, &has_double);
+		if (!part)
+			return (free(word), NULL);
+		word = join_free(word, part);
+		if (!word)
+			return (NULL);
+	}
+	*quote_type = set_quote_type(has_single, has_double);
+	return (word);
+}
