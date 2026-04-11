@@ -1,0 +1,12 @@
+ctrl-c empty prompt: PASS (returned to prompt)
+ctrl-\ empty prompt: PASS (ignored at prompt)
+ctrl-d empty prompt: PASS (shell exited)
+ctrl-c with typed buffer: PASS (buffer cleared)
+ctrl-d with typed buffer: PASS (did not exit)
+ctrl-\ with typed buffer: PASS (ignored typed buffer)
+spaces/tabs only input: PASS (no crash on spaces/tabs)
+blocking cat + ctrl-c: PASS (interrupts blocking cmd)
+blocking cat + ctrl-\: PASS (returns to prompt)
+blocking cat + ctrl-d: PASS (EOF ends cat)
+history up/down: PASS (history up/down works)
+INTERACTIVE_SUMMARY: 11/11 pass

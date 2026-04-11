@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 18:10:00 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 19:28:30 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/11 03:24:39 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,4 @@ void	free_shell(t_shell *shell)
 		free_commands(shell->commands);
 		shell->commands = NULL;
 	}
-	if (shell->env_list)
-	{
-		free_env_list(shell->env_list);
-		shell->env_list = NULL;
-	}
-	rl_clear_history();
 }

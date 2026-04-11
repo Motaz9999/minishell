@@ -83,3 +83,65 @@ Result:
 In command execution, small control-flow shortcuts before validation are risky.
 For shell behavior compatibility, path-like commands must always pass through
 the same validation pipeline that sets both message and exit status.
+
+## 6) Current must-fix list (2026-04-11)
+
+These are still pending and should be fixed next.
+
+### A) Double prompt after Ctrl+C on foreground command
+
+Files:
+- src/signals/signal_handle.c
+- src/main.c
+- src/executor/executor.c
+
+Symptom:
+- Running a foreground command like cat, pressing Ctrl+C can show:
+	minishell$ minishell$
+
+Cause:
+- Parent SIGINT handler always calls readline redraw functions.
+- Parent keeps this handler while waiting for children.
+
+Fix direction:
+- Use separate signal behavior for prompt mode vs execution/wait mode.
+- During wait, do not redraw readline prompt from signal handler.
+- Restore prompt-mode handler after wait loop.
+
+### B) Heredoc with quoted delimiter expands variables (should not)
+
+Files:
+- src/parsing/parser_redir.c
+- src/parsing/lexer_word.c
+
+Symptom:
+- cat << 'EOF' then input $X prints expanded value (wrong).
+
+Expected:
+- With quoted delimiter, heredoc body must not expand variables.
+
+Cause:
+- fill_heredoc always uses expand_cmd on every line.
+- Delimiter quote information is not used to control expansion.
+
+Fix direction:
+- Carry delimiter quote state from token into heredoc redirection node.
+- In fill_heredoc, skip expand_cmd when delimiter was quoted.
+
+### C) Ctrl+C during heredoc should abort command with proper status
+
+Files:
+- src/parsing/parser_redir.c
+- src/signals/signal_handle.c
+
+Symptom:
+- Ctrl+C in heredoc path may not stop command flow cleanly with bash-like status.
+
+Expected:
+- Heredoc is canceled, command should not execute, status should be 130.
+
+Fix direction:
+- In heredoc loop, detect SIGINT flag and stop immediately.
+- Close both heredoc pipe ends on cancel path.
+- Return failure to parser so command does not execute.
+- Set shell->last_exit_status to 130.

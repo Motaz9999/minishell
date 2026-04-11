@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/11 03:12:21 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/11 22:55:07 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int								handle_pipes(int p, int fds[], int rem,
 // signals
 void							setup_signals_child(void);
 void							setup_signals_parent(void);
+void							setup_waitmode_signal(void);
 void							setup_heredoc(void);
 // builtins
 t_builtin						get_builtin(t_command *cmd);

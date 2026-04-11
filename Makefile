@@ -32,13 +32,19 @@ SRC =	src/main.c \
     src/executor/redirections_handle.c \
     src/signals/signal_handle.c \
     src/utils/free_shell.c \
-    tests/lexer/lexer.c \
-    tests/lexer/lexer_utils.c \
     src/expander/expander.c \
     src/expander/replace_str.c \
-    tests/parsing/parser.c \
-    tests/parsing/parser_utils.c \
-    tests/parsing/parse_and_execute.c
+     src/parsing/lexer.c \
+     src/parsing/lexer_quote.c \
+     src/parsing/lexer_utils.c \
+     src/parsing/lexer_word.c \
+     src/parsing/parser.c \
+    src/parsing/parser_and_execute.c \
+     src/parsing/parser_utils.c \
+     src/parsing/parser_redir.c \
+     src/parsing/syntax_checker.c \
+     src/parsing/free_parser.c \
+    
 
 OBJ = $(SRC:.c=.o)
 

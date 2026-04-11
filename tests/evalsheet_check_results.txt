@@ -1,0 +1,64 @@
+EVALSHEET_MANDATORY_SUMMARY
+Arguments: 2/2 pass
+Double Quotes: 2/2 pass
+Environment Path: 2/3 pass
+Environment Variables: 2/2 pass
+Go Crazy: 2/3 pass
+Pipes: 4/4 pass
+Redirection: 3/4 pass
+Relative Path: 1/1 pass
+Return value: 3/3 pass
+Simple/Globals: 3/4 pass
+Single Quotes: 3/3 pass
+cd: 2/2 pass
+echo: 2/4 pass
+env: 0/1 pass
+exit: 1/1 pass
+export: 2/2 pass
+pwd: 1/1 pass
+unset: 1/1 pass
+
+MANDATORY_FAILURES
+[Simple/Globals] Tabs only
+  minishell: '\x07\n.git/                    minishell                testfile\n.gitignore               minishell_evalsheet.pdf  tests/\n.vscode/                 minishell_evalsheet.txt  tmp_err_bash\n42_minishell_tester/     minishell_tester/        tmp_err_m'
+  bash     : ''
+[echo] echo -n
+  minishell: 'helloexit'
+  bash     : 'hello'
+[echo] echo -n -n -n
+  minishell: 'helloexit'
+  bash     : 'hello'
+[env] env prints vars
+  minishell: 'USER=motaz\nSHLVL=2\nHOME=/home/motaz\nOLDPWD=/home/motaz/core/minishell\nDBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus\nWSL_DISTRO_NAME=Ubuntu-22.04\nWAYLAND_DISPLAY=wayland-0\nLOGNAME=motaz\nPULSE_SERVER=unix:/mnt/wslg/PulseServer\nWSL_INT'
+  bash     : 'SHELL=/usr/bin/zsh\nLSCOLORS=Gxfxcxdxbxegedabagacad\nUSER_ZDOTDIR=/home/motaz\nCOLORTERM=truecolor\nLESS=-R\nNVM_INC=/home/motaz/.nvm/versions/node/v24.11.1/include/node\nWSL2_GUI_APPS_ENABLED=1\nTERM_PROGRAM_VERSION=1.114.0\nWSL_DISTRO_NAME=Ubuntu'
+[Environment Path] unset PATH then ls
+  minishell: 'minishell: ls: command not found'
+  bash     : 'bash: line 2: ls: No such file or directory'
+[Redirection] heredoc <<
+  minishell: ''
+  bash     : 'hello'
+[Go Crazy] invalid command no crash
+  minishell: 'minishell: dsbksdgbksdghsd: command not found'
+  bash     : 'bash: line 1: dsbksdgbksdghsd: command not found'
+
+BONUS_SUMMARY
+AND operator: FAIL
+OR operator: FAIL
+Parentheses: FAIL
+Wildcard: FAIL
+Surprise1: PASS
+Surprise2: PASS
+
+BONUS_FAILURE_DETAILS
+AND operator
+  minishell: 'a && echo b'
+  bash     : 'a\nb'
+OR operator
+  minishell: '__TIMEOUT__'
+  bash     : 'recovered'
+Parentheses
+  minishell: 'minishell: (echo: command not found'
+  bash     : 'a'
+Wildcard
+  minishell: 'tests/*'
+  bash     : 'tests/cmdtotest.txt tests/evalsheet_check.py tests/evalsheet_check_results.txt tests/evalsheet_interactive.py tests/lexer tests/parsing tests/results.txt tests/results_executor.txt tests/run_executor_tests.sh tests/run_manual_tests.sh tests'

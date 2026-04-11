@@ -1,4 +1,4 @@
-ULTIMATE MINISHELL TEST — Wed Mar 25 20:41:42 +03 2026
+ULTIMATE MINISHELL TEST — Tue Apr  7 23:59:53 +03 2026
 
 
 ══ ECHO ══
@@ -66,7 +66,10 @@ ULTIMATE MINISHELL TEST — Wed Mar 25 20:41:42 +03 2026
 ══ EXTERNAL COMMANDS ══
   ✓ ls /
   ✓ cat /etc/hostname
-  ✓ cmd not found message
+  ✗ cmd not found message
+      INPUT : notacmd_xyz_abc
+      WANTED: minishell: notacmd_xyz_abc: Command not found
+      GOT   : minishell: notacmd_xyz_abc: command not found
   ✓ successful external → 0  [$?=0]
   ✓ cmd not found → 127  [$?=127]
 
@@ -120,13 +123,6 @@ ULTIMATE MINISHELL TEST — Wed Mar 25 20:41:42 +03 2026
   ✓ $? is 0 at shell start
 
 ══════════════════════════════════════════
-  PASSED : 66 / 68
-  FAILED : 2 / 68
+  PASSED : 65 / 68
+  FAILED : 3 / 68
 ══════════════════════════════════════════
-minishell$ cat << EOF | grep hello
-> eof
-> EOF
-minishell$ echo $?
-1
-
-cat < nonexistent_file -> leaks
