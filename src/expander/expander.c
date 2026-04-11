@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 19:41:40 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/11 03:14:00 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ int	search_for_special(char *word)
 // (replace it with new one that have more info)
 // anything u want to expand must start with $
 // if it not exist just skip it and return the original str
-static char	*expand_cmd(char *expand_it, t_shell *shell)
+char	*expand_cmd(char *expand_it, t_shell *shell)
 {
 	char	*new_one;
 
+	if (expand_it == NULL || *expand_it == '\0')
+		return (NULL);
 	while (search_for_special(expand_it) >= 0)
 	{
 		new_one = replace_str(expand_it, shell);
@@ -61,8 +63,8 @@ static char	*expand_cmd(char *expand_it, t_shell *shell)
 	return (expand_it);
 }
 
-//this fun is for removing any empty "" '' 
-//its doing by free it then shifiting the array
+// this fun is for removing any empty "" ''
+// its doing by free it then shifiting the array
 static void	remove_empty_unquoted_args(t_command *cmd)
 {
 	int	i;
