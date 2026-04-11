@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 20:53:19 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 15:39:39 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/11 00:15:07 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ int	error_syscall(char *context, int exit_code)
 	return (exit_code);
 }
 
+int	error_syntax(char *token, int exit_code)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	if(token != NULL)
+		ft_putstr_fd(token, 2);
+	else
+		ft_putstr_fd("newline", 2);
+	ft_putstr_fd("'\n", 2);
+	return (exit_code);
+}
 // used for "cmd not found" and for logic errors
 // like "custom errors" but but the cmd as NULL
 int	error_cmd(char *cmd, char *msg, int exit_code)
