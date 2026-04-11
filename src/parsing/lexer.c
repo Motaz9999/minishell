@@ -1,9 +1,11 @@
 
+#include "minishell.h"
+
 static int	add_eof_token(t_token **head)
 {
 	t_token	*eof;
 
-	eof = new_toksten(TOKEN_EOF, NULL, NO_QUOTE);
+	eof = new_token(TOKEN_EOF, NULL, NO_QUOTE);
 	if (!eof)
 		return (1);
 	token_add_back(head, eof);

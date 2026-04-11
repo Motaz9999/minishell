@@ -1,4 +1,6 @@
 
+#include "minishell.h"
+
 static void	protect_dollars(char *s)
 {
 	int	i;

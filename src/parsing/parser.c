@@ -1,3 +1,5 @@
+#include "minishell.h"
+
 static int	alloc_arrays(t_command *cmd, int count)
 {
 	cmd->args = malloc(sizeof(char *) * (count + 1));
@@ -19,7 +21,7 @@ static int	add_argument(t_command *cmd, t_token *tok, int *i)
 	return (0);
 }
 
-t_command	*parse_one_command(t_token **tok)
+t_command	*parse_one_command(t_token **tok, t_shell *shell)
 {
 	t_command	*cmd;
 	int			count;
@@ -36,7 +38,7 @@ t_command	*parse_one_command(t_token **tok)
 	{
 		if ((*tok)->type == TOKEN_WORD && add_argument(cmd, *tok, &i))
 			return (free_commands(cmd), NULL);
-		if (is_redir_token((*tok)->type) && parse_redirection(cmd, tok))
+		if (is_redir_token((*tok)->type) && parse_redirection(cmd, tok, shell))
 			return (free_commands(cmd), NULL);
 		*tok = (*tok)->next;
 	}
@@ -44,15 +46,15 @@ t_command	*parse_one_command(t_token **tok)
 	return (cmd);
 }
 
-t_command	*parser(t_token *tokens)
+t_command	*parser(t_token *tokens, t_shell *shell)
 {
-	t_command	*head;
-	t_command	*cmd;
+	t_command *head;
+	t_command *cmd;
 
 	head = NULL;
 	while (tokens && tokens->type != TOKEN_EOF)
 	{
-		cmd = parse_one_command(&tokens);
+		cmd = parse_one_command(&tokens, shell);
 		if (!cmd)
 			return (free_commands(head), NULL);
 		command_add_back(&head, cmd);

@@ -1,3 +1,5 @@
+#include "minishell.h"
+
 static int	set_quote_type(int has_single, int has_double)
 {
 	if (has_double)
@@ -31,6 +33,20 @@ static char	*read_part(char *line, int *i, int *has_single, int *has_double)
 		return (read_double_quoted(line, i));
 	}
 	return (read_plain_part(line, i));
+}
+
+static char	*join_free(char *left, char *right)
+{
+	char	*joined;
+
+	if (!left)
+		return (right);
+	if (!right)
+		return (free(left), NULL);
+	joined = ft_strjoin(left, right);
+	free(left);
+	free(right);
+	return (joined);
 }
 
 char	*read_word(char *line, int *i, int *quote_type)
