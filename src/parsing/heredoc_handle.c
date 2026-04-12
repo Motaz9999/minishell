@@ -6,14 +6,14 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 01:06:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/13 02:21:03 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/13 02:41:32 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-pid_t	fill_heredoc_helper(t_shell *shell, char *key, int fds[],
-		int quote_type)
+pid_t	fill_heredoc_helper(t_command *cmd, t_redirect *redir, t_shell *shell,
+		char *key, int fds[], int quote_type)
 {
 	char	*line;
 	pid_t	pid;
@@ -54,6 +54,8 @@ pid_t	fill_heredoc_helper(t_shell *shell, char *key, int fds[],
 			free(line);
 		}
 		close(fds[1]);
+		free_redirects(redir);
+		free_commands(cmd);
 		free_shell(shell);
 		exit(0);
 		// all good  else the sig well be out with number must be handle to make sens
@@ -65,7 +67,8 @@ pid_t	fill_heredoc_helper(t_shell *shell, char *key, int fds[],
 // ridir file is the name of KEY
 // if quote == 1 or 2 dont expand
 // else expand
-int	fill_heredoc(t_redirect *redir, t_shell *shell, int quote_type)
+int	fill_heredoc(t_command *cmd, t_redirect *redir, t_shell *shell,
+		int quote_type)
 {
 	int		fds[2];
 	pid_t	pid;
@@ -79,7 +82,7 @@ int	fill_heredoc(t_redirect *redir, t_shell *shell, int quote_type)
 		shell->last_exit_status = error_syscall("pipe", 1);
 		return (FALSE);
 	}
-	pid = fill_heredoc_helper(shell, redir->file, fds, quote_type);
+	pid = fill_heredoc_helper(cmd, redir, shell, redir->file, fds, quote_type);
 	close(fds[1]);
 	if (pid == -1)
 	{

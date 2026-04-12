@@ -2,10 +2,10 @@
 
 static int	alloc_arrays(t_command *cmd, int count)
 {
-	cmd->args = malloc(sizeof(char *) * (count + 1));
+	cmd->args = ft_calloc((count + 1), sizeof(char *));
 	if (!cmd->args)
 		return (1);
-	cmd->quote_types = malloc(sizeof(t_quote_type) * (count + 1));
+	cmd->quote_types = ft_calloc((count + 1), sizeof(t_quote_type));
 	if (!cmd->quote_types)
 		return (free(cmd->args), 1);
 	return (0);

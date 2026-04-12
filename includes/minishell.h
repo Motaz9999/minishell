@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/13 01:59:32 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/13 02:41:32 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,8 @@ t_token							*get_token_at(t_token *tokens, int index);
 void							print_tokens(t_token *tokens);
 int								count_commands_parser(t_command *commands);
 void							print_commands(t_command *commands);
-int								fill_heredoc(t_redirect *redir, t_shell *shell,
-									int quote_type);
+int								fill_heredoc(t_command *cmd, t_redirect *redir,
+									t_shell *shell, int quote_type);
 // env init
 t_env							*init_env(char **envp);
 void							free_env_list(t_env *list);

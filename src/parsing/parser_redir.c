@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 10:24:18 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/13 01:43:20 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/13 02:41:32 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ int	parse_redirection(t_command *cmd, t_token **tok, t_shell *shell)
 	redir = new_redirect(redir_type, (*tok)->next->value);
 	if (!redir)
 		return (1);
-	if (redir_type == REDIR_HEREDOC && !fill_heredoc(redir, shell , (*tok)->next->quote_type))
+	if (redir_type == REDIR_HEREDOC
+		&& !fill_heredoc(cmd, redir, shell, (*tok)->next->quote_type))
 	{
 		free_redirects(redir);
 		return (1);
