@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/11 03:14:00 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/13 01:25:27 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*expand_cmd(char *expand_it, t_shell *shell)
 	char	*new_one;
 
 	if (expand_it == NULL || *expand_it == '\0')
-		return (NULL);
+		return (expand_it);
 	while (search_for_special(expand_it) >= 0)
 	{
 		new_one = replace_str(expand_it, shell);

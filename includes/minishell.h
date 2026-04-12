@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/11 22:55:07 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/13 01:45:47 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int								handle_pipes(int p, int fds[], int rem,
 void							setup_signals_child(void);
 void							setup_signals_parent(void);
 void							setup_waitmode_signal(void);
-void							setup_heredoc(void);
+void							setup_signals_heredoc(void);
 // builtins
 t_builtin						get_builtin(t_command *cmd);
 pid_t							execute_builtin(t_ext *ext, t_shell *shell,
@@ -100,12 +100,13 @@ int								error_cmd_export(char *input);
 int								print_all_env_in_order(t_env *env_list);
 // parser / lexer
 t_token							*lexer(char *line);
-int							is_space(char c);
-int							is_operator_char(char c);
-t_token						*new_token(t_token_type type, char *value,
-										int quote_type);
-void							token_add_back(t_token **head, t_token *new_one);
-t_token						*read_operator_token(char *line, int *i);
+int								is_space(char c);
+int								is_operator_char(char c);
+t_token							*new_token(t_token_type type, char *value,
+									int quote_type);
+void							token_add_back(t_token **head,
+									t_token *new_one);
+t_token							*read_operator_token(char *line, int *i);
 char							*read_word(char *line, int *i, int *quote_type);
 char							*read_plain_part(char *line, int *i);
 char							*read_single_quoted(char *line, int *i);
@@ -134,7 +135,8 @@ t_token							*get_token_at(t_token *tokens, int index);
 void							print_tokens(t_token *tokens);
 int								count_commands_parser(t_command *commands);
 void							print_commands(t_command *commands);
-int								fill_heredoc(t_redirect *redir, t_shell *shell);
+int								fill_heredoc(t_redirect *redir, t_shell *shell,
+									int quote_type);
 // env init
 t_env							*init_env(char **envp);
 void							free_env_list(t_env *list);

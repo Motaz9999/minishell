@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 10:24:18 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/11 03:17:05 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/13 01:43:20 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,40 +57,6 @@ void	redirect_add_back(t_redirect **head, t_redirect *new_one)
 	last->next = new_one;
 }
 
-//update later to let take expand and signals
-//ridir file is the name of KEY
-int	fill_heredoc(t_redirect *redir, t_shell *shell)
-{
-	int		fds[2];
-	char	*line;
-
-	if (!redir)
-		return (FALSE);
-	if (pipe(fds) == -1)
-	{
-		shell->last_exit_status = error_syscall("pipe", 1);
-		return (FALSE);
-	}
-	setup_heredoc();
-	while (1)
-	{
-		line = expand_cmd(readline("heredoc>> "), shell);
-		if (!line)
-			break ;
-		if (ft_strcmp(line, redir->file) == 0)//stops here
-		{
-			free(line);
-			break ;
-		}
-		write(fds[1], line, ft_strlen(line));
-		write(fds[1], "\n", 1);
-		free(line);
-	}
-	setup_signals_parent();
-	close(fds[1]);
-	redir->heredoc_fd = fds[0];
-	return (TRUE);
-}
 
 //here i must handle this redire
 //may this redir have a linked list so must check in new_redire
@@ -109,7 +75,7 @@ int	parse_redirection(t_command *cmd, t_token **tok, t_shell *shell)
 	redir = new_redirect(redir_type, (*tok)->next->value);
 	if (!redir)
 		return (1);
-	if (redir_type == REDIR_HEREDOC && !fill_heredoc(redir, shell))
+	if (redir_type == REDIR_HEREDOC && !fill_heredoc(redir, shell , (*tok)->next->quote_type))
 	{
 		free_redirects(redir);
 		return (1);
