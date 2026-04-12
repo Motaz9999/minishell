@@ -39,6 +39,7 @@ SRC =	src/main.c \
      src/parsing/lexer_utils.c \
      src/parsing/lexer_word.c \
      src/parsing/parser.c \
+    src/parsing/heredoc_handle.c \
     src/parsing/parser_and_execute.c \
      src/parsing/parser_utils.c \
      src/parsing/parser_redir.c \

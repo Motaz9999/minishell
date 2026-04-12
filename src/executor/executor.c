@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/11 23:08:04 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/13 02:28:51 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ void	execute(t_shell *shell)
 		return ;
 	ft_memset(ext.pids, -1, count_cmd * sizeof(pid_t));
 	execute_helper(&ext, shell);
+	setup_signals_waits();
 	waiting_loop_free_pids(ext.pids, shell, count_cmd);
-	setup_signals_parent();//return to parent mode
+	setup_signals_parent(); // return to parent mode
 }

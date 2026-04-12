@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/13 01:25:27 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/13 02:32:00 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,21 @@ char	*expand_cmd(char *expand_it, t_shell *shell)
 	return (expand_it);
 }
 
+static void	restore_protected_dollars(char *arg)
+{
+	int	i;
+
+	if (!arg)
+		return ;
+	i = 0;
+	while (arg[i])
+	{
+		if (arg[i] == '\1')
+			arg[i] = '$';
+		i++;
+	}
+}
+
 // this fun is for removing any empty "" ''
 // its doing by free it then shifiting the array
 static void	remove_empty_unquoted_args(t_command *cmd)
@@ -104,12 +119,9 @@ void	expand_args_from_cmd(t_shell *shell, t_command *cmd)
 	i = 0;
 	while (cmd->args[i])
 	{
-		if (cmd->quote_types[i] == SINGLE_QUOTE)
-		{
-			i++;
-			continue ;
-		}
-		cmd->args[i] = expand_cmd(cmd->args[i], shell);
+		if (cmd->quote_types[i] != SINGLE_QUOTE)
+			cmd->args[i] = expand_cmd(cmd->args[i], shell);
+		restore_protected_dollars(cmd->args[i]);
 		i++;
 	}
 	remove_empty_unquoted_args(cmd);

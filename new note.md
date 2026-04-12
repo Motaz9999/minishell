@@ -145,3 +145,63 @@ Fix direction:
 - Close both heredoc pipe ends on cancel path.
 - Return failure to parser so command does not execute.
 - Set shell->last_exit_status to 130.
+
+## 7) Remaining issues after latest checks (2026-04-13)
+
+### A) Single-quoted dollar is still lost
+
+Files:
+- src/parsing/lexer_quote.c
+
+Symptom:
+- echo '$HOME' prints HOME instead of $HOME.
+- echo '$?' prints ? instead of $?.
+
+Cause:
+- read_single_quoted replaces '$' with byte 1 in protect_dollars.
+- No restore path was found before output/execution.
+
+Fix direction:
+- Keep '$' literal in single-quoted text (preferred).
+- Or restore protected byte back to '$' before expansion/output stages.
+
+### B) waitpid return is unchecked in executor wait loop
+
+Files:
+- src/executor/executor.c
+
+Symptom:
+- waiting_loop_free_pids calls waitpid but ignores its return value.
+
+Risk:
+- If waitpid fails/interrupted, status handling can become unreliable.
+
+Fix direction:
+- Check waitpid return value.
+- Retry on EINTR, handle other errors safely, and avoid using undefined status.
+
+### C) Redundant env cleanup in heredoc child
+
+Files:
+- src/parsing/heredoc_handle.c
+- src/utils/free_shell.c
+
+Symptom:
+- Heredoc child calls free_shell(shell), then free_env_list(shell->env_list) again.
+
+Risk:
+- Currently mostly harmless because pointer is nulled, but redundant and fragile.
+
+Fix direction:
+- Remove duplicate free_env_list call in heredoc child cleanup.
+
+### D) Optional compatibility mismatch: command-not-found text casing
+
+Files:
+- src/executor/error_handle.c
+
+Symptom:
+- Output is "command not found" while some tester expects "Command not found".
+
+Fix direction:
+- If matching that tester is required, change exact message casing.

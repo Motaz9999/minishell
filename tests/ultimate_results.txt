@@ -1,4 +1,4 @@
-ULTIMATE MINISHELL TEST — Tue Apr  7 23:59:53 +03 2026
+ULTIMATE MINISHELL TEST — Mon Apr 13 02:13:11 +03 2026
 
 
 ══ ECHO ══
@@ -12,7 +12,10 @@ ULTIMATE MINISHELL TEST — Tue Apr  7 23:59:53 +03 2026
   ✓ echo double quotes
   ✓ echo single quotes
   ✓ echo expand $HOME
-  ✓ echo no-expand in ''
+  ✗ echo no-expand in ''
+      INPUT : echo '$HOME'
+      WANTED: $HOME
+      GOT   : HOME
   ✓ echo expand in ""
   ✗ echo -n -n -n
       INPUT : echo -n -n -n hello
@@ -118,11 +121,17 @@ ULTIMATE MINISHELL TEST — Tue Apr  7 23:59:53 +03 2026
   ✓ expand $HOME
   ✓ expand $USER
   ✓ expand in double quote
-  ✓ no expand in single ''
-  ✓ expand $? = 0
+  ✗ no expand in single ''
+      INPUT : echo '$HOME'
+      WANTED: $HOME
+      GOT   : HOME
+  ✗ expand $? = 0
+      INPUT : true; echo $?
+      WANTED: 
+      GOT   : minishell: true;: command not found
   ✓ $? is 0 at shell start
 
 ══════════════════════════════════════════
-  PASSED : 65 / 68
-  FAILED : 3 / 68
+  PASSED : 62 / 68
+  FAILED : 6 / 68
 ══════════════════════════════════════════
