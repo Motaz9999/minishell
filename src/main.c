@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 01:19:47 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/03 22:30:36 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/12 02:49:03 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	shell_loop(t_shell *shell)
 {
 	char	*line;
 
+	setup_signals_parent();
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -34,7 +35,6 @@ static void	shell_loop(t_shell *shell)
 		}
 		free(line);
 	}
-	rl_clear_history();
 }
 
 // ft_printf("%s %s", GREEN, BOLD);
@@ -48,8 +48,8 @@ int	main(int argc, char **argv, char **envp)
 	ft_memset(&shell, 0, sizeof(shell));
 	if (envp)
 		shell.env_list = init_env(envp);
-	setup_signals_parent();
 	shell_loop(&shell);
 	free_shell(&shell);
+	rl_clear_history();
 	return (shell.last_exit_status);
 }

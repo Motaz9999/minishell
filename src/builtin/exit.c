@@ -6,11 +6,19 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 06:14:18 by moodeh            #+#    #+#             */
-/*   Updated: 2026/02/27 07:53:32 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/12 02:23:50 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	cleanup_exit_resources(t_ext *ext, t_shell *shell)
+{
+	if (ext && ext->pids)
+		free(ext->pids);
+	free_shell(shell);
+	rl_clear_history();
+}
 
 static int	ft_str_isdigit(const char *str)
 {
@@ -34,9 +42,7 @@ static int	handle_invalid_numeric_arg(t_ext *ext, t_shell *shell)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(ext->cmd->args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		if (ext && ext->pids)
-			free(ext->pids);
-		free_shell(shell);
+		cleanup_exit_resources(ext, shell);
 		exit(2);
 	}
 	return (FALSE);
@@ -68,8 +74,6 @@ int	exit_shell(t_ext *ext, t_shell *shell)
 	}
 	exit_code = compute_exit_code(ext);
 	ft_putstr_fd("exit\n", 1);
-	if (ext && ext->pids)
-		free(ext->pids);
-	free_shell(shell);
+	cleanup_exit_resources(ext, shell);
 	exit(exit_code);
 }
