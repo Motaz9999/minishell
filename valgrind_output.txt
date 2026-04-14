@@ -178,3 +178,17 @@
 ==368688== 
 ==368688== For lists of detected and suppressed errors, rerun with: -s
 ==368688== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==368563== 
+==368563== HEAP SUMMARY:
+==368563==     in use at exit: 208,177 bytes in 223 blocks
+==368563==   total heap usage: 1,184 allocs, 961 frees, 293,329 bytes allocated
+==368563== 
+==368563== LEAK SUMMARY:
+==368563==    definitely lost: 0 bytes in 0 blocks
+==368563==    indirectly lost: 0 bytes in 0 blocks
+==368563==      possibly lost: 0 bytes in 0 blocks
+==368563==    still reachable: 0 bytes in 0 blocks
+==368563==         suppressed: 208,177 bytes in 223 blocks
+==368563== 
+==368563== For lists of detected and suppressed errors, rerun with: -s
+==368563== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
