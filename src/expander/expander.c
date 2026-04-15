@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/13 02:32:00 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/15 20:52:56 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,7 @@ void	expand_args_from_cmd(t_shell *shell, t_command *cmd)
 	i = 0;
 	while (cmd->args[i])
 	{
-		if (cmd->quote_types[i] != SINGLE_QUOTE)
-			cmd->args[i] = expand_cmd(cmd->args[i], shell);
+		cmd->args[i] = expand_cmd(cmd->args[i], shell);
 		restore_protected_dollars(cmd->args[i]);
 		i++;
 	}

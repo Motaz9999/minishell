@@ -24,7 +24,10 @@ char	*read_single_quoted(char *line, int *i)
 	while (line[*i] && line[*i] != '\'')
 		(*i)++;
 	if (line[*i] != '\'')
+	{
+		error_syntax("newline", 2);
 		return (NULL);
+	}
 	part = ft_substr(line, start, *i - start);
 	if (part)
 		protect_dollars(part);
@@ -42,7 +45,10 @@ char	*read_double_quoted(char *line, int *i)
 	while (line[*i] && line[*i] != '"')
 		(*i)++;
 	if (line[*i] != '"')
+	{
+		error_syntax("newline", 2);
 		return (NULL);
+	}
 	part = ft_substr(line, start, *i - start);
 	(*i)++;
 	return (part);

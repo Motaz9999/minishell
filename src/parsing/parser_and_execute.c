@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+static int	is_eof_only_tokens(t_token *tokens)
+{
+	if (!tokens)
+		return (0);
+	return (tokens->type == TOKEN_EOF && tokens->next == NULL);
+}
+
 void	parse_and_execute(char *line, t_shell *shell)
 {
 	t_command *ptr;
@@ -31,10 +38,17 @@ void	parse_and_execute(char *line, t_shell *shell)
 		shell->tokens = NULL;
 		return ;
 	}
+	if (is_eof_only_tokens(shell->tokens))
+	{
+		free_tokens(shell->tokens);
+		shell->tokens = NULL;
+		return ;
+	}
 	shell->commands = parser(shell->tokens, shell);
 	if (!shell->commands)
 	{
-		shell->last_exit_status = 2;
+		if (shell->last_exit_status != 130)
+			shell->last_exit_status = 2;
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;
 		return ;

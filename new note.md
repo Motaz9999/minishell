@@ -84,124 +84,200 @@ In command execution, small control-flow shortcuts before validation are risky.
 For shell behavior compatibility, path-like commands must always pass through
 the same validation pipeline that sets both message and exit status.
 
-## 6) Current must-fix list (2026-04-11)
+## 6) Active Priority TODO Board (2026-04-15)
 
-These are still pending and should be fixed next.
+Promotion rule:
+- Only OPEN items stay in this section.
+- If current P1 is solved, the next OPEN item is promoted automatically.
 
-### A) Double prompt after Ctrl+C on foreground command
+Status legend:
+- OPEN = not fixed yet
+- IN PROGRESS = partially fixed, needs final pass
+- SOLVED = moved to section 7
 
-Files:
+### P1) Unsupported operators are parsed as plain text (OPEN, Medium)
+
+Current behavior:
+- && and || are treated as normal words.
+- Example: echo hi && echo there prints literal && echo there.
+
+Expected behavior:
+- Since this minishell does not implement &&/||, return syntax error instead.
+
+Root cause:
+- Lexer only recognizes |, <, > as operators.
+
+Files to update:
+- src/parsing/lexer_utils.c
+- src/parsing/lexer.c
+- src/parsing/syntax_checker.c
+
+Fix:
+- Detect unsupported operators (&&, ||, ;, optionally parentheses) and reject.
+- Emit consistent syntax error + status 2.
+
+Validation after fix:
+- echo hi && echo there -> syntax error.
+- echo hi || echo there -> syntax error.
+
+### P2) Double prompt after Ctrl+C on foreground job (OPEN, Medium)
+
+Current behavior:
+- Foreground command interrupted by Ctrl+C can print duplicated prompt line.
+
+Root cause:
+- Parent SIGINT handler redraws readline prompt while shell is waiting on child.
+
+Files to update:
 - src/signals/signal_handle.c
+- src/executor/executor.c
 - src/main.c
+
+Fix:
+- Use wait-mode signal handler without readline redraw.
+- Restore interactive prompt handler after wait finishes.
+- Gate readline redraw to prompt mode only.
+
+Validation after fix:
+- Run cat, press Ctrl+C once, exactly one clean prompt appears.
+
+### P3) waitpid return value not handled safely (OPEN, Medium)
+
+Current behavior:
+- waitpid result is used without robust return-value checks in wait loop.
+
+Risk:
+- EINTR or other waitpid errors can leave status logic undefined.
+
+Files to update:
 - src/executor/executor.c
 
-Symptom:
-- Running a foreground command like cat, pressing Ctrl+C can show:
-	minishell$ minishell$
+Fix:
+- Check waitpid return.
+- Retry on EINTR.
+- Handle other errors explicitly and avoid reading invalid status.
 
-Cause:
-- Parent SIGINT handler always calls readline redraw functions.
-- Parent keeps this handler while waiting for children.
+Validation after fix:
+- Stress interrupts during pipeline wait; no inconsistent status updates.
 
-Fix direction:
-- Use separate signal behavior for prompt mode vs execution/wait mode.
-- During wait, do not redraw readline prompt from signal handler.
-- Restore prompt-mode handler after wait loop.
+### P4) Escaped quotes in double quotes are not handled (OPEN, Low)
 
-### B) Heredoc with quoted delimiter expands variables (should not)
+Current behavior:
+- Backslash-escaped quote inside double quotes is not parsed bash-like.
 
-Files:
-- src/parsing/parser_redir.c
-- src/parsing/lexer_word.c
+Expected behavior:
+- \" inside double quotes should be treated as literal ".
 
-Symptom:
-- cat << 'EOF' then input $X prints expanded value (wrong).
-
-Expected:
-- With quoted delimiter, heredoc body must not expand variables.
-
-Cause:
-- fill_heredoc always uses expand_cmd on every line.
-- Delimiter quote information is not used to control expansion.
-
-Fix direction:
-- Carry delimiter quote state from token into heredoc redirection node.
-- In fill_heredoc, skip expand_cmd when delimiter was quoted.
-
-### C) Ctrl+C during heredoc should abort command with proper status
-
-Files:
-- src/parsing/parser_redir.c
-- src/signals/signal_handle.c
-
-Symptom:
-- Ctrl+C in heredoc path may not stop command flow cleanly with bash-like status.
-
-Expected:
-- Heredoc is canceled, command should not execute, status should be 130.
-
-Fix direction:
-- In heredoc loop, detect SIGINT flag and stop immediately.
-- Close both heredoc pipe ends on cancel path.
-- Return failure to parser so command does not execute.
-- Set shell->last_exit_status to 130.
-
-## 7) Remaining issues after latest checks (2026-04-13)
-
-### A) Single-quoted dollar is still lost
-
-Files:
+Files to update:
 - src/parsing/lexer_quote.c
 
-Symptom:
-- echo '$HOME' prints HOME instead of $HOME.
-- echo '$?' prints ? instead of $?.
+Fix:
+- Implement escape-aware scan for double-quoted content.
+- Respect shell rules for escapes inside double quotes.
 
-Cause:
-- read_single_quoted replaces '$' with byte 1 in protect_dollars.
-- No restore path was found before output/execution.
+Validation after fix:
+- echo "a\"b" outputs a"b.
 
-Fix direction:
-- Keep '$' literal in single-quoted text (preferred).
-- Or restore protected byte back to '$' before expansion/output stages.
+### P5) Placeholder quote file should be implemented or removed (OPEN, Low)
 
-### B) waitpid return is unchecked in executor wait loop
+Current behavior:
+- src/parsing/handle_quote.c exists as a placeholder with no real logic.
+- It can cause confusion about the real quote-handling path.
 
-Files:
-- src/executor/executor.c
+Expected behavior:
+- Quote handling code should live in one clear place with no dead placeholder file.
 
-Symptom:
-- waiting_loop_free_pids calls waitpid but ignores its return value.
+Root cause:
+- Partial refactor started but not completed.
 
-Risk:
-- If waitpid fails/interrupted, status handling can become unreliable.
+Files to update:
+- src/parsing/handle_quote.c
+- Makefile
 
-Fix direction:
-- Check waitpid return value.
-- Retry on EINTR, handle other errors safely, and avoid using undefined status.
+Fix:
+- Either implement and wire this file into parsing flow, or remove it.
+- Keep one authoritative quote pipeline to avoid duplicated/unused logic.
 
-### C) Redundant env cleanup in heredoc child
+Validation after fix:
+- Build succeeds with no unused/dead parser file confusion.
+- Quote behavior tests still pass.
 
-Files:
-- src/parsing/heredoc_handle.c
-- src/utils/free_shell.c
+### P6) Optional tester compatibility: message casing (OPEN, Low)
 
-Symptom:
-- Heredoc child calls free_shell(shell), then free_env_list(shell->env_list) again.
+Current behavior:
+- Some external testers expect "Command not found" exact casing.
 
-Risk:
-- Currently mostly harmless because pointer is nulled, but redundant and fragile.
-
-Fix direction:
-- Remove duplicate free_env_list call in heredoc child cleanup.
-
-### D) Optional compatibility mismatch: command-not-found text casing
-
-Files:
+Files to update:
 - src/executor/error_handle.c
 
-Symptom:
-- Output is "command not found" while some tester expects "Command not found".
+Fix:
+- Only if required by your chosen tester, align exact message text casing.
 
-Fix direction:
-- If matching that tester is required, change exact message casing.
+Validation after fix:
+- Re-run that tester case and compare exact stderr string.
+
+## 7) Solved Archive (updated 2026-04-15)
+
+### SOLVED) Quoted heredoc delimiter expansion control
+
+Files updated:
+- src/parsing/heredoc_handle.c
+
+Result:
+- cat << '' now terminates on the first empty line (correct empty delimiter match).
+- cat << 'EOF' keeps $VAR literal in heredoc body.
+- Non-empty delimiters still behave correctly.
+
+### SOLVED) Single-quoted dollar preservation
+
+Files updated:
+- src/expander/expander.c
+
+Result:
+- echo '$HOME' and echo '$?' remain literal.
+- Mixed tokens now behave correctly: echo 'abc'$HOME expands only unquoted part.
+
+### SOLVED) Redundant env cleanup in heredoc child
+
+Result:
+- Duplicate env cleanup path is no longer present in current heredoc child code.
+
+### SOLVED) Ctrl+C during heredoc keeps status 130
+
+Files updated:
+- src/parsing/parser_and_execute.c
+
+Result:
+- Parser failure path now preserves status 130 instead of overwriting it with 2.
+- Manual check in minishell session: start heredoc, send Ctrl+C, then echo $? prints 130.
+
+### SOLVED) Unmatched quote reports syntax error
+
+Files updated:
+- src/parsing/lexer_quote.c
+
+Result:
+- Unmatched single quote and unmatched double quote now print:
+	- minishell: syntax error near unexpected token `newline'
+- Status is preserved as 2 after the failed parse.
+
+### SOLVED) Whitespace-only input preserves previous status
+
+Files updated:
+- src/parsing/parser_and_execute.c
+
+Result:
+- EOF-only token streams now return early without forcing status 2.
+- Validation: `false`, then whitespace-only line, then `echo $?` prints `1`.
+
+### SOLVED) Heredoc key with single-quoted '$' matches correctly
+
+Files updated:
+- src/parsing/parser_redir.c
+
+Result:
+- Heredoc delimiter now normalizes protected dollar markers before key storage.
+- Validation:
+	- `cat << '$END'` stops on `$END`.
+	- `cat << "$END"` stops on `$END`.
+	- Existing behavior preserved for `<< EOF` (expands body) and `<< 'EOF'` (no expansion).

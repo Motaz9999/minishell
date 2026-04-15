@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 01:06:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/13 02:41:32 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/15 20:36:43 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,18 @@ pid_t	fill_heredoc_helper(t_command *cmd, t_redirect *redir, t_shell *shell,
 			line = readline("> ");
 			if (!line)
 				break ;
-			if (ft_strcmp(line, "") == 0)
+			
+			if (ft_strcmp(line, key) == 0) // stops here
+			{
+				free(line);
+				break ;
+			}
+			if (ft_strcmp(line, "") == 0 && !ft_strcmp(key, "") == 0)
 			{
 				write(fds[1], line, ft_strlen(line));
 				write(fds[1], "\n", 1);
 				free(line);
 				continue ;
-			}
-			if (ft_strcmp(line, key) == 0) // stops here
-			{
-				free(line);
-				break ;
 			}
 			if (quote_type == 0)
 				line = expand_cmd(line, shell);
