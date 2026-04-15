@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 00:26:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/15 23:36:06 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 01:24:07 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ t_builtin	get_builtin(t_command *cmd)
 }
 
 //this fun for save stdin and stdout
-int	execute_builtin_helper(t_ext *ext, t_shell *shell, int *saved_stdin,
+static int	execute_builtin_helper(t_ext *ext, int *saved_stdin,
 		int *saved_stdout)
 {
-	(void)shell;
 	if (ext)
 	{
 		ext->pipe_fds[0] = -1;
@@ -63,6 +62,34 @@ int	execute_builtin_helper(t_ext *ext, t_shell *shell, int *saved_stdin,
 	return (0);
 }
 
+static pid_t	child_builtin(t_ext *ext, t_shell *shell)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (error_syscall("fork", -1));
+	if (pid == 0)
+		execute_in_child(ext, shell);
+	return (pid);
+}
+
+static int	restore_builtin_stdio(t_ext *ext, int saved_stdin, int saved_stdout)
+{
+	if (dup2(saved_stdin, STDIN_FILENO) == -1)
+		return (error_syscall("dup2", -1));
+	if (dup2(saved_stdout, STDOUT_FILENO) == -1)
+		return (error_syscall("dup2", -1));
+	close(saved_stdin);
+	close(saved_stdout);
+	if (ext)
+	{
+		ext->pipe_fds[0] = -1;
+		ext->pipe_fds[1] = -1;
+	}
+	return (0);
+}
+
 // here we decide how to execute the builtin and what it  needs
 // and if it a child or single cmd(no fork needed)
 // if single return -1 there is noo pid
@@ -74,33 +101,17 @@ int	execute_builtin_helper(t_ext *ext, t_shell *shell, int *saved_stdin,
 // it return -1 EASY //-1 => pid_t is parent so no need to wait
 pid_t	execute_builtin(t_ext *ext, t_shell *shell, int casee)
 {
-	pid_t	pid;
 	int		saved_stdin;
 	int		saved_stdout;
 
 	if (casee == 1)
-	{
-		pid = fork();
-		if (pid == -1)
-			return (error_syscall("fork", -1));
-		if (pid == 0)
-			execute_in_child(ext, shell);
-		return (pid);
-	}
-	if (execute_builtin_helper(ext, shell, &saved_stdin, &saved_stdout) == -1)
+		return (child_builtin(ext, shell));
+	if (execute_builtin_helper(ext, &saved_stdin, &saved_stdout) == -1)
 		return (-1);
 	if (!handle_redir(ext->cmd->redirects, shell))
 		shell->last_exit_status = 1;
 	else
 		execute_builtin_cmd(ext, shell);
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
-	if (ext)
-	{
-		ext->pipe_fds[0] = -1;
-		ext->pipe_fds[1] = -1;
-	}
+	restore_builtin_stdio(ext, saved_stdin, saved_stdout);
 	return (-1);
 }
