@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 01:46:52 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 01:59:59 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void							resolve_path(char **p, char *c, t_env *e,
 void							execute(t_shell *shell);
 int								count_commands(t_command *cmds);
 // error handles
+void							warn_heredoc_eof(char *key);
 void							error_execve(char *cmd);
 int								error_cmd(char *cmd, char *msg, int exit_code);
 int								error_syscall(char *context, int exit_code);
@@ -191,6 +192,7 @@ int								count_commands_parser(t_command *commands);
 void							print_commands(t_command *commands);
 int								fill_heredoc(t_command *cmd, t_redirect *redir,
 									t_shell *shell, int quote_type);
+pid_t						fill_heredoc_helper(t_heredoc_ctx *ctx, int fds[]);
 // env init
 t_env							*init_env(char **envp);
 void							free_env_list(t_env *list);

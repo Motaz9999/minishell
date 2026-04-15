@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/16 01:53:26 by moodeh            #+#    #+#             */
+/*   Updated: 2026/04/16 01:53:34 by moodeh           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	is_space(char c)
@@ -46,11 +58,11 @@ t_token	*read_operator_token(char *line, int *i)
 	if (line[*i] == '|')
 		return ((*i)++, new_token(TOKEN_PIPE, ft_strdup("|"), NO_QUOTE));
 	if (line[*i] == '<' && line[*i + 1] == '<')
-		return ((*i) += 2, new_token(TOKEN_REDIR_HEREDOC,
-				ft_strdup("<<"), NO_QUOTE));
+		return ((*i) += 2, new_token(TOKEN_REDIR_HEREDOC, ft_strdup("<<"),
+				NO_QUOTE));
 	if (line[*i] == '>' && line[*i + 1] == '>')
-		return ((*i) += 2, new_token(TOKEN_REDIR_APPEND,
-				ft_strdup(">>"), NO_QUOTE));
+		return ((*i) += 2, new_token(TOKEN_REDIR_APPEND, ft_strdup(">>"),
+				NO_QUOTE));
 	if (line[*i] == '<')
 		return ((*i)++, new_token(TOKEN_REDIR_IN, ft_strdup("<"), NO_QUOTE));
 	return ((*i)++, new_token(TOKEN_REDIR_OUT, ft_strdup(">"), NO_QUOTE));

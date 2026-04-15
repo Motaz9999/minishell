@@ -6,12 +6,20 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 20:53:19 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 01:37:03 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 01:59:26 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	warn_heredoc_eof(char *key)
+{
+	ft_putstr_fd("minishell: warning: here-document at line 1 delimited ", 2);
+	ft_putstr_fd("by end-of-file (wanted `", 2);
+	if (key)
+		ft_putstr_fd(key, 2);
+	ft_putstr_fd("')\n", 2);
+}
 // if a sys fails use errno
 // for all sys calls like    open, read, write,
 // fork, pipe, dup2 , chdir, access
@@ -56,8 +64,8 @@ int	error_cmd(char *cmd, char *msg, int exit_code)
 
 // execve failure handler (just for child)
 // this is used after execve (it dosent work for a resone)
-// there also builtins errors and signals errors 
-//but for later
+// there also builtins errors and signals errors
+// but for later
 void	error_execve(char *cmd)
 {
 	ft_putstr_fd("minishell: ", 2);

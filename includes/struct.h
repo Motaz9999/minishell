@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:53:48 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 17:06:31 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 02:02:42 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,16 @@ typedef struct s_shell
 	t_token				*tokens;
 	t_command			*commands;
 }						t_shell;
+
+//for heredoc norm
+typedef struct s_heredoc_ctx
+{
+	t_command			*cmd;
+	t_redirect			*redir;
+	t_shell				*shell;
+	char					*key;
+	int					quote_type;
+}						t_heredoc_ctx;
 
 typedef struct s_ext
 {

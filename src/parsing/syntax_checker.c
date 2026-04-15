@@ -6,20 +6,20 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 11:22:13 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/15 21:36:44 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 01:52:20 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//this to see its redir or not
+// this to see its redir or not
 int	is_redir_token(t_token_type type)
 {
 	return (type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT
 		|| type == TOKEN_REDIR_APPEND || type == TOKEN_REDIR_HEREDOC);
 }
 
-//see pipe or not 
+// see pipe or not
 int	check_pipe(t_token *tok)
 {
 	if (!tok->next || tok->next->type == TOKEN_PIPE
@@ -28,7 +28,7 @@ int	check_pipe(t_token *tok)
 	return (0);
 }
 
-//make sure it
+// make sure it
 int	check_redir(t_token *tok)
 {
 	if (!tok->next || tok->next->type == TOKEN_EOF)
