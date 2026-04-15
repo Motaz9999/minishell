@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+static void	warn_heredoc_eof(char *key)
+{
+	ft_putstr_fd("minishell: warning: here-document at line 1 delimited ", 2);
+	ft_putstr_fd("by end-of-file (wanted `", 2);
+	if (key)
+		ft_putstr_fd(key, 2);
+	ft_putstr_fd("')\n", 2);
+}
+
 pid_t	fill_heredoc_helper(t_command *cmd, t_redirect *redir, t_shell *shell,
 		char *key, int fds[], int quote_type)
 {
@@ -32,7 +41,10 @@ pid_t	fill_heredoc_helper(t_command *cmd, t_redirect *redir, t_shell *shell,
 		{
 			line = readline("> ");
 			if (!line)
+			{
+				warn_heredoc_eof(key);
 				break ;
+			}
 			
 			if (ft_strcmp(line, key) == 0) // stops here
 			{

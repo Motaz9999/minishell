@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 00:26:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/15 22:28:29 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/15 23:36:06 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_builtin	get_builtin(t_command *cmd)
 }
 
 //this fun for save stdin and stdout
-//
 int	execute_builtin_helper(t_ext *ext, t_shell *shell, int *saved_stdin,
 		int *saved_stdout)
 {

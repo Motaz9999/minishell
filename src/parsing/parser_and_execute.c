@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 22:12:15 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/11 23:07:23 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/15 23:40:54 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	parse_and_execute(char *line, t_shell *shell)
 		expand_args_from_cmd(shell, ptr);
 		ptr = ptr->next;
 	}
+	setup_signals_waits();
 	execute(shell);
 	free_tokens(shell->tokens);
 	free_commands(shell->commands);

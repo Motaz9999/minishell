@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/13 02:41:32 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 00:07:53 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,31 @@
 # include <unistd.h>
 # define TRUE 1
 # define FALSE 0
+# define SIG_STATE_NONE 0
+# define SIG_STATE_PROMPT 1
+# define SIG_STATE_INT_OUTSIDE 2
+# define SIG_STATE_INT_PROMPT 3
 
-// global var
-// for signals
-// this a special int type defined in signals
-// Guaranteed to be read/written atomically
-// Safe to modify inside a signal handler
-// Prevents data corruption if an interrupt happens
-// volatile => This variable can change at any time — don’t optimize it away
-// Without volatile,
-//	the compiler might cache the value and never see updates from the handler.
-// volatile sig_atomic_t	g_in_cmd = 0; this false
-
+/*
+** Signal state machine shared by:
+** - src/main.c (prompt loop, sets/consumes state)
+** - src/signals/signal_handle.c (SIGINT handler, updates state)
+**
+** Values:
+** - SIG_STATE_NONE: no pending interrupt information.
+** - SIG_STATE_PROMPT: shell is currently blocked in readline("minishell$ ").
+** - SIG_STATE_INT_OUTSIDE: SIGINT arrived while shell was not at prompt.
+** - SIG_STATE_INT_PROMPT: SIGINT arrived during prompt readline.
+**
+** Why one global works:
+** - The handler only writes this variable and does async-signal-safe write(2).
+** - The main loop reads/clears it after readline returns and sets $? = 130.
+** Prompt state points in code:
+** - Before prompt read: src/main.c::shell_loop sets SIG_STATE_PROMPT,
+**   then calls readline("minishell$ ").
+** - After prompt read returns: same function checks INT states and updates
+**   shell->last_exit_status to 130 when needed.
+*/
 extern volatile sig_atomic_t	g_sigint_received;
 // path handler funs
 void							resolve_path(char **p, char *c, t_env *e,
@@ -61,6 +74,46 @@ int								handle_redir(t_redirect *redirections,
 									t_shell *shell);
 int								handle_pipes(int p, int fds[], int rem,
 									t_shell *s);
+/*
+** Signal setup API (implemented in src/signals/signal_handle.c)
+**
+** Exact runtime timeline (where + when + why):
+**
+** 1) Shell startup, before first prompt:
+**    - Call: setup_signals_parent()
+**    - Why: parent must own interactive Ctrl-C behavior at prompt.
+**
+** 2) While parsing redirections, before heredoc input loop:
+**    - Call: setup_signals_heredoc()
+**    - Location: src/parsing/heredoc_handle.c::fill_heredoc_helper
+**      (inside heredoc child, before readline("> ")).
+**    - Why: heredoc reader uses dedicated signal mode (Ctrl-C aborts heredoc,
+**      SIGQUIT ignored).
+**
+** 3) After heredoc finishes (normal delimiter or Ctrl-C):
+**    - Location: src/parsing/heredoc_handle.c::fill_heredoc (parent waitpid)
+**    - Effect on flow: parent receives child status and parser continues or
+**      stops based on fill_heredoc return/status.
+**
+** 4) After parsing/expansion and before execute():
+**    - Call: setup_signals_waits()
+**    - Location: src/parsing/parser_and_execute.c::parse_and_execute
+**      (immediately before execute(shell)).
+**    - Why: parent is entering wait phase; avoid prompt redisplay side effects
+**      while children are running.
+**
+** 5) Right before each child runs command logic:
+**    - Call: setup_signals_child()
+**    - Locations:
+**      src/executor/executor_utils.c::fork_cmd (external commands),
+**      src/builtin/builtin_utils.c::execute_in_child (builtin in child path).
+**    - Why: child must restore default SIGINT/SIGQUIT behavior like real cmd.
+**
+** 6) After execute wait loop completes, before next prompt:
+**    - Call: setup_signals_parent()
+**    - Location: src/executor/executor.c::execute (after waiting_loop_free_pids)
+**    - Why: restore prompt-time signal behavior for next readline cycle.
+*/
 // signals
 void							setup_signals_child(void);
 void							setup_signals_parent(void);

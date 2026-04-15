@@ -6,36 +6,47 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:05 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/13 02:06:54 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 00:06:37 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Single definition of the global signal flag */
-//	g_sigint_received = 1;         // we cant do anything  with it now
-volatile sig_atomic_t	g_sigint_received = 0;
+/* One global signal state shared by handler and main loop. */
+volatile sig_atomic_t	g_sigint_received = SIG_STATE_NONE;
 //  ^         ^
 //  |         |
 //  |         └── one instruction read/write, no torn values
 //  └── always read from memory, never from register/cache
-
+// This is the safe pattern for data shared between
+// a signal handler and normal code
 static void	handle_sigint(int sig)
 {
 	(void)sig;
-	g_sigint_received = 1;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	write(1, "\n", 1);//we print new line aw
+	if (g_sigint_received == SIG_STATE_PROMPT
+		|| g_sigint_received == SIG_STATE_INT_PROMPT)
+	{
+		g_sigint_received = SIG_STATE_INT_PROMPT;
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else
+		g_sigint_received = SIG_STATE_INT_OUTSIDE;
 }
 
+// in wait mode after u kill the child process
+// print new line
 static void	handle_sigint_wait(int sig)
 {
 	(void)sig;
 	write(1, "\n", 1);
 }
 
+// this is for here doc bc its also a process
+//	sigaction(SIGQUIT, &sa, NULL); 
+//  Ctrl+backslash print the error
 void	setup_signals_heredoc(void)
 {
 	struct sigaction	sa;
@@ -43,7 +54,7 @@ void	setup_signals_heredoc(void)
 	sa.sa_handler = SIG_IGN;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-	sigaction(SIGQUIT, &sa, NULL); // ignore Ctrl+backslash
+	sigaction(SIGQUIT, &sa, NULL);
 	sa.sa_handler = SIG_DFL;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;

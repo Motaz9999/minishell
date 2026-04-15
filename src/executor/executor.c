@@ -6,26 +6,22 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/15 22:48:32 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/15 23:58:40 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	waiting_loop_free_pids_helper2(int *status, t_shell *shell, int i,
-		int cmd_count)
+static void	waiting_loop_update_last_status(int status, t_shell *shell)
 {
-	if (i == cmd_count - 1)
+	if (WIFEXITED(status))
+		shell->last_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
 	{
-		if (WIFEXITED(*status))
-			shell->last_exit_status = WEXITSTATUS(*status);
-		else if (WIFSIGNALED(status))
-		{
-			*status = WTERMSIG(status);
-			shell->last_exit_status = *status + 128;
-			if (*status == SIGQUIT)
-				write(1, "Quit (core dumped)\n", 19);
-		}
+		status = WTERMSIG(status);
+		shell->last_exit_status = status + 128;
+		if (status == SIGQUIT)
+			write(1, "Quit (core dumped)\n", 19);
 	}
 }
 
@@ -75,7 +71,8 @@ static void	waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count)
 				i++;
 				continue ;
 			}
-			waiting_loop_free_pids_helper2(&status, shell, i,cmd_count);
+			if (i == cmd_count - 1)
+				waiting_loop_update_last_status(status, shell);
 		}
 		i++;
 	}
@@ -168,7 +165,6 @@ void	execute(t_shell *shell)
 		return ;
 	ft_memset(ext.pids, -1, count_cmd * sizeof(pid_t));
 	execute_helper(&ext, shell);
-	setup_signals_waits();
 	waiting_loop_free_pids(ext.pids, shell, count_cmd);
-	setup_signals_parent(); // return to parent mode
+	setup_signals_parent();
 }

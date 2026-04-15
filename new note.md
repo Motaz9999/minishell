@@ -94,8 +94,12 @@ Status legend:
 - OPEN = not fixed yet
 - IN PROGRESS = partially fixed, needs final pass
 - SOLVED = moved to section 7
+- SKIPPED = deferred by request
 
-### P1) Unsupported operators are parsed as plain text (OPEN, Medium)
+### P1) Unsupported operators are parsed as plain text (SKIPPED, Medium)
+
+Reason:
+- Deferred by request on 2026-04-15.
 
 Current behavior:
 - && and || are treated as normal words.
@@ -141,26 +145,7 @@ Fix:
 Validation after fix:
 - Run cat, press Ctrl+C once, exactly one clean prompt appears.
 
-### P3) waitpid return value not handled safely (OPEN, Medium)
-
-Current behavior:
-- waitpid result is used without robust return-value checks in wait loop.
-
-Risk:
-- EINTR or other waitpid errors can leave status logic undefined.
-
-Files to update:
-- src/executor/executor.c
-
-Fix:
-- Check waitpid return.
-- Retry on EINTR.
-- Handle other errors explicitly and avoid reading invalid status.
-
-Validation after fix:
-- Stress interrupts during pipeline wait; no inconsistent status updates.
-
-### P4) Escaped quotes in double quotes are not handled (OPEN, Low)
+### P3) Escaped quotes in double quotes are not handled (OPEN, Low)
 
 Current behavior:
 - Backslash-escaped quote inside double quotes is not parsed bash-like.
@@ -178,7 +163,7 @@ Fix:
 Validation after fix:
 - echo "a\"b" outputs a"b.
 
-### P5) Placeholder quote file should be implemented or removed (OPEN, Low)
+### P4) Placeholder quote file should be implemented or removed (OPEN, Low)
 
 Current behavior:
 - src/parsing/handle_quote.c exists as a placeholder with no real logic.
@@ -202,7 +187,7 @@ Validation after fix:
 - Build succeeds with no unused/dead parser file confusion.
 - Quote behavior tests still pass.
 
-### P6) Optional tester compatibility: message casing (OPEN, Low)
+### P5) Optional tester compatibility: message casing (OPEN, Low)
 
 Current behavior:
 - Some external testers expect "Command not found" exact casing.
@@ -281,3 +266,22 @@ Result:
 	- `cat << '$END'` stops on `$END`.
 	- `cat << "$END"` stops on `$END`.
 	- Existing behavior preserved for `<< EOF` (expands body) and `<< 'EOF'` (no expansion).
+
+### SOLVED) waitpid error handling in executor wait loop
+
+Files updated:
+- src/executor/executor.c
+
+Result:
+- Added EINTR-safe wait loop helper and explicit waitpid failure handling.
+- Last-command status extraction remains correct after successful waits.
+
+### SOLVED) Heredoc EOF before delimiter warning
+
+Files updated:
+- src/parsing/heredoc_handle.c
+
+Result:
+- EOF (Ctrl+D) before delimiter now prints:
+	- minishell: warning: here-document at line 1 delimited by end-of-file (wanted `DELIM')
+- Normal delimiter-terminated heredoc flow remains unchanged.
