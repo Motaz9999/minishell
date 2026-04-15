@@ -6,19 +6,11 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/15 20:52:56 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 01:43:10 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// check on chars that is the same form as key in env list
-int	check_valid_key_char(char c)
-{
-	if (ft_isalnum(c) || c == '_')
-		return (TRUE);
-	return (FALSE);
-}
 
 // Yes, all expansions start with $, but NO it
 // doesn't have to be at the start:

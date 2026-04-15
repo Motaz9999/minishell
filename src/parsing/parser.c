@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/16 01:43:57 by moodeh            #+#    #+#             */
+/*   Updated: 2026/04/16 01:43:58 by moodeh           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	alloc_arrays(t_command *cmd, int count)
@@ -48,8 +60,8 @@ t_command	*parse_one_command(t_token **tok, t_shell *shell)
 
 t_command	*parser(t_token *tokens, t_shell *shell)
 {
-	t_command *head;
-	t_command *cmd;
+	t_command	*head;
+	t_command	*cmd;
 
 	head = NULL;
 	while (tokens && tokens->type != TOKEN_EOF)

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 00:07:53 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 01:46:52 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,8 @@ int								handle_pipes(int p, int fds[], int rem,
 **
 ** 6) After execute wait loop completes, before next prompt:
 **    - Call: setup_signals_parent()
-**    - Location: src/executor/executor.c::execute (after waiting_loop_free_pids)
+**
+	- Location: src/executor/executor.c::execute (after waiting_loop_free_pids)
 **    - Why: restore prompt-time signal behavior for next readline cycle.
 */
 // signals
@@ -198,6 +199,8 @@ char							**make_envp(t_env *env_list);
 int								count_env_vars(t_env *env);
 // executor internals
 void							free_pids(t_ext *ext);
+void							waiting_loop_free_pids(pid_t pids[],
+									t_shell *shell, int cmd_count);
 // shell cleanup
 void							free_shell(t_shell *shell);
 
@@ -210,9 +213,14 @@ void							execute_builtin_cmd(t_ext *ext, t_shell *shell);
 void							expand_args_from_cmd(t_shell *shell,
 									t_command *cmd);
 char							*expand_cmd(char *expand_it, t_shell *shell);
-
+int								check_valid_key_char(char c);
 int								search_for_special(char *word);
 int								check_valid_key_char(char c);
 // replace str
 char							*replace_str(char *expand_it, t_shell *shell);
+
+// redir hepler
+char							*normalize_heredoc_key(char *raw);
+t_redir_type					get_redir_type(t_token_type type);
+t_redirect						*new_redirect(t_redir_type type, char *file);
 #endif
