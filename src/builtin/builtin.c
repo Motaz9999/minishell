@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 00:26:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 21:36:23 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/15 22:28:29 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,16 @@ t_builtin	get_builtin(t_command *cmd)
 }
 
 //this fun for save stdin and stdout
+//
 int	execute_builtin_helper(t_ext *ext, t_shell *shell, int *saved_stdin,
 		int *saved_stdout)
 {
-	(void)ext;
 	(void)shell;
+	if (ext)
+	{
+		ext->pipe_fds[0] = -1;
+		ext->pipe_fds[1] = -1;
+	}
 	*saved_stdin = dup(STDIN_FILENO);
 	if (*saved_stdin == -1)
 		return (error_syscall("dup", -1));
@@ -50,6 +55,11 @@ int	execute_builtin_helper(t_ext *ext, t_shell *shell, int *saved_stdin,
 	{
 		close(*saved_stdin);
 		return (error_syscall("dup", -1));
+	}
+	if (ext)
+	{
+		ext->pipe_fds[0] = *saved_stdin;
+		ext->pipe_fds[1] = *saved_stdout;
 	}
 	return (0);
 }
@@ -88,5 +98,10 @@ pid_t	execute_builtin(t_ext *ext, t_shell *shell, int casee)
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
 	close(saved_stdout);
+	if (ext)
+	{
+		ext->pipe_fds[0] = -1;
+		ext->pipe_fds[1] = -1;
+	}
 	return (-1);
 }
