@@ -58,9 +58,11 @@ static int	handle_invalid_numeric_arg(t_ext *ext, t_shell *shell)
 {
 	if (ext->cmd->args[1] && ft_str_isdigit(ext->cmd->args[1]) == FALSE)
 	{
-		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(RED, 2);
+		ft_putstr_fd(SHELL_NAME ": exit: ", 2);
 		ft_putstr_fd(ext->cmd->args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
+		ft_putstr_fd(RESET, 2);
 		cleanup_exit_resources(ext, shell);
 		exit(2);
 	}
@@ -98,7 +100,10 @@ int	exit_shell(t_ext *ext, t_shell *shell)
 	handle_invalid_numeric_arg(ext, shell);
 	if (find_args_count(ext->cmd->args) > 2)
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		ft_putstr_fd(RED, 2);
+		ft_putstr_fd(SHELL_NAME ": exit: too many arguments", 2);
+		ft_putstr_fd(RESET, 2);
+		ft_putstr_fd("\n", 2);
 		return (FALSE);
 	}
 	exit_code = compute_exit_code(ext);

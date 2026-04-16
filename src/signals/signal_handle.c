@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:05 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 00:06:37 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 02:09:41 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,9 @@ volatile sig_atomic_t	g_sigint_received = SIG_STATE_NONE;
 //  |         └── one instruction read/write, no torn values
 //  └── always read from memory, never from register/cache
 // This is the safe pattern for data shared between
-// a signal handler and normal code
-static void	handle_sigint(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);//we print new line aw
-	if (g_sigint_received == SIG_STATE_PROMPT
-		|| g_sigint_received == SIG_STATE_INT_PROMPT)
-	{
-		g_sigint_received = SIG_STATE_INT_PROMPT;
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else
-		g_sigint_received = SIG_STATE_INT_OUTSIDE;
-}
-
-// in wait mode after u kill the child process
-// print new line
-static void	handle_sigint_wait(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);
-}
 
 // this is for here doc bc its also a process
-//	sigaction(SIGQUIT, &sa, NULL); 
+//	sigaction(SIGQUIT, &sa, NULL);
 //  Ctrl+backslash print the error
 void	setup_signals_heredoc(void)
 {

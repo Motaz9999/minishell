@@ -39,9 +39,11 @@ char	*cut_value(char *arg, int cut)
 // custom error handler from export
 int	error_cmd_export(char *input)
 {
-	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(RED, 2);
+	ft_putstr_fd(SHELL_NAME ": export: `", 2);
 	ft_putstr_fd(input, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
+	ft_putstr_fd(RESET, 2);
 	return (FALSE);
 }
 

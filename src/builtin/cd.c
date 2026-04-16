@@ -23,7 +23,10 @@ int	check_on_args(char **args)
 		count++;
 	if (count == 1 || count == 2)
 		return (TRUE);
-	ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+	ft_putstr_fd(RED, 2);
+	ft_putstr_fd(SHELL_NAME ": cd: too many arguments", 2);
+	ft_putstr_fd(RESET, 2);
+	ft_putstr_fd("\n", 2);
 	return (FALSE);
 }
 
@@ -43,10 +46,12 @@ char	*get_home_path(t_env *env_list)
 
 static int	cd_helper_error(char *path)
 {
-	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(RED, 2);
+	ft_putstr_fd(SHELL_NAME ": cd: ", 2);
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd(RESET, 2);
 	ft_putstr_fd("\n", 2);
 	return (FALSE);
 }

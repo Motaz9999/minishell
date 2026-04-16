@@ -154,7 +154,7 @@ typedef struct s_heredoc_ctx
 	t_command			*cmd;
 	t_redirect			*redir;
 	t_shell				*shell;
-	char					*key;
+	char				*key;
 	int					quote_type;
 }						t_heredoc_ctx;
 

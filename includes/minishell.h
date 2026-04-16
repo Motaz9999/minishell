@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 01:59:59 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/16 02:19:59 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int								handle_pipes(int p, int fds[], int rem,
 **
 ** 2) While parsing redirections, before heredoc input loop:
 **    - Call: setup_signals_heredoc()
-**    - Location: src/parsing/heredoc_handle.c::fill_heredoc_helper
 **      (inside heredoc child, before readline("> ")).
 **    - Why: heredoc reader uses dedicated signal mode (Ctrl-C aborts heredoc,
 **      SIGQUIT ignored).
@@ -117,6 +116,8 @@ int								handle_pipes(int p, int fds[], int rem,
 **    - Why: restore prompt-time signal behavior for next readline cycle.
 */
 // signals
+void							handle_sigint(int sig);
+void							handle_sigint_wait(int sig);
 void							setup_signals_child(void);
 void							setup_signals_parent(void);
 void							setup_signals_waits(void);
@@ -192,7 +193,8 @@ int								count_commands_parser(t_command *commands);
 void							print_commands(t_command *commands);
 int								fill_heredoc(t_command *cmd, t_redirect *redir,
 									t_shell *shell, int quote_type);
-pid_t						fill_heredoc_helper(t_heredoc_ctx *ctx, int fds[]);
+pid_t						fill_heredoc_helper(t_heredoc_ctx *ctx,
+										int fds[]);
 // env init
 t_env							*init_env(char **envp);
 void							free_env_list(t_env *list);
@@ -217,12 +219,9 @@ void							expand_args_from_cmd(t_shell *shell,
 char							*expand_cmd(char *expand_it, t_shell *shell);
 int								check_valid_key_char(char c);
 int								search_for_special(char *word);
-int								check_valid_key_char(char c);
 // replace str
 char							*replace_str(char *expand_it, t_shell *shell);
 
 // redir hepler
 char							*normalize_heredoc_key(char *raw);
-t_redir_type					get_redir_type(t_token_type type);
-t_redirect						*new_redirect(t_redir_type type, char *file);
 #endif
