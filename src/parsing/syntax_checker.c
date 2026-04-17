@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamr <aamr@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 11:22:13 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/17 22:34:14 by aamr             ###   ########.fr       */
+/*   Updated: 2026/04/18 02:03:58 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_pipe(t_token *tok)
 	if (!tok->next || tok->next->type == TOKEN_PIPE
 		|| tok->next->type == TOKEN_EOF)
 		return (error_syntax("|", 2));
-	return (0);
+	return (0); 
 }
 
 // make sure it

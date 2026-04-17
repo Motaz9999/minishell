@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/18 01:11:24 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/18 02:01:20 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,7 @@ int								handle_redir(t_redirect *redirections,
 int								handle_pipes(int p, int fds[], int rem,
 									t_shell *s);
 /*
-** Signal setup API (implemented in src/signals/signal_handle.c)
 **
-** Exact runtime timeline (where + when + why):
 **
 ** 1) Shell startup, before first prompt:
 **    - Call: setup_signals_parent()
@@ -87,8 +85,7 @@ int								handle_pipes(int p, int fds[], int rem,
 ** 2) While parsing redirections, before heredoc input loop:
 **    - Call: setup_signals_heredoc()
 **      (inside heredoc child, before readline("> ")).
-**    - Why: heredoc reader uses dedicated signal mode (Ctrl-C aborts heredoc,
-**      SIGQUIT ignored).
+**    - Why: heredoc reader uses dedicated signal mode (Ctrl-C , ctrl -D)
 **
 ** 3) After heredoc finishes (normal delimiter or Ctrl-C):
 **    - Location: src/parsing/heredoc_handle.c::fill_heredoc (parent waitpid)
@@ -111,8 +108,7 @@ int								handle_pipes(int p, int fds[], int rem,
 **
 ** 6) After execute wait loop completes, before next prompt:
 **    - Call: setup_signals_parent()
-**
-	- Location: src/executor/executor.c::execute (after waiting_loop_free_pids)
+**	  - Location: src/executor/executor.c::execute (after waiting_loop_free_pids)
 **    - Why: restore prompt-time signal behavior for next readline cycle.
 */
 // signals
