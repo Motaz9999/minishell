@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamr <aamr <aamr@student.42.fr>>           +#+  +:+       +#+        */
+/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/17 22:02:46 by aamr             ###   ########.fr       */
+/*   Updated: 2026/04/18 01:11:24 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ char							*cut_value(char *arg, int cut);
 int								error_cmd_export(char *input);
 int								print_all_env_in_order(t_env *env_list);
 // parser / lexer
+t_token							*make_operator_token(t_token_type type,
+									char *str, int *i, int step);
 t_token							*lexer(char *line);
 int								is_space(char c);
 int								is_operator_char(char c);
@@ -193,8 +195,8 @@ int								count_commands_parser(t_command *commands);
 void							print_commands(t_command *commands);
 int								fill_heredoc(t_command *cmd, t_redirect *redir,
 									t_shell *shell, int quote_type);
-pid_t						fill_heredoc_helper(t_heredoc_ctx *ctx,
-										int fds[]);
+pid_t							fill_heredoc_helper(t_heredoc_ctx *ctx,
+									int fds[]);
 // env init
 t_env							*init_env(char **envp);
 void							free_env_list(t_env *list);
