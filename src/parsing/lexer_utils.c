@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamr <aamr@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 01:53:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/17 22:35:20 by aamr             ###   ########.fr       */
+/*   Updated: 2026/04/18 01:11:29 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ void	token_add_back(t_token **head, t_token *new_one)
 	last->next = new_one;
 }
 
-static t_token	*make_operator_token(t_token_type type, char *str, int *i,
-		int step)
+t_token	*make_operator_token(t_token_type type, char *str, int *i, int step)
 {
 	char	*value;
 
