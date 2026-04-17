@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redir_helper.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aamr <aamr <aamr@student.42.fr>>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 01:46:14 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 01:51:50 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/17 21:53:16 by aamr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ t_redirect	*new_redirect(t_redir_type type, char *file)
 	redir->heredoc_fd = -1;
 	redir->next = NULL;
 	if (!redir->file)
-		return (free(redir), NULL);
+	{
+		free(redir);
+		return (NULL);
+	}
 	return (redir);
 }

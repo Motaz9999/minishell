@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aamr <aamr <aamr@student.42.fr>>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 01:53:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 01:53:34 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/17 21:48:50 by aamr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,14 @@ void	token_add_back(t_token **head, t_token *new_one)
 	last->next = new_one;
 }
 
-t_token	*read_operator_token(char *line, int *i)
+static t_token	*make_operator_token(t_token_type type, char *str, int *i,
+		int step)
 {
-	if (line[*i] == '|')
-		return ((*i)++, new_token(TOKEN_PIPE, ft_strdup("|"), NO_QUOTE));
-	if (line[*i] == '<' && line[*i + 1] == '<')
-		return ((*i) += 2, new_token(TOKEN_REDIR_HEREDOC, ft_strdup("<<"),
-				NO_QUOTE));
-	if (line[*i] == '>' && line[*i + 1] == '>')
-		return ((*i) += 2, new_token(TOKEN_REDIR_APPEND, ft_strdup(">>"),
-				NO_QUOTE));
-	if (line[*i] == '<')
-		return ((*i)++, new_token(TOKEN_REDIR_IN, ft_strdup("<"), NO_QUOTE));
-	return ((*i)++, new_token(TOKEN_REDIR_OUT, ft_strdup(">"), NO_QUOTE));
+	char	*value;
+
+	value = ft_strdup(str);
+	if (!value)
+		return (NULL);
+	*i += step;
+	return (new_token(type, value, NO_QUOTE));
 }

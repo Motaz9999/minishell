@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_word.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aamr <aamr <aamr@student.42.fr>>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 01:51:31 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 01:52:37 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/17 21:49:58 by aamr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ char	*read_word(char *line, int *i, int *quote_type)
 	{
 		part = read_part(line, i, &has_single, &has_double);
 		if (!part)
-			return (free(word), NULL);
+		{
+			free(word);
+			return (NULL);
+		}
 		word = join_free(word, part);
 		if (!word)
 			return (NULL);

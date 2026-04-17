@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aamr <aamr <aamr@student.42.fr>>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 01:43:57 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 01:43:58 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/17 22:03:15 by aamr             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ static int	alloc_arrays(t_command *cmd, int count)
 		return (1);
 	cmd->quote_types = ft_calloc((count + 1), sizeof(t_quote_type));
 	if (!cmd->quote_types)
-		return (free(cmd->args), 1);
+	{
+		free(cmd->args);
+		return (1);
+	}
 	return (0);
 }
 
@@ -30,6 +33,16 @@ static int	add_argument(t_command *cmd, t_token *tok, int *i)
 		return (1);
 	cmd->quote_types[*i] = tok->quote_type;
 	(*i)++;
+	return (0);
+}
+
+static int	handle_command_token(t_command *cmd, t_token **tok,
+		t_shell *shell, int *i)
+{
+	if ((*tok)->type == TOKEN_WORD && add_argument(cmd, *tok, i))
+		return (1);
+	if (is_redir_token((*tok)->type) && parse_redirection(cmd, tok, shell))
+		return (1);
 	return (0);
 }
 
@@ -44,14 +57,18 @@ t_command	*parse_one_command(t_token **tok, t_shell *shell)
 		return (NULL);
 	count = count_args_in_segment(*tok);
 	if (alloc_arrays(cmd, count))
-		return (free(cmd), NULL);
+	{
+		free(cmd);
+		return (NULL);
+	}
 	i = 0;
 	while (*tok && (*tok)->type != TOKEN_EOF && (*tok)->type != TOKEN_PIPE)
 	{
-		if ((*tok)->type == TOKEN_WORD && add_argument(cmd, *tok, &i))
-			return (free_commands(cmd), NULL);
-		if (is_redir_token((*tok)->type) && parse_redirection(cmd, tok, shell))
-			return (free_commands(cmd), NULL);
+		if (handle_command_token(cmd, tok, shell, &i))
+		{
+			free_commands(cmd);
+			return (NULL);
+		}
 		*tok = (*tok)->next;
 	}
 	cmd->args[i] = NULL;
@@ -68,7 +85,10 @@ t_command	*parser(t_token *tokens, t_shell *shell)
 	{
 		cmd = parse_one_command(&tokens, shell);
 		if (!cmd)
-			return (free_commands(head), NULL);
+		{
+			free_commands(head);
+			return (NULL);
+		}
 		command_add_back(&head, cmd);
 		if (tokens && tokens->type == TOKEN_PIPE)
 			tokens = tokens->next;
