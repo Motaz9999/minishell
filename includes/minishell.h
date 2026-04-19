@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/18 02:01:20 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/19 03:22:22 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int								handle_redir(t_redirect *redirections,
 									t_shell *shell);
 int								handle_pipes(int p, int fds[], int rem,
 									t_shell *s);
+void							close_all_heredoc_fds_except(t_command *commands,
+									t_command *keep_cmd);
 /*
 **
 **
@@ -108,7 +110,7 @@ int								handle_pipes(int p, int fds[], int rem,
 **
 ** 6) After execute wait loop completes, before next prompt:
 **    - Call: setup_signals_parent()
-**	  - Location: src/executor/executor.c::execute (after waiting_loop_free_pids)
+**		- Location: src/executor/executor.c::execute (after waiting_loop_free_pids)
 **    - Why: restore prompt-time signal behavior for next readline cycle.
 */
 // signals

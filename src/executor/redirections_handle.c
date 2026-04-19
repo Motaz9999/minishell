@@ -6,14 +6,44 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:01 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/08 15:38:40 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/19 03:49:45 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// It iterates over all commands and all redirections.
+// For each REDIR_HEREDOC with heredoc_fd != -1
+// it closes that FD
+//close inherited/unneeded heredoc FDs across command lis
+void	close_all_heredoc_fds_except(t_command *commands, t_command *keep_cmd)
+{
+	t_command	*cmd;
+	t_redirect	*redir;
+
+	cmd = commands;
+	while (cmd)
+	{
+		if (cmd != keep_cmd)
+		{
+			redir = cmd->redirects;
+			while (redir)
+			{
+				if (redir->type == REDIR_HEREDOC && redir->heredoc_fd != -1)
+				{
+					close(redir->heredoc_fd);
+					redir->heredoc_fd = -1;
+				}
+				redir = redir->next;
+			}
+		}
+		cmd = cmd->next;
+	}
+}
+
 // here we handle  heredoc redir << // already opend  and filed and sent
 // open fails
+//apply one command heredoc as stdin via dup2(fd, 0), then close it.
 static int	handle_redir_heredoc(t_redirect *redir, t_shell *shell)
 {
 	if (redir->heredoc_fd == -1)
@@ -25,9 +55,11 @@ static int	handle_redir_heredoc(t_redirect *redir, t_shell *shell)
 	{
 		shell->last_exit_status = 1;
 		close(redir->heredoc_fd);
+		redir->heredoc_fd = -1;
 		return (error_syscall("dup2", 1) - 1);
 	}
 	close(redir->heredoc_fd);
+	redir->heredoc_fd = -1;
 	return (TRUE);
 }
 

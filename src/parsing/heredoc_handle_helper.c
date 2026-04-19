@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handle_helper.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamr <aamr@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 01:58:03 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/17 22:35:24 by aamr             ###   ########.fr       */
+/*   Updated: 2026/04/19 03:50:12 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//close already-created heredoc FDs only inside current command
+// during parse-time heredoc child. 
+static void	close_cmd_heredoc_fds(t_command *cmd)
+{
+	t_redirect	*redir;
+
+	if (!cmd)
+		return ;
+	redir = cmd->redirects;
+	while (redir)
+	{
+		if (redir->type == REDIR_HEREDOC && redir->heredoc_fd != -1)
+		{
+			close(redir->heredoc_fd);
+			redir->heredoc_fd = -1;
+		}
+		redir = redir->next;
+	}
+}
 
 static int	handle_heredoc_line(t_heredoc_ctx *ctx, int write_fd, char *line)
 {
@@ -33,6 +53,8 @@ static void	run_heredoc_child(t_heredoc_ctx *ctx, int fds[])
 {
 	char	*line;
 
+	close_all_heredoc_fds_except(ctx->shell->commands, NULL);
+	close_cmd_heredoc_fds(ctx->cmd);
 	close(fds[0]);
 	setup_signals_heredoc();
 	while (TRUE)

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 01:38:00 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/19 03:14:35 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,13 @@ static void	execute_helper(t_ext *ext, t_shell *shell)
 	}
 }
 
+void	execute_one_builtin_cmd(t_ext *ext, t_shell *shell)
+{
+	ext->pipe_fds[0] = -1;
+	ext->pipe_fds[1] = -1;
+	execute_builtin(ext, shell, 0);
+	setup_signals_parent();
+}
 // this is the parent process
 // make a custom struct
 // but them all one struct this best
@@ -88,14 +95,15 @@ void	execute(t_shell *shell)
 	ext.prev_fd_in = -1;
 	if (count_cmd == 1 && get_builtin(shell->commands) != BI_NONE)
 	{
-		ext.pipe_fds[0] = -1;
-		ext.pipe_fds[1] = -1;
-		execute_builtin(&ext, shell, 0);
+		execute_one_builtin_cmd(&ext, shell);
 		return ;
 	}
 	ext.pids = malloc(sizeof(pid_t) * count_cmd);
 	if (ext.pids == NULL)
+	{
+		setup_signals_parent();
 		return ;
+	}
 	ft_memset(ext.pids, -1, count_cmd * sizeof(pid_t));
 	execute_helper(&ext, shell);
 	waiting_loop_free_pids(ext.pids, shell, count_cmd);

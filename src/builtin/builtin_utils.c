@@ -16,6 +16,7 @@
 void	execute_in_child(t_ext *ext, t_shell *shell)
 {
 	setup_signals_child();
+	close_all_heredoc_fds_except(shell->commands, ext->cmd);
 	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, count_commands(ext->cmd),
 			shell))
 	{

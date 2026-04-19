@@ -81,15 +81,19 @@ t_command	*parser(t_token *tokens, t_shell *shell)
 	t_command	*cmd;
 
 	head = NULL;
+	shell->commands = NULL;
 	while (tokens && tokens->type != TOKEN_EOF)
 	{
+		shell->commands = head;
 		cmd = parse_one_command(&tokens, shell);
 		if (!cmd)
 		{
 			free_commands(head);
+			shell->commands = NULL;
 			return (NULL);
 		}
 		command_add_back(&head, cmd);
+		shell->commands = head;
 		if (tokens && tokens->type == TOKEN_PIPE)
 			tokens = tokens->next;
 	}

@@ -85,6 +85,7 @@ static pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 	if (pid == 0)
 	{
 		setup_signals_child();
+		close_all_heredoc_fds_except(shell->commands, ext->cmd);
 		envp = make_envp(shell->env_list);
 		fork_cmd_helper(envp, ext, shell, find_path);
 		execve(find_path, ext->cmd->args, envp);
