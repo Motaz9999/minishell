@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/*
+** Finalize heredoc collection in parent after fork.
+** Wait child, propagate status, and store read-end fd on success.
+*/
 static int	finish_heredoc(pid_t pid, int fds[2], t_shell *shell,
 		t_redirect *redir)
 {
@@ -41,6 +45,10 @@ static int	finish_heredoc(pid_t pid, int fds[2], t_shell *shell,
 	return (TRUE);
 }
 
+/*
+** Create a heredoc pipe and launch reader child.
+** The parent returns success/failure and keeps read-end for execution.
+*/
 int	fill_heredoc(t_command *cmd, t_redirect *redir, t_shell *shell,
 		int quote_type)
 {

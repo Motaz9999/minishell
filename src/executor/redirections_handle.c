@@ -6,16 +6,16 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:01 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/19 03:49:45 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/19 03:55:57 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// It iterates over all commands and all redirections.
-// For each REDIR_HEREDOC with heredoc_fd != -1
-// it closes that FD
-//close inherited/unneeded heredoc FDs across command lis
+/*
+** Close all currently tracked heredoc read-end fds except one command.
+** Used in child paths to prevent inherited descriptor leaks.
+*/
 void	close_all_heredoc_fds_except(t_command *commands, t_command *keep_cmd)
 {
 	t_command	*cmd;
@@ -41,9 +41,9 @@ void	close_all_heredoc_fds_except(t_command *commands, t_command *keep_cmd)
 	}
 }
 
-// here we handle  heredoc redir << // already opend  and filed and sent
-// open fails
-//apply one command heredoc as stdin via dup2(fd, 0), then close it.
+/*
+** Apply one heredoc redirection on stdin and consume its fd.
+*/
 static int	handle_redir_heredoc(t_redirect *redir, t_shell *shell)
 {
 	if (redir->heredoc_fd == -1)
@@ -63,10 +63,9 @@ static int	handle_redir_heredoc(t_redirect *redir, t_shell *shell)
 	return (TRUE);
 }
 
-// here we handle input redir <
-// open fails
-// 1 => true
-// open fails
+/*
+** Apply input redirection from file to stdin.
+*/
 static int	handle_redir_in(t_redirect *redir, t_shell *shell)
 {
 	redir->fd = open(redir->file, O_RDONLY);
@@ -85,7 +84,9 @@ static int	handle_redir_in(t_redirect *redir, t_shell *shell)
 	return (TRUE);
 }
 
-// here we handle output redir >
+/*
+** Apply output redirection with truncate mode.
+*/
 static int	handle_redir_out(t_redirect *redir, t_shell *shell)
 {
 	redir->fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -104,7 +105,9 @@ static int	handle_redir_out(t_redirect *redir, t_shell *shell)
 	return (TRUE);
 }
 
-// here we handle append redir >>
+/*
+** Apply output redirection with append mode.
+*/
 static int	handle_redir_append(t_redirect *redir, t_shell *shell)
 {
 	redir->fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);

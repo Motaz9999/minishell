@@ -6,13 +6,16 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 15:54:00 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/27 22:02:37 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/19 03:54:13 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// here i want to execute in child
+/*
+** Execute builtin command in child process context.
+** Applies pipes/redirections then runs builtin implementation.
+*/
 void	execute_in_child(t_ext *ext, t_shell *shell)
 {
 	setup_signals_child();

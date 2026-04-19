@@ -12,7 +12,9 @@
 
 #include "minishell.h"
 
-// to add to the list (last node)
+/*
+** Append a redirection node to the command redirection list.
+*/
 void	redirect_add_back(t_redirect **head, t_redirect *new_one)
 {
 	t_redirect	*last;
@@ -30,10 +32,10 @@ void	redirect_add_back(t_redirect **head, t_redirect *new_one)
 	last->next = new_one;
 }
 
-// here i must handle this redire
-// may this redir have a linked list so must check in new_redire
-// it also handle the heredoc in here and in execute
-//
+/*
+** Build one redirection node from current tokens.
+** Heredoc delimiter is normalized before node creation.
+*/
 static t_redirect	*create_redirection(t_token *tok, t_redir_type redir_type)
 {
 	t_redirect	*redir;
@@ -49,6 +51,10 @@ static t_redirect	*create_redirection(t_token *tok, t_redir_type redir_type)
 	return (redir);
 }
 
+/*
+** Run parse-time heredoc collection for REDIR_HEREDOC nodes.
+** On failure, free temporary node and report parser error path.
+*/
 static int	handle_heredoc_redirection(t_command *cmd, t_redirect *redir,
 		t_token *tok, t_shell *shell)
 {
@@ -60,6 +66,10 @@ static int	handle_heredoc_redirection(t_command *cmd, t_redirect *redir,
 	return (1);
 }
 
+/*
+** Parse one redirection operator and its target token.
+** Create node, resolve heredoc immediately when needed, then append.
+*/
 int	parse_redirection(t_command *cmd, t_token **tok, t_shell *shell)
 {
 	t_redirect		*redir;

@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/*
+** Allocate argv and quote-type arrays for one parsed command.
+*/
 static int	alloc_arrays(t_command *cmd, int count)
 {
 	cmd->args = ft_calloc((count + 1), sizeof(char *));
@@ -26,6 +29,9 @@ static int	alloc_arrays(t_command *cmd, int count)
 	return (0);
 }
 
+/*
+** Copy one word token into command argv/quote arrays.
+*/
 static int	add_argument(t_command *cmd, t_token *tok, int *i)
 {
 	cmd->args[*i] = ft_strdup(tok->value);
@@ -36,6 +42,10 @@ static int	add_argument(t_command *cmd, t_token *tok, int *i)
 	return (0);
 }
 
+/*
+** Parse a single token inside current command segment.
+** Handles argument words and redirection operators.
+*/
 static int	handle_command_token(t_command *cmd, t_token **tok,
 		t_shell *shell, int *i)
 {
@@ -46,6 +56,9 @@ static int	handle_command_token(t_command *cmd, t_token **tok,
 	return (0);
 }
 
+/*
+** Parse one command segment until pipe/EOF and build command node.
+*/
 t_command	*parse_one_command(t_token **tok, t_shell *shell)
 {
 	t_command	*cmd;
@@ -75,6 +88,10 @@ t_command	*parse_one_command(t_token **tok, t_shell *shell)
 	return (cmd);
 }
 
+/*
+** Parse full token stream into a linked list of commands.
+** Publishes incremental head in shell state for heredoc children.
+*/
 t_command	*parser(t_token *tokens, t_shell *shell)
 {
 	t_command	*head;

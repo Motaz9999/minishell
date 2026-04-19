@@ -12,8 +12,9 @@
 
 #include "minishell.h"
 
-// this fun is for finding out if the key have to expand anything
-// so the key must be normalize first
+/*
+** Normalize stored heredoc delimiter text after lexer encoding.
+*/
 char	*normalize_heredoc_key(char *raw)
 {
 	char	*key;
@@ -32,7 +33,9 @@ char	*normalize_heredoc_key(char *raw)
 	return (key);
 }
 
-// know the redir type
+/*
+** Map lexer token type to parser redirection type.
+*/
 t_redir_type	get_redir_type(t_token_type type)
 {
 	if (type == TOKEN_REDIR_IN)
@@ -44,7 +47,9 @@ t_redir_type	get_redir_type(t_token_type type)
 	return (REDIR_HEREDOC);
 }
 
-// add new node but must have init values
+/*
+** Allocate and initialize one redirection node.
+*/
 t_redirect	*new_redirect(t_redir_type type, char *file)
 {
 	t_redirect	*redir;

@@ -6,19 +6,24 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:00:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 19:11:10 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/19 03:56:25 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+** Free pid array allocated for pipeline children.
+*/
 void	free_pids(t_ext *ext)
 {
 	if (ext && ext->pids)
 		free(ext->pids);
 }
 
-// counter for cmd num
+/*
+** Count commands in pipeline list.
+*/
 int	count_commands(t_command *cmds)
 {
 	int	count;
@@ -32,7 +37,9 @@ int	count_commands(t_command *cmds)
 	return (count);
 }
 
-// error already printed inside handle_redir
+/*
+** Child-side pre-exec setup for env, pipes, and redirections.
+*/
 static void	fork_cmd_helper(char **envp, t_ext *ext, t_shell *shell,
 		char *find_path)
 {
@@ -98,16 +105,10 @@ static pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 	return (pid);
 }
 
-// i have 2 line here it enough for the if statement
-// and dont forget the signal
-// first thing i must do is execute just one command
-
-// also in this fun
-// dont need the others the 1 is for fork and must return pid
-// here is the continue for this fun
-//	if (!ext || !ext->cmd
-//		|| !ext->cmd->args) this is for check if cmd struct is exist
-//
+/*
+** Execute a single pipeline command node.
+** Dispatch builtins or fork/exec external commands.
+*/
 pid_t	execute_one_cmd(t_ext *ext, t_shell *shell)
 {
 	char	*find_path;

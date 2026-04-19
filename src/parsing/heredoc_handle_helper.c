@@ -12,8 +12,10 @@
 
 #include "minishell.h"
 
-//close already-created heredoc FDs only inside current command
-// during parse-time heredoc child. 
+/*
+** Close heredoc read ends already created on the current command.
+** This prevents inherited descriptors from leaking in later heredoc forks.
+*/
 static void	close_cmd_heredoc_fds(t_command *cmd)
 {
 	t_redirect	*redir;
@@ -32,6 +34,10 @@ static void	close_cmd_heredoc_fds(t_command *cmd)
 	}
 }
 
+/*
+** Process one heredoc input line.
+** Stop on delimiter match, optionally expand variables, then write to pipe.
+*/
 static int	handle_heredoc_line(t_heredoc_ctx *ctx, int write_fd, char *line)
 {
 	if (ft_strcmp(line, ctx->key) == 0)
@@ -49,6 +55,10 @@ static int	handle_heredoc_line(t_heredoc_ctx *ctx, int write_fd, char *line)
 	return (TRUE);
 }
 
+/*
+** Child-side heredoc reader loop.
+** Cleans inherited fds, reads lines until delimiter/EOF, then exits.
+*/
 static void	run_heredoc_child(t_heredoc_ctx *ctx, int fds[])
 {
 	char	*line;
@@ -75,6 +85,10 @@ static void	run_heredoc_child(t_heredoc_ctx *ctx, int fds[])
 	exit(0);
 }
 
+/*
+** Fork a dedicated child that collects heredoc input into the pipe.
+** Parent gets child pid for wait/status handling.
+*/
 pid_t	fill_heredoc_helper(t_heredoc_ctx *ctx, int fds[])
 {
 	pid_t	pid;
