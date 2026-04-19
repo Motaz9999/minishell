@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/19 03:22:22 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/19 04:02:41 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int								handle_pipes(int p, int fds[], int rem,
 									t_shell *s);
 void							close_all_heredoc_fds_except(t_command *commands,
 									t_command *keep_cmd);
+									
 /*
 **
 **

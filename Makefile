@@ -29,6 +29,7 @@ SRC =	src/main.c \
     src/executor/executor_utils2.c \
     src/executor/path_handle.c \
     src/executor/pipes_handle.c \
+    src/executor/redir_helper.c \
     src/executor/redirections_handle.c \
     src/signals/signal_handle.c \
     src/signals/signal_handle_helper.c \

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 04:49:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/19 03:14:35 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/19 04:00:59 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	execute_one_builtin_cmd(t_ext *ext, t_shell *shell)
 	execute_builtin(ext, shell, 0);
 	setup_signals_parent();
 }
+
 // this is the parent process
 // make a custom struct
 // but them all one struct this best
