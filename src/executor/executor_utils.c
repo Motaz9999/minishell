@@ -57,6 +57,7 @@ static void	fork_cmd_helper(char **envp, t_ext *ext, t_shell *shell,
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
 		free_pids(ext);
+		free_shell(shell);
 		exit(error_syscall("dup2", shell->last_exit_status));
 	}
 	if (!handle_redir(ext->cmd->redirects, shell))
@@ -64,6 +65,7 @@ static void	fork_cmd_helper(char **envp, t_ext *ext, t_shell *shell,
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
 		free_pids(ext);
+		free_shell(shell);
 		exit(shell->last_exit_status);
 	}
 }
@@ -99,6 +101,7 @@ static pid_t	fork_cmd(t_shell *shell, t_ext *ext, char *find_path)
 		free(find_path);
 		ft_free_all2((void **)envp, NULL);
 		free_pids(ext);
+		free_shell(shell);
 		error_execve(ext->cmd->args[0]);
 	}
 	free(find_path);

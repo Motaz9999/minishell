@@ -49,9 +49,11 @@ static int	handle_redir_in(t_redirect *redir, t_shell *shell)
 	{
 		shell->last_exit_status = 1;
 		close(redir->fd);
+		redir->fd = -1;
 		return (error_syscall("dup2", 1) - 1);
 	}
 	close(redir->fd);
+	redir->fd = -1;
 	return (TRUE);
 }
 
@@ -70,9 +72,11 @@ static int	handle_redir_out(t_redirect *redir, t_shell *shell)
 	{
 		shell->last_exit_status = 1;
 		close(redir->fd);
+		redir->fd = -1;
 		return (error_syscall("dup2", 1) - 1);
 	}
 	close(redir->fd);
+	redir->fd = -1;
 	return (TRUE);
 }
 
@@ -91,9 +95,11 @@ static int	handle_redir_append(t_redirect *redir, t_shell *shell)
 	{
 		shell->last_exit_status = 1;
 		close(redir->fd);
+		redir->fd = -1;
 		return (error_syscall("dup2", 1) - 1);
 	}
 	close(redir->fd);
+	redir->fd = -1;
 	return (TRUE);
 }
 

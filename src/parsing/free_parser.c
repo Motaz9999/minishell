@@ -32,6 +32,8 @@ void	free_redirects(t_redirect *redirects)
 	while (redirects)
 	{
 		next = redirects->next;
+		if (redirects->fd != -1)
+			close(redirects->fd);
 		if (redirects->heredoc_fd != -1)
 			close(redirects->heredoc_fd);
 		free(redirects->file);
