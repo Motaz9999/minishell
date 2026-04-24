@@ -285,3 +285,70 @@ Result:
 - EOF (Ctrl+D) before delimiter now prints:
 	- minishell: warning: here-document at line 1 delimited by end-of-file (wanted `DELIM')
 - Normal delimiter-terminated heredoc flow remains unchanged.
+
+## 8) Signal handling review notes (2026-04-24)
+
+This section records issues found during a focused review of signal flow.
+No fixes are included here.
+
+### A) Non-signal-safe readline calls inside SIGINT handler (High)
+
+Files involved:
+- src/signals/signal_handle_helper.c
+
+What is wrong:
+- handle_sigint calls rl_on_new_line, rl_replace_line, and rl_redisplay directly from the signal handler.
+
+Why this is risky:
+- Those functions are not async-signal-safe.
+- Behavior can become unstable under timing pressure (prompt glitches, hangs, undefined behavior).
+
+### B) Heredoc Ctrl+C can be treated like normal completion (High)
+
+Files involved:
+- src/parsing/heredoc_handle_helper.c
+- src/parsing/heredoc_handle.c
+- src/parsing/parser_redir.c
+
+What is wrong:
+- Heredoc child exits with code 130 when interrupted.
+- Parent only checks WIFSIGNALED path as interruption, then otherwise stores heredoc fd and continues.
+
+Observed risk:
+- Ctrl+C in heredoc may be interpreted as normal exited child path instead of hard interruption path.
+
+### C) SA_RESTART in heredoc SIGINT setup can delay interrupt reaction (Medium)
+
+Files involved:
+- src/signals/signal_handle.c
+- src/parsing/heredoc_handle_helper.c
+
+What is wrong:
+- Heredoc SIGINT setup uses SA_RESTART while loop depends on quick break behavior around readline.
+
+Observed risk:
+- Interrupt reaction can feel delayed or require extra interaction depending on timing/readline behavior.
+
+### D) Prompt-state timing window around readline transition (Medium)
+
+Files involved:
+- src/main.c
+- src/signals/signal_handle_helper.c
+
+What is wrong:
+- g_sigint_received is set to PROMPT before readline call.
+- A SIGINT can arrive in that transition window and be handled as full prompt-mode state.
+
+Observed risk:
+- Inconsistent prompt redraw/status behavior near the entry boundary to readline.
+
+### E) Missing error checks on sigaction and sigemptyset calls (Low)
+
+Files involved:
+- src/signals/signal_handle.c
+
+What is wrong:
+- setup functions do not check return values for signal API calls.
+
+Observed risk:
+- If installation fails, shell keeps unexpected signal dispositions silently, which makes debugging harder.

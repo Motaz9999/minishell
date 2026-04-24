@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 22:31:19 by aamr              #+#    #+#             */
-/*   Updated: 2026/04/18 00:36:28 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/24 22:51:40 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 static int	finish_heredoc(pid_t pid, int fds[2], t_shell *shell,
 		t_redirect *redir)
 {
-	int	status;
+	int		status;
+	pid_t	ret;
 
 	close(fds[1]);
 	if (pid == -1)
@@ -28,7 +29,10 @@ static int	finish_heredoc(pid_t pid, int fds[2], t_shell *shell,
 		close(fds[0]);
 		return (FALSE);
 	}
-	if (waitpid(pid, &status, 0) == -1)
+	ret = waitpid(pid, &status, 0);
+	while (ret == -1 && errno == EINTR)
+		ret = waitpid(pid, &status, 0);
+	if (ret == -1)
 	{
 		shell->last_exit_status = error_syscall("waitpid", 1);
 		close(fds[0]);
@@ -36,7 +40,13 @@ static int	finish_heredoc(pid_t pid, int fds[2], t_shell *shell,
 	}
 	if (WIFSIGNALED(status))
 	{
-		shell->last_exit_status = WTERMSIG(status) + 128;
+		shell->last_exit_status = 130;
+		close(fds[0]);
+		return (FALSE);
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		shell->last_exit_status = 130;
 		close(fds[0]);
 		return (FALSE);
 	}

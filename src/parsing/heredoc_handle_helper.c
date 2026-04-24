@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 01:58:03 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/19 03:50:12 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/24 22:56:38 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,25 @@ static int	handle_heredoc_line(t_heredoc_ctx *ctx, int write_fd, char *line)
 	return (TRUE);
 }
 
+// here u must free all stuff and handle them well
+// then do the normal
+static void	dose_the_user_send_sig(int fds[], t_heredoc_ctx *ctx, char **line)
+{
+	if (g_sigint_received == SIG_STATE_INT_HEREDOC)
+	{
+		if (line && *line)
+			free(*line);
+		if (fds[0] != -1)
+			close(fds[0]);
+		if (fds[1] != -1)
+			close(fds[1]);
+		free_redirects(ctx->redir);
+		free_commands(ctx->cmd);
+		free_shell(ctx->shell);
+		setup_signals_child();
+		kill(getpid() , SIGINT);
+	}
+}
 /*
 ** Child-side heredoc reader loop.
 ** Cleans inherited fds, reads lines until delimiter/EOF, then exits.
@@ -63,13 +82,12 @@ static void	run_heredoc_child(t_heredoc_ctx *ctx, int fds[])
 {
 	char	*line;
 
-	close_all_heredoc_fds_except(ctx->shell->commands, NULL);
-	close_cmd_heredoc_fds(ctx->cmd);
-	close(fds[0]);
-	setup_signals_heredoc();
+	line = NULL;
 	while (TRUE)
 	{
+		dose_the_user_send_sig(fds, ctx, &line);
 		line = readline("> ");
+		dose_the_user_send_sig(fds, ctx, &line);
 		if (!line)
 		{
 			warn_heredoc_eof(ctx->key);
@@ -78,7 +96,8 @@ static void	run_heredoc_child(t_heredoc_ctx *ctx, int fds[])
 		if (!handle_heredoc_line(ctx, fds[1], line))
 			break ;
 	}
-	close(fds[1]);
+	if (fds[1] != -1)
+		close(fds[1]);
 	free_redirects(ctx->redir);
 	free_commands(ctx->cmd);
 	free_shell(ctx->shell);
@@ -100,6 +119,13 @@ pid_t	fill_heredoc_helper(t_heredoc_ctx *ctx, int fds[])
 		return (-1);
 	}
 	if (pid == 0)
+	{
+		close_all_heredoc_fds_except(ctx->shell->commands, NULL);
+		close_cmd_heredoc_fds(ctx->cmd);
+		close(fds[0]);
+		fds[0] = -1;
+		setup_signals_heredoc();
 		run_heredoc_child(ctx, fds);
+	}
 	return (pid);
 }

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 21:20:01 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/19 04:03:25 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/24 22:07:50 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	handle_redir_in(t_redirect *redir, t_shell *shell)
 	if (redir->fd == -1)
 	{
 		shell->last_exit_status = 1;
-		return (error_syscall("open", 1) - 1);
+		return (error_syscall(redir->file, 1) - 1);
 	}
 	if (dup2(redir->fd, 0) == -1)
 	{
@@ -66,7 +66,7 @@ static int	handle_redir_out(t_redirect *redir, t_shell *shell)
 	if (redir->fd == -1)
 	{
 		shell->last_exit_status = 1;
-		return (error_syscall("open", 1) - 1);
+		return (error_syscall(redir->file, 1) - 1);
 	}
 	if (dup2(redir->fd, 1) == -1)
 	{
@@ -89,7 +89,7 @@ static int	handle_redir_append(t_redirect *redir, t_shell *shell)
 	if (redir->fd == -1)
 	{
 		shell->last_exit_status = 1;
-		return (error_syscall("open", 1) - 1);
+		return (error_syscall(redir->file, 1) - 1);
 	}
 	if (dup2(redir->fd, 1) == -1)
 	{

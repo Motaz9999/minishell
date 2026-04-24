@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/19 04:02:41 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/24 19:35:20 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define SIG_STATE_PROMPT 1
 # define SIG_STATE_INT_OUTSIDE 2
 # define SIG_STATE_INT_PROMPT 3
-
+# define SIG_STATE_INT_HEREDOC 4
 /*
 ** Signal state machine shared by:
 ** - src/main.c (prompt loop, sets/consumes state)
@@ -46,8 +46,8 @@
 ** Values:
 ** - SIG_STATE_NONE: no pending interrupt information.
 ** - SIG_STATE_PROMPT: shell is currently blocked in readline("minishell$ ").
-** - SIG_STATE_INT_OUTSIDE: SIGINT arrived while shell was not at prompt.
 ** - SIG_STATE_INT_PROMPT: SIGINT arrived during prompt readline.
+** - SIG_STATE_INT_OUTSIDE: SIGINT arrived while shell was not at prompt.
 **
 ** Why one global works:
 ** - The handler only writes this variable and does async-signal-safe write(2).
@@ -77,7 +77,7 @@ int								handle_pipes(int p, int fds[], int rem,
 									t_shell *s);
 void							close_all_heredoc_fds_except(t_command *commands,
 									t_command *keep_cmd);
-									
+
 /*
 **
 **
@@ -121,6 +121,7 @@ void							setup_signals_child(void);
 void							setup_signals_parent(void);
 void							setup_signals_waits(void);
 void							setup_signals_heredoc(void);
+void							handle_sigint_heredoc(int sig);
 // builtins
 t_builtin						get_builtin(t_command *cmd);
 pid_t							execute_builtin(t_ext *ext, t_shell *shell,

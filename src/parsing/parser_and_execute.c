@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_and_execute.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamr <aamr@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 22:12:15 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/17 22:35:43 by aamr             ###   ########.fr       */
+/*   Updated: 2026/04/24 22:44:13 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	build_and_expand_commands(t_shell *shell)
 	shell->commands = parser(shell->tokens, shell);
 	if (!shell->commands)
 	{
-		if (shell->last_exit_status != 130)
+		if (!(shell->last_exit_status > 128))
 			shell->last_exit_status = 2;
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;
