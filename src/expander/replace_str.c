@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 20:16:20 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/13 01:04:59 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/24 23:40:54 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static char	*extract_key_value(char *key, t_env *env_list, int last_exit_status)
 {
 	t_env	*node;
 	char	*value;
+	int		i;
 
 	if (ft_strcmp(key, "?") == 0)
 		value = ft_itoa(last_exit_status);
@@ -29,10 +30,16 @@ static char	*extract_key_value(char *key, t_env *env_list, int last_exit_status)
 	}
 	if (!value)
 		return (NULL);
+	i = 0;
+	while (value[i])
+	{
+		if (value[i] == '$')
+			value[i] = '\1';
+		i++;
+	}
 	return (value);
 }
 
-// now i have 3 strs just join them and return the join
 static char	*replace_str_helper_2(char *expand_it, t_expander *exp1)
 {
 	exp1->new_one = ft_merge_join(exp1->prefix, exp1->value, exp1->suffix);
@@ -47,7 +54,6 @@ static char	*replace_str_helper_2(char *expand_it, t_expander *exp1)
 	return (exp1->new_one);
 }
 
-// anything before the $
 static char	*replace_str_helper_1(char *expand_it, t_expander *exp1,
 		t_shell *shell)
 {
@@ -74,12 +80,6 @@ static char	*replace_str_helper_1(char *expand_it, t_expander *exp1,
 	}
 	return (replace_str_helper_2(expand_it, exp1));
 }
-//	exp1.dollar_pos = search_for_special(expand_it);
-// where $ located
-//	if (expand_it[exp1.key_start] == '?')
-// check for exit code here
-//	if (exp1.key_len == 0) // no key exist
-// return the original word// now after i make sure there is a key and have len
 
 char	*replace_str(char *expand_it, t_shell *shell)
 {

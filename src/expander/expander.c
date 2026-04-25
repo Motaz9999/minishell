@@ -6,19 +6,12 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 17:50:55 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/16 01:43:10 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/25 02:58:51 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Yes, all expansions start with $, but NO it
-// doesn't have to be at the start:
-// echo $HOME          # start → expands
-// echo hello$HOME     # middle → expands
-// echo hello$HOME/end # middle → expands
-// it return false if there nothing to expand
-// and len if true
 int	search_for_special(char *word)
 {
 	int	i;
@@ -31,28 +24,6 @@ int	search_for_special(char *word)
 	if (word[i] == '$')
 		return (i);
 	return (-1);
-}
-
-// ok this fun is for expanding the cmd
-// (replace it with new one that have more info)
-// anything u want to expand must start with $
-// if it not exist just skip it and return the original str
-char	*expand_cmd(char *expand_it, t_shell *shell)
-{
-	char	*new_one;
-
-	if (expand_it == NULL || *expand_it == '\0')
-		return (expand_it);
-	while (search_for_special(expand_it) >= 0)
-	{
-		new_one = replace_str(expand_it, shell);
-		if (!new_one)
-			return (expand_it);
-		if (new_one == expand_it)
-			break ;
-		expand_it = new_one;
-	}
-	return (expand_it);
 }
 
 static void	restore_protected_dollars(char *arg)
@@ -70,8 +41,25 @@ static void	restore_protected_dollars(char *arg)
 	}
 }
 
-// this fun is for removing any empty "" ''
-// its doing by free it then shifiting the array
+char	*expand_cmd(char *expand_it, t_shell *shell)
+{
+	char	*new_one;
+
+	if (expand_it == NULL || *expand_it == '\0')
+		return (expand_it);
+	while (search_for_special(expand_it) >= 0)
+	{
+		new_one = replace_str(expand_it, shell);
+		if (!new_one)
+			return (expand_it);
+		if (new_one == expand_it)
+			break ;
+		expand_it = new_one;
+	}
+	restore_protected_dollars(expand_it);
+	return (expand_it);
+}
+
 static void	remove_empty_unquoted_args(t_command *cmd)
 {
 	int	i;
@@ -98,10 +86,6 @@ static void	remove_empty_unquoted_args(t_command *cmd)
 	}
 }
 
-// first what i well deal with is shell and cmds
-// this fun is used once for each cmd
-//		if (cmd->quote_types[i] == SINGLE_QUOTE) // skip here
-//		} // double and none i want to expand it
 void	expand_args_from_cmd(t_shell *shell, t_command *cmd)
 {
 	int	i;
@@ -112,7 +96,6 @@ void	expand_args_from_cmd(t_shell *shell, t_command *cmd)
 	while (cmd->args[i])
 	{
 		cmd->args[i] = expand_cmd(cmd->args[i], shell);
-		restore_protected_dollars(cmd->args[i]);
 		i++;
 	}
 	remove_empty_unquoted_args(cmd);

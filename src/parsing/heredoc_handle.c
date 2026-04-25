@@ -6,11 +6,31 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 22:31:19 by aamr              #+#    #+#             */
-/*   Updated: 2026/04/24 22:51:40 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/25 03:02:50 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	finish_heredoc_helper(int status, t_shell *shell, int fds[],
+		t_redirect *redir)
+{
+	if (WIFSIGNALED(status))
+	{
+		shell->last_exit_status = 130;
+		close(fds[0]);
+		return (FALSE);
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		shell->last_exit_status = 130;
+		close(fds[0]);
+		return (FALSE);
+	}
+	shell->last_exit_status = WEXITSTATUS(status);
+	redir->heredoc_fd = fds[0];
+	return (TRUE);
+}
 
 /*
 ** Finalize heredoc collection in parent after fork.
@@ -38,21 +58,7 @@ static int	finish_heredoc(pid_t pid, int fds[2], t_shell *shell,
 		close(fds[0]);
 		return (FALSE);
 	}
-	if (WIFSIGNALED(status))
-	{
-		shell->last_exit_status = 130;
-		close(fds[0]);
-		return (FALSE);
-	}
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
-	{
-		shell->last_exit_status = 130;
-		close(fds[0]);
-		return (FALSE);
-	}
-	shell->last_exit_status = WEXITSTATUS(status);
-	redir->heredoc_fd = fds[0];
-	return (TRUE);
+	return (finish_heredoc_helper(status, shell, fds, redir));
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:33:27 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/24 19:35:20 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/24 23:42:21 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ void							resolve_path(char **p, char *c, t_env *e,
 									t_shell *s);
 void							execute(t_shell *shell);
 int								count_commands(t_command *cmds);
+int								check_on_split(char **split_paths,
+									char *cmd_name, t_shell *shell);
+
 // error handles
 void							warn_heredoc_eof(char *key);
 void							error_execve(char *cmd);

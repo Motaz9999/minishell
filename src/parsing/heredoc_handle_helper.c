@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 01:58:03 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/24 22:56:38 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/25 02:59:31 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@ static void	dose_the_user_send_sig(int fds[], t_heredoc_ctx *ctx, char **line)
 		free_commands(ctx->cmd);
 		free_shell(ctx->shell);
 		setup_signals_child();
-		kill(getpid() , SIGINT);
+		kill(getpid(), SIGINT);
 	}
 }
+
 /*
 ** Child-side heredoc reader loop.
 ** Cleans inherited fds, reads lines until delimiter/EOF, then exits.

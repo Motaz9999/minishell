@@ -6,14 +6,12 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 21:05:26 by moodeh            #+#    #+#             */
-/*   Updated: 2026/03/30 19:31:33 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/24 23:42:36 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Returns 1 if cmd is an absolute (/../cmd) or relative (./cmd ../cmd) path,
-// 0 if it is a bare command name that must be searched in PATH.
 static int	is_path(char *cmd)
 {
 	if (cmd[0] == '/')
@@ -23,7 +21,6 @@ static int	is_path(char *cmd)
 	return (FALSE);
 }
 
-// this fun for if u give it a bare cmd like ls or cat
 static void	handle_bare_cmd(char **find_path, char *cmd_name, char **paths,
 		t_shell *shell)
 {
@@ -50,22 +47,6 @@ static void	handle_bare_cmd(char **find_path, char *cmd_name, char **paths,
 		shell->last_exit_status = error_cmd(cmd_name, "command not found", 127);
 }
 
-// this stat fun is used to give me info about the file/folder
-// like size it is a dir or a file and last update
-// all this stored in struct of type stat
-// struct stat {
-//   dev_t   st_dev;  // device
-//   ino_t   st_ino;  // inode number
-//   mode_t  st_mode; // file type + permissions (**)
-//   nlink_t st_nlink;// number of hard links
-//   uid_t   st_uid;  // user ID
-//   gid_t   st_gid;  // group ID
-//   off_t   st_size; // file size (bytes)
-//   time_t  st_atime;// last access
-//   time_t  st_mtime;// last modification
-//   time_t  st_ctime;// last status change
-// };
-// and i will be using different fun to check
 static int	check_on_dir(char *cmd, t_shell *shell)
 {
 	struct stat	path_stat;
@@ -83,13 +64,6 @@ static int	check_on_dir(char *cmd, t_shell *shell)
 	return (TRUE);
 }
 
-// this cmd is for doing anything that help FULL PATH CMD
-// and there is 2 types of it 1. relative cmd that start with ./ or ../
-//								2. is FULL PATH CMD  start with /
-// F_OK → Test if the file exists.
-// R_OK → Test if the file is readable.
-// X_OK → Test if the file is executable.
-//	if (access(cmd_name, F_OK) != TRUE) // dose the file exist
 static void	handle_path_cmd(char **find_path, char *cmd_name, t_shell *shell)
 {
 	if (access(cmd_name, F_OK) != 0)
@@ -110,14 +84,6 @@ static void	handle_path_cmd(char **find_path, char *cmd_name, t_shell *shell)
 		shell->last_exit_status = error_syscall("malloc", 1);
 }
 
-// Find the command's full path. Returns a malloc'd string or NULL.
-// Case 1: absolute/relative path → duplicate and return as-is.
-// Case 2: bare name → search each directory listed in PATH.
-// now we know this cmd is start with ./ or ../  or
-//  so no need to search inside PATH
-// ok this fun is for resolving what path and it have everything
-// first i have 2 types of paths one start with '/'
-//	if (is_path(cmd_name)) // bare cmd or path cmd
 void	resolve_path(char **find_path, char *cmd_name, t_env *env_list,
 		t_shell *shell)
 {
@@ -136,13 +102,8 @@ void	resolve_path(char **find_path, char *cmd_name, t_env *env_list,
 		return ;
 	}
 	split_paths = ft_split(path_node->value, ':');
-	if (split_paths == NULL)
+	if (!check_on_split(split_paths, cmd_name, shell))
 		return ;
-	if (*split_paths == NULL)
-	{
-		free(split_paths);
-		return ;
-	}
 	handle_bare_cmd(find_path, cmd_name, split_paths, shell);
 	ft_free_all2((void *)split_paths, NULL);
 }

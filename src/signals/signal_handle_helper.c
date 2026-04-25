@@ -6,7 +6,7 @@
 /*   By: moodeh <moodeh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 02:08:04 by moodeh            #+#    #+#             */
-/*   Updated: 2026/04/24 23:14:44 by moodeh           ###   ########.fr       */
+/*   Updated: 2026/04/25 03:03:00 by moodeh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	handle_sigint_heredoc(int sig)
 {
 	(void)sig;
 	g_sigint_received = SIG_STATE_INT_HEREDOC;
-	write(1, "\n", 1); // ← add this
+	write(1, "\n", 1);
 	close(STDIN_FILENO);
 	rl_done = 1;
 }
