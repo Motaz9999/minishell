@@ -12,22 +12,8 @@
 
 #include "minishell.h"
 
-/*
-** Execute builtin command in child process context.
-** Applies pipes/redirections then runs builtin implementation.
-*/
-void	execute_in_child(t_ext *ext, t_shell *shell)
+static void	execute_in_child_helper(t_ext *ext, t_shell *shell)
 {
-	setup_signals_child();
-	close_all_heredoc_fds_except(shell->commands, ext->cmd);
-	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, count_commands(ext->cmd),
-			shell))
-	{
-		if (ext && ext->pids)
-			free(ext->pids);
-		free_shell(shell);
-		exit(error_syscall("dup2", 1));
-	}
 	if (!handle_redir(ext->cmd->redirects, shell))
 	{
 		if (ext && ext->pids)
@@ -40,6 +26,31 @@ void	execute_in_child(t_ext *ext, t_shell *shell)
 		free(ext->pids);
 	free_shell(shell);
 	exit(shell->last_exit_status);
+}
+
+/*
+** Execute builtin command in child process context.
+** Applies pipes/redirections then runs builtin implementation.
+*/
+void	execute_in_child(t_ext *ext, t_shell *shell)
+{
+	struct sigaction	sa;
+
+	setup_signals_child();
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGPIPE, &sa, NULL);
+	close_all_heredoc_fds_except(shell->commands, ext->cmd);
+	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, count_commands(ext->cmd),
+			shell))
+	{
+		if (ext && ext->pids)
+			free(ext->pids);
+		free_shell(shell);
+		exit(error_syscall("dup2", 1));
+	}
+	execute_in_child_helper(ext, shell);
 }
 
 // here we execute the cmds but first we decide what cmd we

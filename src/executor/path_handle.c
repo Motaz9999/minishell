@@ -18,6 +18,8 @@ static int	is_path(char *cmd)
 		return (TRUE);
 	if (cmd[0] == '.' && (cmd[1] == '/' || (cmd[1] == '.' && cmd[2] == '/')))
 		return (TRUE);
+	if (ft_strcmp(cmd, ".") == 0 || ft_strcmp(cmd, "..") == 0)
+		return (TRUE);
 	return (FALSE);
 }
 
@@ -102,8 +104,13 @@ void	resolve_path(char **find_path, char *cmd_name, t_env *env_list,
 		return ;
 	}
 	split_paths = ft_split(path_node->value, ':');
-	if (!check_on_split(split_paths, cmd_name, shell))
+	if (split_paths == NULL)
 		return ;
+	if (*split_paths == NULL)
+	{
+		resolve_path_helper(cmd_name, shell, split_paths);
+		return ;
+	}
 	handle_bare_cmd(find_path, cmd_name, split_paths, shell);
 	ft_free_all2((void *)split_paths, NULL);
 }

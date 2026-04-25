@@ -66,6 +66,8 @@ void							execute(t_shell *shell);
 int								count_commands(t_command *cmds);
 int								check_on_split(char **split_paths,
 									char *cmd_name, t_shell *shell);
+void							resolve_path_helper(char *cmd_name,
+									t_shell *shell, char **split_paths);
 
 // error handles
 void							warn_heredoc_eof(char *key);
@@ -210,6 +212,8 @@ int								count_env_vars(t_env *env);
 void							free_pids(t_ext *ext);
 void							waiting_loop_free_pids(pid_t pids[],
 									t_shell *shell, int cmd_count);
+void							fork_cmd_helper1(char **envp, t_ext *ext,
+									t_shell *shell, char *find_path);
 // shell cleanup
 void							free_shell(t_shell *shell);
 

@@ -12,6 +12,61 @@
 
 #include "minishell.h"
 
+/*
+** Child-side pre-exec setup for env, pipes, and redirections.
+*/
+static void	fork_cmd_helper2(char **envp, t_ext *ext, t_shell *shell,
+		char *find_path)
+{
+	int	remaining_cmds;
+
+	remaining_cmds = count_commands(ext->cmd);
+	if (envp == NULL)
+	{
+		free(find_path);
+		free_pids(ext);
+		exit(error_syscall("envp", 1));
+	}
+	if (!handle_pipes(ext->prev_fd_in, ext->pipe_fds, remaining_cmds, shell))
+	{
+		free(find_path);
+		ft_free_all2((void **)envp, NULL);
+		free_pids(ext);
+		free_shell(shell);
+		exit(error_syscall("dup2", shell->last_exit_status));
+	}
+	if (!handle_redir(ext->cmd->redirects, shell))
+	{
+		free(find_path);
+		ft_free_all2((void **)envp, NULL);
+		free_pids(ext);
+		free_shell(shell);
+		exit(shell->last_exit_status);
+	}
+}
+
+void	fork_cmd_helper1(char **envp, t_ext *ext, t_shell *shell,
+		char *find_path)
+{
+	setup_signals_child();
+	close_all_heredoc_fds_except(shell->commands, ext->cmd);
+	envp = make_envp(shell->env_list);
+	fork_cmd_helper2(envp, ext, shell, find_path);
+	if (find_path == NULL)
+	{
+		ft_free_all2((void **)envp, NULL);
+		free_pids(ext);
+		free_shell(shell);
+		exit(0);
+	}
+	execve(find_path, ext->cmd->args, envp);
+	free(find_path);
+	ft_free_all2((void **)envp, NULL);
+	free_pids(ext);
+	free_shell(shell);
+	error_execve(ext->cmd->args[0]);
+}
+
 static void	waiting_loop_update_last_status(int status, t_shell *shell)
 {
 	if (WIFEXITED(status))
@@ -21,7 +76,7 @@ static void	waiting_loop_update_last_status(int status, t_shell *shell)
 		status = WTERMSIG(status);
 		shell->last_exit_status = status + 128;
 		if (status == SIGQUIT)
-			write(1, "Quit (core dumped)\n", 19);
+			write(STDERR_FILENO, "Quit (core dumped)\n", 19);
 	}
 }
 
@@ -55,6 +110,7 @@ static int	waiting_loop_free_pids_helper(pid_t pid, int *status,
 // WTERMSIG(status) -> Returns the signal number that killed the process.
 // last cmd: update exit status from child
 // pids[i] == -1: cmd not found/no perm, last_exit_status already set
+// Check WTERMSIG dynamically updating Exit statues matching correct norms!
 void	waiting_loop_free_pids(pid_t pids[], t_shell *shell, int cmd_count)
 {
 	int	i;
