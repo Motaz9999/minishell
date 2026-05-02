@@ -1,10 +1,45 @@
-*This project has been created as part of the 42 curriculum by moodeh & ammr.*
+*This project has been created as part of the 42 curriculum by moodeh & aamr.*
 
-# minishell
+# LazyShell
+
+![Minishell Preview](readme%20files/Minishell%20Pipeline%20Architecture.png)
 
 ## Description
 
 minishell is a minimal UNIX shell written in C, built as part of the 42 school curriculum. The goal of the project is to reproduce core bash-like behavior: reading a command line, tokenizing/parsing it, expanding variables, and executing commands with pipes, redirections, heredocs, builtins, signals, and environment management.
+
+Visually and functionally, the project bridges the gap between the commands a user types and the complex system calls required to parse, route, and execute those commands flawlessly under the UNIX philosophy.
+
+### 📸 Preview
+
+<img src="readme files/preview1.png" alt="Minishell Terminal Preview 1" />
+<img src="readme files/preview2.png" alt="Minishell Terminal Preview 2" />
+
+## Architecture & Diagrams
+
+To help readers understand the inner workings of our shell, we've broken down the architecture into visual representations:
+
+### 1. Overall Pipeline Architecture
+The shell utilizes a clear separation of concerns, taking a string of characters and piping it through lexical analysis, parsing, tree building, and finally to the executor.
+![Pipeline Architecture](readme%20files/Minishell%20Pipeline%20Architecture.png)
+
+### 2. Execution Flow
+From evaluating builtins in the parent process versus launching robust child processes inside pipelines, this is the core loop taking place repeatedly:
+![Execution Flow](readme%20files/Execution%20Flow.png)
+
+### 3. Data Structures
+Memory mapping and interconnected nodes are crucial for keeping track of environments (`envp`), token clusters, and AST components.
+![Data Structures](readme%20files/Minishell%20Data%20Structures.png)
+
+### 4. Pipe and Fork Model
+UNIX `pipe()` and `fork()` concepts heavily dictate how commands pass output to the next command's input without breaking the main shell loop.
+![Pipe and Fork Model](readme%20files/Pipe%20and%20Fork%20Model.png)
+
+### 5. Heredoc End-To-End Trace
+Heredocs (`<<`) act as a separate process interaction intercepting standard input securely until a chosen delimiter is hit, managing its own file descriptors.
+![Heredoc End-To-End Trace](readme%20files/Heredoc%20End-To-End%20Trace.png)
+
+---
 
 The project is split between two responsibilities:
 
@@ -132,12 +167,7 @@ bash 42_minishell_tester/tester.sh m syntax
 - [`man 2 sigaction`](https://man7.org/linux/man-pages/man2/sigaction.2.html) - signal handling
 - [Writing a Shell in C - Stephen Brennan](https://brennan.io/2015/01/16/write-a-shell-in-c/) - introductory walkthrough
 
-Project notes and diagrams available in the repository:
-
-- `readme files/Execution Flow.jam`
-- `readme files/Minishell Data Structures.jam`
-- `readme files/Minishell Pipeline Architecture.jam`
-- `readme files/Pipe and Fork Model.jam`
+Project notes and diagrams are available graphically in the `readme files/` folder, which also includes the original `.jam` editable sources for the Jamboard/Figjam diagrams.
 
 ### Use of AI
 
